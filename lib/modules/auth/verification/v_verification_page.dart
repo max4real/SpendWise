@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:spend_wise/_servies/theme_services/w_custon_theme_builder.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class VerificationPage extends StatelessWidget {
+  const VerificationPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaxThemeBuilder(
       builder: (context, theme, themeController) {
         return Scaffold(
-          backgroundColor: theme.background,
+          resizeToAvoidBottomInset: true,
           appBar: AppBar(
-            backgroundColor: theme.background2,
+            centerTitle: true,
+            title: const Text(
+              'Verification',
+              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 18),
+            ),
           ),
-          body: const Center(
-            child: Text("This is home"),
-          ),
+          body: Placeholder(),
         );
       },
     );

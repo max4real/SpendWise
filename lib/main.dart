@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:spend_wise/_common/data/data_controller.dart';
 import 'package:spend_wise/modules/gateway/v_gateway_page.dart';
 import '_servies/theme_services/c_theme_controller.dart';
 
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
   }
 
   void injectDependencies() {
+    Get.put(DataController());
     Get.put(ThemeController());
   }
 }
