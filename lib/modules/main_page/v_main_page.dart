@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:spend_wise/_common/constants/app_svg.dart';
 // import 'package:spend_wise/_common/data/data_controller.dart';
 import 'package:spend_wise/_servies/theme_services/w_custon_theme_builder.dart';
 import 'package:spend_wise/modules/home/v_home_page.dart';
@@ -15,10 +18,45 @@ class MainPage extends StatelessWidget {
     return MaxThemeBuilder(
       builder: (context, theme, themeController) {
         return Scaffold(
-          floatingActionButton: FloatingActionButton(
-            onPressed: () {},
-            backgroundColor: theme.background,
-            child: Icon(Icons.add,size: 30,color: theme.text1,),
+          floatingActionButtonLocation: ExpandableFab.location,
+          floatingActionButton: ExpandableFab(
+            type: ExpandableFabType.fan,
+            pos: ExpandableFabPos.right,
+            childrenAnimation: ExpandableFabAnimation.rotate,
+            distance: 90,
+            openButtonBuilder: RotateFloatingActionButtonBuilder(
+              child: const Icon(
+                Icons.add,
+                color: Colors.white,
+                size: 30,
+              ),
+              backgroundColor: theme.background,
+            ),
+            overlayStyle: ExpandableFabOverlayStyle(
+              color: Colors.black.withOpacity(0.5),
+              blur: 5,
+            ),
+            children: [
+              FloatingActionButton.small(
+                heroTag: null,
+                backgroundColor: const Color(0XFF00A86B),
+                // child: const Icon(Icons.edit),
+                child: SvgPicture.string(AppSvgs.addIncomeIcon),
+                onPressed: () {},
+              ),
+              FloatingActionButton.small(
+                heroTag: null,
+                backgroundColor: const Color(0XFF0077FF),
+                child: SvgPicture.string(AppSvgs.addTransferIcon),
+                onPressed: () {},
+              ),
+              FloatingActionButton.small(
+                heroTag: null,
+                backgroundColor: const Color(0XFFFD3C4A),
+                child: SvgPicture.string(AppSvgs.addOutcomeIcon),
+                onPressed: () {},
+              ),
+            ],
           ),
           bottomNavigationBar: ValueListenableBuilder(
             valueListenable: controller.currentTab,
@@ -28,15 +66,26 @@ class MainPage extends StatelessWidget {
                 selectedItemColor: theme.background,
                 selectedIconTheme: IconThemeData(color: theme.background),
                 showSelectedLabels: true,
-                iconSize: 26,
+                iconSize: 22,
                 // showUnselectedLabels: true,
                 unselectedItemColor: const Color(0XFFC6C6C6),
                 currentIndex: EnumMainPageTab.values.indexOf(currentTab),
                 items: EnumMainPageTab.values.map(
                   (e) {
+                    bool xSelected = currentTab == e;
                     return BottomNavigationBarItem(
                       backgroundColor: const Color(0XFFFCFCFC),
-                      icon: e.icon,
+                      // icon: SvgPicture.string(
+                      //   e.icon,
+                      //   colorFilter: ColorFilter.mode(
+                      //     xSelected ? theme.background : Colors.grey,
+                      //     BlendMode.srcIn,
+                      //   ),
+                      // ),
+                      icon: Icon(
+                        e.icon.icon,
+                        color: xSelected ? theme.background : Colors.grey,
+                      ),
                       label: e.label,
                     );
                   },
