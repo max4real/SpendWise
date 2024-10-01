@@ -8,5 +8,4 @@ class ForgotPasswordController extends GetxController {
     // TODO: implement onInit
     super.onInit();
   }
-
 }

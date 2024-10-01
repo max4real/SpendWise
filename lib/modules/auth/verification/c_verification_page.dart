@@ -2,12 +2,14 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:spend_wise/_servies/theme_services/d_dark_theme.dart';
 
 class VerificationController extends GetxController {
   String strEmail = 'komyintmyatsoe@icloud.com';
   TextEditingController pinController = TextEditingController();
   FocusNode focusNode = FocusNode();
   ValueNotifier<int> remainingSeconds = ValueNotifier(300);
+  Widget textEamil= Text("strEmail",style:  TextStyle(fontSize: 15,color: background));
 
   Timer? timer;
   @override

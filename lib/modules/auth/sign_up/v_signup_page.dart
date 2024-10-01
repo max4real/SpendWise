@@ -166,7 +166,7 @@ class SignUpPage extends StatelessWidget {
                       ),
                       TextButton(
                         onPressed: () {
-                          Get.to(() => const LoginPage());
+                          Get.off(() => const LoginPage());
                         },
                         child: Text(
                           "Login",

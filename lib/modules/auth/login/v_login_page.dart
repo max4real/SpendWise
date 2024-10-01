@@ -93,7 +93,7 @@ class LoginPage extends StatelessWidget {
                   GestureDetector(
                     onTap: () {
                       // controller.fetchLogin();
-                      Get.to(() => const HomePage());
+                      Get.offAll(() => const HomePage());
                     },
                     child: Container(
                       decoration: BoxDecoration(
@@ -114,7 +114,7 @@ class LoginPage extends StatelessWidget {
                   const SizedBox(height: 20),
                   TextButton(
                     onPressed: () {
-                      Get.to(() => const ForgotPasswordPage());
+                      Get.off(() => const ForgotPasswordPage());
                     },
                     child: Text(
                       "Forgot Password?",
@@ -136,7 +136,7 @@ class LoginPage extends StatelessWidget {
                       ),
                       TextButton(
                         onPressed: () {
-                          Get.to(() => const SignUpPage());
+                          Get.off(() => const SignUpPage());
                         },
                         child: Text(
                           "Sign Up",

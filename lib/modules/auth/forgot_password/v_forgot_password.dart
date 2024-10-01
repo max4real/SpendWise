@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:spend_wise/_servies/theme_services/w_custon_theme_builder.dart';
 import 'package:spend_wise/modules/auth/forgot_password/c_forgot_password.dart';
 import 'package:get/get.dart';
+import 'package:spend_wise/modules/auth/forgot_password/v_reset_gateway.dart';
 
 import '../../../_common/data/data_controller.dart';
 
@@ -29,8 +30,8 @@ class ForgotPasswordPage extends StatelessWidget {
                 children: [
                   const SizedBox(height: 35),
                   const Text(
-                    'Don’t worry. Enter your email and we’ll send you a link to reset your password.',
-                    style: TextStyle(fontSize: 20),
+                    'Don’t worry.\nEnter your email and we’ll send you a link to reset your password.',
+                    style: TextStyle(fontSize: 22),
                   ),
                   const SizedBox(height: 30),
                   TextField(
@@ -56,7 +57,7 @@ class ForgotPasswordPage extends StatelessWidget {
                   const SizedBox(height: 30),
                   GestureDetector(
                     onTap: () {
-                      // controller.fetchLogin();
+                      Get.off(() => const ResetGatewayPage());
                     },
                     child: Container(
                       decoration: BoxDecoration(
