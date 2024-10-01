@@ -37,11 +37,20 @@ class ResetGatewayPage extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 20),
-                      Text(
-                        'Check your email ${controller.txtEmail.text} and follow the instructions to reset your password',
+                      RichText(
                         textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          fontSize: 17,
+                        text: TextSpan(
+                          text: 'Check your email ',
+                          style: const TextStyle(
+                              fontSize: 17, color: Colors.black),
+                          children: <TextSpan>[
+                            TextSpan(
+                                text: controller.txtEmail.text,
+                                style: TextStyle(color: theme.background)),
+                            const TextSpan(
+                                text:
+                                    ' and follow the instructions to reset your password!'),
+                          ],
                         ),
                       ),
                     ],
@@ -50,7 +59,7 @@ class ResetGatewayPage extends StatelessWidget {
                 const Spacer(),
                 GestureDetector(
                   onTap: () {
-                    Get.off(()=>const LoginPage());
+                    Get.off(() => const LoginPage());
                   },
                   child: Container(
                     decoration: BoxDecoration(

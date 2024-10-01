@@ -4,7 +4,7 @@ import 'package:spend_wise/modules/auth/forgot_password/v_forgot_password.dart';
 import 'package:spend_wise/modules/auth/login/c_login_page.dart';
 import 'package:get/get.dart';
 import 'package:spend_wise/modules/auth/sign_up/v_signup_page.dart';
-import 'package:spend_wise/modules/home/v_home_page.dart';
+import 'package:spend_wise/modules/main_page/v_main_page.dart';
 
 import '../../../_servies/theme_services/w_custon_theme_builder.dart';
 
@@ -22,7 +22,7 @@ class LoginPage extends StatelessWidget {
             centerTitle: true,
             title: const Text(
               'Login',
-              style: TextStyle(fontWeight: FontWeight.w500,fontSize: 18),
+              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 18),
             ),
           ),
           body: Padding(
@@ -92,8 +92,7 @@ class LoginPage extends StatelessWidget {
                   const SizedBox(height: 45),
                   GestureDetector(
                     onTap: () {
-                      // controller.fetchLogin();
-                      Get.offAll(() => const HomePage());
+                      Get.offAll(() => const MainPage());
                     },
                     child: Container(
                       decoration: BoxDecoration(

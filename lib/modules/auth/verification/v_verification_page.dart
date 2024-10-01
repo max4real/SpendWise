@@ -114,16 +114,34 @@ class VerificationPage extends StatelessWidget {
                     },
                   ),
                   const SizedBox(height: 20),
-                  Text(
-                    'We send verification code to your email ${controller.strEmail}. You can check your inbox.',
-                    style: const TextStyle(fontSize: 15),
+                  RichText(
+                    text: TextSpan(
+                      text: 'We send verification code to your email ',
+                      style: const TextStyle(fontSize: 15, color: Colors.black),
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: controller.strEmail,
+                          style: TextStyle(color: theme.background),
+                        ),
+                        const TextSpan(text: '. You can check your inbox.'),
+                      ],
+                    ),
                   ),
                   const SizedBox(height: 20),
                   GestureDetector(
                     onTap: () {},
-                    child: Text(
-                      'I didn’t received the code? Send again.',
-                      style: TextStyle(fontSize: 15, color: theme.background),
+                    child: RichText(
+                      text: TextSpan(
+                        text: 'I didn’t received the code?',
+                        style:
+                            const TextStyle(fontSize: 15, color: Colors.black),
+                        children: <TextSpan>[
+                          TextSpan(
+                            text: ' Send again.',
+                            style: TextStyle(color: theme.background),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],

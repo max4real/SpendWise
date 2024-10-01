@@ -127,8 +127,19 @@ class SignUpPage extends StatelessWidget {
                       ),
                       SizedBox(
                         width: Get.width * 0.7,
-                        child: const Text(
-                            'By signing up, you agree to the Terms of Service and Privacy Policy'),
+                        child: RichText(
+                          text: TextSpan(
+                            text: 'By signing up, you agree to the ',
+                            style: const TextStyle(
+                                fontSize: 14, color: Colors.black),
+                            children: <TextSpan>[
+                              TextSpan(
+                                text: 'Terms of Service and Privacy Policy',
+                                style: TextStyle(color: theme.background),
+                              ),
+                            ],
+                          ),
+                        ),
                       )
                     ],
                   ),

@@ -9,9 +9,8 @@ class HomePage extends StatelessWidget {
     return MaxThemeBuilder(
       builder: (context, theme, themeController) {
         return Scaffold(
-          backgroundColor: theme.background,
           appBar: AppBar(
-            backgroundColor: theme.background2,
+            backgroundColor:Colors.transparent,
           ),
           body: const Center(
             child: Text("This is home"),
