@@ -5,8 +5,12 @@ import 'package:get/get.dart';
 import 'package:spend_wise/_common/constants/app_svg.dart';
 // import 'package:spend_wise/_common/data/data_controller.dart';
 import 'package:spend_wise/_servies/theme_services/w_custon_theme_builder.dart';
+import 'package:spend_wise/modules/create_new/outcome_new/v_outcome_new.dart';
+import 'package:spend_wise/modules/create_new/transfer_new/v_transfer_new.dart';
 import 'package:spend_wise/modules/home/v_home_page.dart';
 import 'package:spend_wise/modules/main_page/c_main_page.dart';
+
+import '../create_new/income_new/v_income_new.dart';
 
 class MainPage extends StatelessWidget {
   const MainPage({super.key});
@@ -42,19 +46,25 @@ class MainPage extends StatelessWidget {
                 backgroundColor: const Color(0XFF00A86B),
                 // child: const Icon(Icons.edit),
                 child: SvgPicture.string(AppSvgs.addIncomeIcon),
-                onPressed: () {},
+                onPressed: () {
+                  Get.to(() => const IncomeNewPage());
+                },
               ),
               FloatingActionButton.small(
                 heroTag: null,
                 backgroundColor: const Color(0XFF0077FF),
                 child: SvgPicture.string(AppSvgs.addTransferIcon),
-                onPressed: () {},
+                onPressed: () {
+                  Get.to(() => const TransferNewPage());
+                },
               ),
               FloatingActionButton.small(
                 heroTag: null,
                 backgroundColor: const Color(0XFFFD3C4A),
                 child: SvgPicture.string(AppSvgs.addOutcomeIcon),
-                onPressed: () {},
+                onPressed: () {
+                  Get.to(() => const OutcomeNewPage());
+                },
               ),
             ],
           ),

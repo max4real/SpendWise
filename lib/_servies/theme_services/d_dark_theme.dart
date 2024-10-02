@@ -13,6 +13,10 @@ Color onBackground = const Color.fromARGB(255, 219, 218, 218);
 
 Color text1 = const Color(0XFFDDDDDD);
 
+Color outcomeColor = const Color(0XFFFD3C4A);
+Color incomeColor = const Color(0XFF00A86B);
+Color transferColor = const Color(0XFF0077FF);
+
 class DarkThemData {
   static ThemeModel theme = ThemeModel(
     primary: primary,
