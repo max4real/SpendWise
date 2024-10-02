@@ -30,7 +30,7 @@ class MainPage extends StatelessWidget {
                 color: Colors.white,
                 size: 30,
               ),
-              backgroundColor: theme.background,
+              backgroundColor: theme.background.withOpacity(0.7),
             ),
             overlayStyle: ExpandableFabOverlayStyle(
               color: Colors.black.withOpacity(0.5),

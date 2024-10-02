@@ -17,6 +17,8 @@ dependencies:
   flutter_svg: ^2.0.9
   iconsax: ^0.0.8
   flutter_expandable_fab: ^2.3.0
+  animated_toggle_switch: ^0.8.3
+  fl_chart: ^0.69.0
 
 dev_dependencies:
   flutter_test:
