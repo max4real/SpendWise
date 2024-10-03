@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:spend_wise/_common/data/data_controller.dart';
 import 'package:spend_wise/_servies/theme_services/d_dark_theme.dart';
@@ -6,6 +7,8 @@ import 'package:spend_wise/_servies/theme_services/w_custon_theme_builder.dart';
 import 'package:get/get.dart';
 import 'package:spend_wise/modules/create_new/outcome_new/c_outcome_new.dart';
 import 'package:textfield_tags/textfield_tags.dart';
+
+import '../../../_common/constants/app_svg.dart';
 
 class OutcomeNewPage extends StatelessWidget {
   const OutcomeNewPage({super.key});
@@ -54,8 +57,7 @@ class OutcomeNewPage extends StatelessWidget {
                       children: [
                         const Text(
                           'How Much?',
-                          style:
-                              TextStyle(fontSize: 18, color: Colors.white),
+                          style: TextStyle(fontSize: 18, color: Colors.white),
                         ),
                         //Amount Text Field row
                         Row(
@@ -79,8 +81,7 @@ class OutcomeNewPage extends StatelessWidget {
                                   hintText: '0 Ks',
                                   hintStyle: TextStyle(
                                     fontSize: 30,
-                                    color:
-                                        Color.fromARGB(255, 235, 234, 234),
+                                    color: Color.fromARGB(255, 235, 234, 234),
                                     fontWeight: FontWeight.w300,
                                   ),
                                 ),
@@ -89,8 +90,8 @@ class OutcomeNewPage extends StatelessWidget {
                             const SizedBox(width: 10),
                             const Text(
                               'MMK',
-                              style: TextStyle(
-                                  fontSize: 20, color: Colors.white),
+                              style:
+                                  TextStyle(fontSize: 20, color: Colors.white),
                             ),
                           ],
                         )
@@ -124,8 +125,7 @@ class OutcomeNewPage extends StatelessWidget {
                           decoration: InputDecoration(
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(15),
-                              borderSide:
-                                  const BorderSide(color: Colors.grey),
+                              borderSide: const BorderSide(color: Colors.grey),
                             ),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(15),
@@ -146,8 +146,7 @@ class OutcomeNewPage extends StatelessWidget {
                           decoration: InputDecoration(
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(15),
-                              borderSide:
-                                  const BorderSide(color: Colors.grey),
+                              borderSide: const BorderSide(color: Colors.grey),
                             ),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(15),
@@ -287,39 +286,26 @@ class OutcomeNewPage extends StatelessWidget {
                         scrollDirection: Axis.horizontal,
                         child: Row(
                             children: inputFieldValues.tags.map((String tag) {
-                          return Container(
-                            decoration: const BoxDecoration(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10.0),
+                          return Card(
+                            child: Padding(
+                              padding: const EdgeInsets.all(5),
+                              child: Row(
+                                children: [
+                                  SvgPicture.string(AppSvgs.svgGreenDot),
+                                  const SizedBox(width: 4.0),
+                                  InkWell(
+                                    child: Text(
+                                      tag,
+                                      style: const TextStyle(
+                                          color: Color(0xFF5D5C5C)),
+                                    ),
+                                    onTap: () {
+                                      inputFieldValues.onTagRemoved(tag);
+                                    },
+                                  ),
+                                  const SizedBox(width: 4.0),
+                                ],
                               ),
-                              color: Color(0xFF8A8888),
-                            ),
-                            margin: const EdgeInsets.symmetric(horizontal: 5),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10.0, vertical: 4.0),
-                            child: Row(
-                              children: [
-                                InkWell(
-                                  child: Text(
-                                    '#$tag',
-                                    style: const TextStyle(color: Colors.white),
-                                  ),
-                                  onTap: () {
-                                    inputFieldValues.onTagRemoved(tag);
-                                  },
-                                ),
-                                const SizedBox(width: 4.0),
-                                InkWell(
-                                  child: const Icon(
-                                    Icons.cancel,
-                                    size: 14.0,
-                                    color: Color.fromARGB(255, 233, 233, 233),
-                                  ),
-                                  onTap: () {
-                                    inputFieldValues.onTagRemoved(tag);
-                                  },
-                                )
-                              ],
                             ),
                           );
                         }).toList()),

@@ -11,6 +11,7 @@ import 'package:spend_wise/modules/home/v_home_page.dart';
 import 'package:spend_wise/modules/main_page/c_main_page.dart';
 
 import '../create_new/income_new/v_income_new.dart';
+import '../transaction/v_transaction_page.dart';
 
 class MainPage extends StatelessWidget {
   const MainPage({super.key});
@@ -45,7 +46,7 @@ class MainPage extends StatelessWidget {
                 heroTag: null,
                 backgroundColor: const Color(0XFF00A86B),
                 // child: const Icon(Icons.edit),
-                child: SvgPicture.string(AppSvgs.addIncomeIcon),
+                child: SvgPicture.string(AppSvgs.svgAddIncomeIcon),
                 onPressed: () {
                   Get.to(() => const IncomeNewPage());
                 },
@@ -53,7 +54,7 @@ class MainPage extends StatelessWidget {
               FloatingActionButton.small(
                 heroTag: null,
                 backgroundColor: const Color(0XFF0077FF),
-                child: SvgPicture.string(AppSvgs.addTransferIcon),
+                child: SvgPicture.string(AppSvgs.svgAddTransferIcon),
                 onPressed: () {
                   Get.to(() => const TransferNewPage());
                 },
@@ -61,7 +62,7 @@ class MainPage extends StatelessWidget {
               FloatingActionButton.small(
                 heroTag: null,
                 backgroundColor: const Color(0XFFFD3C4A),
-                child: SvgPicture.string(AppSvgs.addOutcomeIcon),
+                child: SvgPicture.string(AppSvgs.svgAddOutcomeIcon),
                 onPressed: () {
                   Get.to(() => const OutcomeNewPage());
                 },
@@ -118,7 +119,7 @@ class MainPage extends StatelessWidget {
                       case EnumMainPageTab.home:
                         return const HomePage();
                       case EnumMainPageTab.transaction:
-                        return const HomePage();
+                        return const TransactionPage();
                       case EnumMainPageTab.budget:
                         return const HomePage();
                       case EnumMainPageTab.profile:

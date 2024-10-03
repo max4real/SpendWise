@@ -3,6 +3,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:spend_wise/_common/_widget/maxListTile.dart';
 import 'package:spend_wise/_servies/theme_services/w_custon_theme_builder.dart';
 import 'package:get/get.dart';
 import 'package:spend_wise/modules/home/c_home_page.dart';
@@ -95,7 +96,7 @@ class HomePage extends StatelessWidget {
                                         SvgPicture.string(
                                           height: 30,
                                           width: 30,
-                                          AppSvgs.IncomeIcon,
+                                          AppSvgs.svgIncomeIcon,
                                         ),
                                         const SizedBox(width: 10),
                                         const Text(
@@ -143,7 +144,7 @@ class HomePage extends StatelessWidget {
                                         SvgPicture.string(
                                           height: 30,
                                           width: 30,
-                                          AppSvgs.OutcomeIcon,
+                                          AppSvgs.svgOutcomeIcon,
                                         ),
                                         const SizedBox(width: 10),
                                         const Text(
@@ -332,14 +333,30 @@ class HomePage extends StatelessWidget {
                     child: ListView(
                       physics: const NeverScrollableScrollPhysics(),
                       children: [
-                        customCard('Shopping' * 4, 'Buy some grocery', '-50000',
-                            '08:34 AM'),
-                        customCard('Shopping', 'Buy some grocery' * 10,
-                            '-50000', '08:34 AM'),
-                        customCard('Shopping', 'Buy some grocery', '-50000',
-                            '08:34 AM'),
-                        customCard('Shopping', 'Buy some grocery', '-50000',
-                            '08:34 AM'),
+                        MaxListTile(
+                            title: 'Shopping',
+                            subtitle: 'This week car gas',
+                            amount: 54000,
+                            time: DateTime.now(),
+                            transaction: false),
+                        MaxListTile(
+                            title: 'Shopping',
+                            subtitle: 'This week car gas',
+                            amount: 54000,
+                            time: DateTime.now(),
+                            transaction: true),
+                        MaxListTile(
+                            title: 'Shopping',
+                            subtitle: 'This week car gas',
+                            amount: 54000,
+                            time: DateTime.now(),
+                            transaction: false),
+                        MaxListTile(
+                            title: 'Shopping',
+                            subtitle: 'This week car gas',
+                            amount: 54000,
+                            time: DateTime.now(),
+                            transaction: true),
                       ],
                     ),
                   ),
@@ -349,52 +366,6 @@ class HomePage extends StatelessWidget {
           ),
         );
       },
-    );
-  }
-
-  Widget customCard(String title, String subtitle, String amount, String time) {
-    return Card(
-      child: ListTile(
-        leading: Container(
-          padding: const EdgeInsets.all(5),
-          decoration: BoxDecoration(
-            color: const Color(0XFFFCAC12),
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: SvgPicture.string(AppSvgs.addOutcomeIcon),
-        ),
-        title: Text(
-          title,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        ),
-        subtitle: Text(
-          subtitle,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        ),
-        trailing: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 5),
-            Text(
-              amount,
-              style: const TextStyle(
-                color: Colors.redAccent,
-                fontSize: 16,
-              ),
-            ),
-            const Spacer(),
-            Text(
-              time,
-              style: const TextStyle(
-                fontSize: 12,
-              ),
-            ),
-            const SizedBox(height: 5),
-          ],
-        ),
-      ),
     );
   }
 }
