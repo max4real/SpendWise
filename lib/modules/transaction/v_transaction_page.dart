@@ -6,6 +6,7 @@ import 'package:spend_wise/_servies/theme_services/w_custon_theme_builder.dart';
 import 'package:spend_wise/modules/transaction/c_transaction_page.dart';
 import 'package:get/get.dart';
 import 'package:gap/gap.dart';
+import 'package:spend_wise/modules/transaction_details/details/v_transaction_details.dart';
 
 import '../../_common/_widget/maxListTile.dart';
 
@@ -90,9 +91,7 @@ class TransactionPage extends StatelessWidget {
               children: [
                 //financial report
                 GestureDetector(
-                  onTap: () {
-
-                  },
+                  onTap: () {},
                   child: Container(
                     width: double.infinity,
                     decoration: BoxDecoration(
@@ -123,12 +122,17 @@ class TransactionPage extends StatelessWidget {
                   child: ListView.builder(
                     itemCount: 10,
                     itemBuilder: (context, index) {
-                      return MaxListTile(
-                        title: 'Shopping $index',
-                        subtitle: 'This week car gas',
-                        amount: 54000,
-                        time: DateTime.now(),
-                        transaction: index % 2 == 0 ? true : false,
+                      return GestureDetector(
+                        onTap: () {
+                          Get.to(() => const TransactionDetailsPage());
+                        },
+                        child: MaxListTile(
+                          title: 'Shopping $index',
+                          subtitle: 'This week car gas',
+                          amount: 54000,
+                          time: DateTime.now(),
+                          transaction: index % 2 == 0 ? true : false,
+                        ),
                       );
                     },
                   ),

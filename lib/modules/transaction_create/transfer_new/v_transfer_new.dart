@@ -5,7 +5,7 @@ import 'package:spend_wise/_common/constants/app_svg.dart';
 import 'package:spend_wise/_servies/theme_services/d_dark_theme.dart';
 import 'package:spend_wise/_servies/theme_services/w_custon_theme_builder.dart';
 import 'package:get/get.dart';
-import 'package:spend_wise/modules/create_new/transfer_new/c_transfer_new.dart';
+import 'package:spend_wise/modules/transaction_create/transfer_new/c_transfer_new.dart';
 
 import '../../../_common/data/data_controller.dart';
 

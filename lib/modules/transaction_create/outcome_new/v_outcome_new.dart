@@ -6,7 +6,7 @@ import 'package:spend_wise/_common/data/data_controller.dart';
 import 'package:spend_wise/_servies/theme_services/d_dark_theme.dart';
 import 'package:spend_wise/_servies/theme_services/w_custon_theme_builder.dart';
 import 'package:get/get.dart';
-import 'package:spend_wise/modules/create_new/outcome_new/c_outcome_new.dart';
+import 'package:spend_wise/modules/transaction_create/outcome_new/c_outcome_new.dart';
 
 import '../../../_common/constants/app_svg.dart';
 
