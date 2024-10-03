@@ -84,19 +84,56 @@ class TransactionPage extends StatelessWidget {
             padding: const EdgeInsets.only(
               left: 15,
               right: 15,
-              top: 18,
+              top: 8,
             ),
-            child: ListView.builder(
-              itemCount: 10,
-              itemBuilder: (context, index) {
-                return MaxListTile(
-                  title: 'Shopping $index',
-                  subtitle: 'This week car gas',
-                  amount: 54000,
-                  time: DateTime.now(),
-                  transaction: index%2==0?true:false,
-                );
-              },
+            child: Column(
+              children: [
+                //financial report
+                GestureDetector(
+                  onTap: () {
+
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: const Color(0XFFEEE5FF),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 15,
+                      vertical: 8,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'See your financial report',
+                          style: TextStyle(color: theme.background),
+                        ),
+                        Icon(
+                          Iconsax.arrow_right_3,
+                          color: theme.background,
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                const Gap(10),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: 10,
+                    itemBuilder: (context, index) {
+                      return MaxListTile(
+                        title: 'Shopping $index',
+                        subtitle: 'This week car gas',
+                        amount: 54000,
+                        time: DateTime.now(),
+                        transaction: index % 2 == 0 ? true : false,
+                      );
+                    },
+                  ),
+                ),
+              ],
             ),
           ),
         );

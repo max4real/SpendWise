@@ -7,14 +7,9 @@ class OutcomeNewController extends GetxController {
   TextEditingController txtAmount = TextEditingController();
   TextEditingController txtDescription = TextEditingController();
   TextEditingController txtWallet = TextEditingController();
+  ValueNotifier<String?> selectedCategory = ValueNotifier(null);
 
   List<String> walletList = [];
-  List<String> categoryTags = <String>[
-    'shopping',
-    'netflix',
-    'foods',
-    'dinner'
-  ];
 
   @override
   void onInit() {

@@ -10,6 +10,7 @@ import 'package:spend_wise/modules/create_new/transfer_new/v_transfer_new.dart';
 import 'package:spend_wise/modules/home/v_home_page.dart';
 import 'package:spend_wise/modules/main_page/c_main_page.dart';
 
+import '../budget/v_budget.dart';
 import '../create_new/income_new/v_income_new.dart';
 import '../transaction/v_transaction_page.dart';
 
@@ -121,7 +122,7 @@ class MainPage extends StatelessWidget {
                       case EnumMainPageTab.transaction:
                         return const TransactionPage();
                       case EnumMainPageTab.budget:
-                        return const HomePage();
+                        return const BudgetPage();
                       case EnumMainPageTab.profile:
                         return const HomePage();
                     }

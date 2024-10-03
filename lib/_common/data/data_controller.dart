@@ -4,6 +4,17 @@ import 'package:intl/intl.dart';
 
 class DataController extends GetxController {
   String apiToken = '';
+  List<String> categoryTags = [
+    'Shopping',
+    'Subscription',
+    'Food',
+    'Salary',
+    'Transportation',
+    'General Use',
+    'Loan',
+    'Borrow',
+    'Other',
+  ];
 }
 
 void dismissKeyboard() {
