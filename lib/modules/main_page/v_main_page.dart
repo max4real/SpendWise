@@ -25,50 +25,58 @@ class MainPage extends StatelessWidget {
       builder: (context, theme, themeController) {
         return Scaffold(
           floatingActionButtonLocation: ExpandableFab.location,
-          floatingActionButton: ExpandableFab(
-            type: ExpandableFabType.fan,
-            pos: ExpandableFabPos.right,
-            childrenAnimation: ExpandableFabAnimation.rotate,
-            distance: 90,
-            openButtonBuilder: RotateFloatingActionButtonBuilder(
-              child: const Icon(
-                Icons.add,
-                color: Colors.white,
-                size: 30,
-              ),
-              backgroundColor: theme.background.withOpacity(0.7),
-            ),
-            overlayStyle: ExpandableFabOverlayStyle(
-              color: Colors.black.withOpacity(0.5),
-              blur: 5,
-            ),
-            children: [
-              FloatingActionButton.small(
-                heroTag: null,
-                backgroundColor: const Color(0XFF00A86B),
-                // child: const Icon(Icons.edit),
-                child: SvgPicture.string(AppSvgs.svgAddIncomeIcon),
-                onPressed: () {
-                  Get.to(() => const IncomeNewPage());
-                },
-              ),
-              FloatingActionButton.small(
-                heroTag: null,
-                backgroundColor: const Color(0XFF0077FF),
-                child: SvgPicture.string(AppSvgs.svgAddTransferIcon),
-                onPressed: () {
-                  Get.to(() => const TransferNewPage());
-                },
-              ),
-              FloatingActionButton.small(
-                heroTag: null,
-                backgroundColor: const Color(0XFFFD3C4A),
-                child: SvgPicture.string(AppSvgs.svgAddOutcomeIcon),
-                onPressed: () {
-                  Get.to(() => const OutcomeNewPage());
-                },
-              ),
-            ],
+          floatingActionButton: ValueListenableBuilder(
+            valueListenable: controller.showFAB,
+            builder: (context, value, child) {
+              return Visibility(
+                visible: value,
+                child: ExpandableFab(
+                  type: ExpandableFabType.fan,
+                  pos: ExpandableFabPos.right,
+                  childrenAnimation: ExpandableFabAnimation.rotate,
+                  distance: 90,
+                  openButtonBuilder: RotateFloatingActionButtonBuilder(
+                    child: const Icon(
+                      Icons.add,
+                      color: Colors.white,
+                      size: 30,
+                    ),
+                    backgroundColor: theme.background.withOpacity(0.7),
+                  ),
+                  overlayStyle: ExpandableFabOverlayStyle(
+                    color: Colors.black.withOpacity(0.5),
+                    blur: 5,
+                  ),
+                  children: [
+                    FloatingActionButton.small(
+                      heroTag: null,
+                      backgroundColor: const Color(0XFF00A86B),
+                      // child: const Icon(Icons.edit),
+                      child: SvgPicture.string(AppSvgs.svgAddIncomeIcon),
+                      onPressed: () {
+                        Get.to(() => const IncomeNewPage());
+                      },
+                    ),
+                    FloatingActionButton.small(
+                      heroTag: null,
+                      backgroundColor: const Color(0XFF0077FF),
+                      child: SvgPicture.string(AppSvgs.svgAddTransferIcon),
+                      onPressed: () {
+                        Get.to(() => const TransferNewPage());
+                      },
+                    ),
+                    FloatingActionButton.small(
+                      heroTag: null,
+                      backgroundColor: const Color(0XFFFD3C4A),
+                      child: SvgPicture.string(AppSvgs.svgAddOutcomeIcon),
+                      onPressed: () {
+                        Get.to(() => const OutcomeNewPage());
+                      },
+                    ),
+                  ],
+                ),
+              );
+            },
           ),
           bottomNavigationBar: ValueListenableBuilder(
             valueListenable: controller.currentTab,
@@ -104,6 +112,16 @@ class MainPage extends StatelessWidget {
                 ).toList(),
                 onTap: (value) {
                   controller.updateTab(tab: EnumMainPageTab.values[value]);
+                  switch (value) {
+                    case 0:
+                      controller.showFAB.value = true;
+                    case 1:
+                      controller.showFAB.value = true;
+                    case 2:
+                      controller.showFAB.value = false;
+                    case 3:
+                      controller.showFAB.value = false;
+                  }
                 },
               );
             },

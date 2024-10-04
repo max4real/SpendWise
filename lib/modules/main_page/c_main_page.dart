@@ -21,6 +21,7 @@ class MainPageController extends GetxController
     with GetTickerProviderStateMixin {
   ValueNotifier<EnumMainPageTab> currentTab =
       ValueNotifier(EnumMainPageTab.home);
+  ValueNotifier<bool> showFAB = ValueNotifier(true);
   late AnimationController tabChangeAnimation;
   @override
   void onInit() {
