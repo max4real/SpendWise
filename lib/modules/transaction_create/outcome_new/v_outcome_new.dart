@@ -1,7 +1,11 @@
+import 'dart:io';
+
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:spend_wise/_common/data/data_controller.dart';
 import 'package:spend_wise/_servies/theme_services/d_dark_theme.dart';
 import 'package:spend_wise/_servies/theme_services/w_custon_theme_builder.dart';
@@ -46,7 +50,7 @@ class OutcomeNewPage extends StatelessWidget {
               children: [
                 SizedBox(
                   width: Get.width,
-                  height: 200,
+                  height: 180,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 18,
@@ -103,7 +107,7 @@ class OutcomeNewPage extends StatelessWidget {
                 Container(
                   width: double.infinity,
                   // height: Get.height-250,
-                  height: MediaQuery.of(context).size.height - 250,
+                  height: MediaQuery.of(context).size.height - 100,
                   decoration: const BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.only(
@@ -188,8 +192,31 @@ class OutcomeNewPage extends StatelessWidget {
                           onTapOutside: (event) {
                             dismissKeyboard();
                           },
-                          controller: controller.txtDescription,
+                          controller: controller.txtRemark,
                           keyboardType: TextInputType.text,
+                          decoration: InputDecoration(
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15),
+                              borderSide: const BorderSide(color: Colors.grey),
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            hintText: 'Remark',
+                            hintStyle: const TextStyle(
+                                color: Color(0XFF91919F),
+                                fontWeight: FontWeight.w400),
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        TextField(
+                          onTapOutside: (event) {
+                            dismissKeyboard();
+                          },
+                          controller: controller.txtDescription,
+                          keyboardType: TextInputType.multiline,
+                          textInputAction: TextInputAction.newline,
+                          maxLines: 2,
                           decoration: InputDecoration(
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(15),
@@ -204,7 +231,7 @@ class OutcomeNewPage extends StatelessWidget {
                                 fontWeight: FontWeight.w400),
                           ),
                         ),
-                        const SizedBox(height: 30),
+                        const SizedBox(height: 20),
                         TextField(
                           onTapOutside: (event) {
                             dismissKeyboard();
@@ -225,6 +252,85 @@ class OutcomeNewPage extends StatelessWidget {
                               fontWeight: FontWeight.w400,
                             ),
                           ),
+                        ),
+                        const SizedBox(height: 20),
+                        ValueListenableBuilder(
+                          valueListenable: controller.imagePickState,
+                          builder: (context, value, child) {
+                            if (value) {
+                              return Stack(
+                                children: [
+                                  SizedBox(
+                                    width: double.infinity,
+                                    height: 120,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(20),
+                                      child: ValueListenableBuilder(
+                                        valueListenable:
+                                            controller.selectedImage,
+                                        builder: (context, value, child) {
+                                          if (value != null) {
+                                            return displayImage(value);
+                                          } else {
+                                            return const Center(
+                                              child: Text("no image yet"),
+                                            );
+                                          }
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                  Align(
+                                    alignment: Alignment.topRight,
+                                    child: IconButton.filled(
+                                      onPressed: () {
+                                        controller.selectedImage.value = null;
+                                        controller.imagePickState.value = false;
+                                      },
+                                      icon: const Icon(
+                                        Icons.clear_rounded,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              );
+                            } else {
+                              return GestureDetector(
+                                onTap: () {
+                                  controller.pickImage();
+                                },
+                                child: DottedBorder(
+                                  borderType: BorderType.RRect,
+                                  radius: const Radius.circular(15),
+                                  dashPattern: const [8, 2],
+                                  color: Colors.grey,
+                                  strokeWidth: 1,
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 14, horizontal: 24),
+                                    child: const Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Icon(
+                                          Iconsax.attach_square,
+                                          color: Colors.grey,
+                                        ),
+                                        SizedBox(width: 8),
+                                        Text(
+                                          'Add attachment',
+                                          style: TextStyle(
+                                            color: Colors.grey,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }
+                          },
                         ),
                         const SizedBox(height: 30),
                         GestureDetector(
@@ -257,5 +363,16 @@ class OutcomeNewPage extends StatelessWidget {
         );
       },
     );
+  }
+
+  Widget displayImage(XFile? pickedFile) {
+    if (pickedFile != null) {
+      return Image.file(
+        File(pickedFile.path),
+        fit: BoxFit.cover,
+      );
+    } else {
+      return const Text('No image selected');
+    }
   }
 }
