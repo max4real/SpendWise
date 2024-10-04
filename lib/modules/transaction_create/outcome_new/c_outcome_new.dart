@@ -10,8 +10,8 @@ class OutcomeNewController extends GetxController {
   TextEditingController txtRemark = TextEditingController();
   TextEditingController txtWallet = TextEditingController();
   ValueNotifier<String?> selectedCategory = ValueNotifier(null);
+  
   ValueNotifier<XFile?> selectedImage = ValueNotifier(null);
-
   ValueNotifier<bool> imagePickState = ValueNotifier(false);
 
   List<String> walletList = [];

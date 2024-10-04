@@ -202,49 +202,46 @@ class HomePage extends StatelessWidget {
                 ),
                 //Line Chart
                 Container(
-                  width: double.infinity,
-                  height: 200,
-                  padding: const EdgeInsets.symmetric(vertical: 20),
-                  child: LineChart(
-                    LineChartData(
-                      // lineTouchData: const LineTouchData(enabled: false),
-                      gridData: const FlGridData(show: false),
-                      titlesData: const FlTitlesData(show: false),
-                      borderData: FlBorderData(show: false),
-                      lineBarsData: [
-                        LineChartBarData(
-                          color: theme.background,
-                          barWidth: 5,
-                          isCurved: true,
-                          isStrokeCapRound: true,
-                          belowBarData: BarAreaData(
-                            show: true,
-                            gradient: LinearGradient(
-                              colors: [
-                                theme.background.withOpacity(0.5),
-                                Colors.white.withOpacity(0.5)
-                              ],
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                            ),
+                    width: double.infinity,
+                    height: 200,
+                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    child: ValueListenableBuilder(
+                      valueListenable: controller.chartDataList,
+                      builder: (context, value, child) {
+                        return LineChart(
+                          duration: const Duration(seconds: 1),
+                          LineChartData(
+                            // lineTouchData: const LineTouchData(enabled: false),
+                            gridData: const FlGridData(show: false),
+                            titlesData: const FlTitlesData(show: false),
+                            borderData: FlBorderData(show: false),
+                            lineBarsData: [
+                              LineChartBarData(
+                                color: theme.background,
+                                barWidth: 5,
+                                isCurved: true,
+                                isStrokeCapRound: true,
+                                belowBarData: BarAreaData(
+                                  show: true,
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      theme.background.withOpacity(0.5),
+                                      Colors.white.withOpacity(0.5)
+                                    ],
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                  ),
+                                ),
+                                spots: value,
+                                dotData: const FlDotData(
+                                  show: false,
+                                ),
+                              ),
+                            ],
                           ),
-                          spots: const [
-                            FlSpot(0, 0),
-                            FlSpot(1, 1),
-                            FlSpot(2, 1),
-                            FlSpot(3, 4),
-                            FlSpot(4, 5),
-                            FlSpot(5, 2),
-                            FlSpot(6, 3),
-                          ],
-                          dotData: const FlDotData(
-                            show: false,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                        );
+                      },
+                    )),
                 //Tab
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 18),
@@ -300,7 +297,7 @@ class HomePage extends StatelessWidget {
                         borderWidth: 0.0,
                         onChanged: (i) {
                           controller.tabIndex.value = i;
-                          print(i);
+                          controller.chartTabOnChnage(i);
                         },
                       );
                     },

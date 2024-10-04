@@ -225,7 +225,7 @@ class IncomeNewPage extends StatelessWidget {
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(15),
                             ),
-                            hintText: 'Description',
+                            hintText: 'Description (optional)',
                             hintStyle: const TextStyle(
                                 color: Color(0XFF91919F),
                                 fontWeight: FontWeight.w400),
