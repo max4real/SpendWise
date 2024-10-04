@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:spend_wise/_common/_widget/maxMultiButton.dart';
 import 'package:spend_wise/_common/data/data_controller.dart';
+import 'package:spend_wise/_servies/theme_services/d_dark_theme.dart';
 import 'package:spend_wise/_servies/theme_services/w_custon_theme_builder.dart';
 import 'package:spend_wise/modules/transaction/c_transaction_page.dart';
 import 'package:get/get.dart';
@@ -124,7 +125,7 @@ class TransactionPage extends StatelessWidget {
                     itemBuilder: (context, index) {
                       return GestureDetector(
                         onTap: () {
-                          Get.to(() => const TransactionDetailsPage());
+                          Get.to(() =>  TransactionDetailsPage(color: outcomeColor));
                         },
                         child: MaxListTile(
                           title: 'Shopping $index',

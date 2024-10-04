@@ -20,6 +20,10 @@ class DataController extends GetxController {
 void dismissKeyboard() {
   FocusManager.instance.primaryFocus?.unfocus();
 }
+String myFullDateTimeFormat(DateTime rawDate) {
+  String formatDate = DateFormat("EEEE d MMMM y  hh:mm a").format(rawDate);
+  return formatDate;
+}
 
 String myDateFormat(DateTime rawDate) {
   String formatDate = DateFormat("MMMM dd h:mm a").format(rawDate);

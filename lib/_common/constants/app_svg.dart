@@ -54,4 +54,8 @@ class AppSvgs {
       """<svg width="14" height="15" viewBox="0 0 14 15" fill="none" xmlns="http://www.w3.org/2000/svg">
 <circle cx="7" cy="7.5" r="7" fill="#00A86B"/>
 </svg>""";
+  static const String svgDottedLine =
+      """<svg width="343" height="2" viewBox="0 0 343 2" fill="none" xmlns="http://www.w3.org/2000/svg">
+<line x1="1" y1="1" x2="342" y2="1" stroke="#E3E5E5" stroke-width="2" stroke-linecap="round" stroke-dasharray="8 12"/>
+</svg>""";
 }
