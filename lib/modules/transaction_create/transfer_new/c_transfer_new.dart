@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:textfield_tags/textfield_tags.dart';
 
 class TransferNewController extends GetxController {
-  late StringTagController stringTagController;
   TextEditingController txtAmount = TextEditingController();
   TextEditingController txtRemark = TextEditingController();
   TextEditingController txtDescription = TextEditingController();

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:intl/intl.dart';
 import 'package:spend_wise/_servies/theme_services/w_custon_theme_builder.dart';
+import 'package:spend_wise/modules/budget/budget_create/v_budget_create.dart';
 import 'package:spend_wise/modules/budget/c_budget.dart';
 import 'package:get/get.dart';
 
@@ -16,28 +18,48 @@ class BudgetPage extends StatelessWidget {
           backgroundColor: theme.background,
           appBar: AppBar(
             backgroundColor: theme.background,
-            leading: IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Iconsax.arrow_left_2,
-                color: Colors.white,
+            leadingWidth: 130,
+            // toolbarHeight: 100,
+            leading: Card(
+              child: Row(
+                children: [
+                  IconButton(
+                    onPressed: () {},
+                    icon: Icon(
+                      Iconsax.arrow_left_2,
+                      size: 22,
+                      color: theme.background,
+                    ),
+                  ),
+                  ValueListenableBuilder(
+                    valueListenable: controller.viewMonth,
+                    builder: (context, value, child) {
+                      return Text(
+                        DateFormat('MMM').format(value),
+                      );
+                    },
+                  ),
+                  IconButton(
+                    onPressed: () {},
+                    icon: Icon(
+                      Iconsax.arrow_right_3,
+                      size: 22,
+                      color: theme.background,
+                    ),
+                  ),
+                ],
               ),
-            ),
-            centerTitle: true,
-            title: ValueListenableBuilder(
-              valueListenable: controller.titleMonth,
-              builder: (context, value, child) {
-                return Text(
-                  value,
-                  style: const TextStyle(color: Colors.white, fontSize: 18),
-                );
-              },
             ),
             actions: [
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Get.to(() => const BudgetCreatePage())?.whenComplete(() {
+                    controller.onInit();
+                  });
+                },
                 icon: const Icon(
-                  Iconsax.arrow_right_3,
+                  Iconsax.add_square,
+                  size: 28,
                   color: Colors.white,
                 ),
               ),
@@ -46,7 +68,7 @@ class BudgetPage extends StatelessWidget {
           body: Container(
             width: double.infinity,
             height: double.infinity,
-            margin: const EdgeInsets.only(top: 10),
+            margin: const EdgeInsets.only(top: 5),
             decoration: const BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.only(
@@ -55,32 +77,14 @@ class BudgetPage extends StatelessWidget {
               ),
             ),
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 18),
-              child: Column(
-                children: [
-                  Expanded(
-                    child: Placeholder(),
+              padding: const EdgeInsets.symmetric(horizontal: 18),
+              child: Expanded(
+                child: Center(
+                  child: Text(
+                    'You don’t have a budget.\nLet’s make one so you in control.',
+                    textAlign: TextAlign.center,
                   ),
-                  GestureDetector(
-                    onTap: () {},
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: theme.background,
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 50),
-                      child: const Text(
-                        "Create a budget",
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               ),
             ),
           ),

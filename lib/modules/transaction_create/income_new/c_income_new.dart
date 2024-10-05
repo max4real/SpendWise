@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:textfield_tags/textfield_tags.dart';
 
 class IncomeNewController extends GetxController {
-  late StringTagController stringTagController;
+  // late StringTagController stringTagController;
   TextEditingController txtAmount = TextEditingController();
   TextEditingController txtRemark = TextEditingController();
   TextEditingController txtDescription = TextEditingController();
@@ -20,22 +19,11 @@ class IncomeNewController extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-    stringTagController = StringTagController();
   }
 
   @override
   void dispose() {
     super.dispose();
-    stringTagController.dispose();
-  }
-
-  void testPrint() {
-    List<String>? list_ = stringTagController.getTags;
-    if (list_!.isNotEmpty) {
-      list_.forEach(print);
-    } else {
-      print('empty');
-    }
   }
 
   Future<XFile?> pickImage() async {
