@@ -41,7 +41,9 @@ class BudgetDetailPage extends StatelessWidget {
             ),
             actions: [
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  showDeleteSheet();
+                },
                 icon: const Icon(
                   Iconsax.trash,
                   color: Colors.black,
@@ -147,6 +149,83 @@ class BudgetDetailPage extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+
+  void showDeleteSheet() {
+    Get.bottomSheet(
+      backgroundColor: Colors.white,
+      MaxThemeBuilder(
+        builder: (context, theme, themeController) {
+          return Padding(
+            padding: const EdgeInsets.only(
+              left: 18,
+              right: 18,
+              top: 18,
+            ),
+            child: SizedBox(
+              width: double.infinity,
+              height: 200,
+              child: Column(
+                children: [
+                  Text(
+                    "Remove this budget?",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 18,
+                    ),
+                  ),
+                  const Gap(10),
+                  Text(
+                    "Are you sure do you wanna remove this budget?",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 16,
+                      color: Color(0XFF91919F),
+                    ),
+                  ),
+                  const Gap(20),
+                  Row(
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          Get.back();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: theme.background2,
+                          minimumSize: const Size(150, 40),
+                        ),
+                        child: Text(
+                          "No",
+                          style:
+                              TextStyle(color: theme.background, fontSize: 18),
+                        ),
+                      ),
+                      const Spacer(),
+                      ElevatedButton(
+                        onPressed: () {
+                          //Delete code
+                          maxSuccessDialog(
+                              'Budget has been successfully removed', true);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: theme.background,
+                          minimumSize: const Size(150, 40),
+                        ),
+                        child: Text(
+                          "Yes",
+                          style: TextStyle(color: theme.text1, fontSize: 18),
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          );
+        },
+      ),
     );
   }
 }
