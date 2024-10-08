@@ -4,6 +4,7 @@ import 'package:gap/gap.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:spend_wise/_common/data/data_controller.dart';
 import 'package:spend_wise/modules/budget/budget_create/c_budget_create.dart';
+import 'package:syncfusion_flutter_sliders/sliders.dart';
 
 import '../../../_common/constants/app_svg.dart';
 import '../../../_servies/theme_services/w_custon_theme_builder.dart';
@@ -101,7 +102,7 @@ class BudgetCreatePage extends StatelessWidget {
                 Container(
                   width: double.infinity,
                   // height: Get.height-250,
-                  height: MediaQuery.of(context).size.height - 300,
+                  height: MediaQuery.of(context).size.height - 330,
                   decoration: const BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.only(
@@ -184,7 +185,7 @@ class BudgetCreatePage extends StatelessWidget {
                         const Gap(25),
                         Row(
                           children: [
-                            Column(
+                            const Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
@@ -231,51 +232,41 @@ class BudgetCreatePage extends StatelessWidget {
                           valueListenable: controller.xSwitched,
                           builder: (context, value, child) {
                             return Visibility(
-                                visible: value,
-                                child: ValueListenableBuilder(
-                                  valueListenable: controller.progressIndi,
-                                  builder: (context, progress, child) {
-                                    return Stack(
-                                      alignment: Alignment.centerRight,
-                                      children: [
-                                        Container(
-                                          height: 20,
-                                          width: double.infinity,
-                                          child: LinearProgressIndicator(
-                                            value: 0.5,
-                                            backgroundColor: Colors.grey[300],
-                                            valueColor:
-                                                AlwaysStoppedAnimation<Color>(
-                                                    Colors.purple),
-                                          ),
+                              visible: value,
+                              child: ValueListenableBuilder(
+                                valueListenable: controller.progressIndi,
+                                builder: (context, progress, child) {
+                                  return Row(
+                                    children: [
+                                      Expanded(
+                                        child: SfSlider(
+                                          min: 0.00,
+                                          max: 1,
+                                          value: progress,
+                                          showTicks: false,
+                                          showLabels: false,
+                                          enableTooltip: false,
+                                          // numberFormat: NumberFormat('#%'),
+                                          onChanged: (dynamic value) {
+                                            controller.progressIndi.value =
+                                                value;
+                                          },
                                         ),
-                                        Positioned(
-                                          right: 20,
-                                          child: Container(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: 10, vertical: 3),
-                                            decoration: BoxDecoration(
-                                              color: Colors.purple,
-                                              borderRadius:
-                                                  BorderRadius.circular(15),
-                                            ),
-                                            child: Text(
-                                              '${(progress * 100).toInt()}%',
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                ));
+                                      ),
+                                      Text('${(progress * 100).toInt()}%'),
+                                      const Gap(10)
+                                    ],
+                                  );
+                                },
+                              ),
+                            );
                           },
                         ),
                         const Gap(25),
                         GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            controller.printData();
+                          },
                           child: Container(
                             decoration: BoxDecoration(
                               color: theme.background,
