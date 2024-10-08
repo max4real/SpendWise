@@ -3,32 +3,30 @@ import 'dart:io';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:gap/gap.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:spend_wise/_common/data/data_controller.dart';
+import 'package:spend_wise/_common/constants/app_svg.dart';
 import 'package:spend_wise/_servies/theme_services/d_dark_theme.dart';
 import 'package:spend_wise/_servies/theme_services/w_custon_theme_builder.dart';
 import 'package:get/get.dart';
-import 'package:spend_wise/modules/transaction_create/outcome_new/c_outcome_new.dart';
+import 'package:spend_wise/modules/transaction/transaction_create/transfer_new/c_transfer_new.dart';
 
-import '../../../_common/constants/app_svg.dart';
+import '../../../../_common/data/data_controller.dart';
 
-class OutcomeNewPage extends StatelessWidget {
-  const OutcomeNewPage({super.key});
+class TransferNewPage extends StatelessWidget {
+  const TransferNewPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    OutcomeNewController controller = Get.put(OutcomeNewController());
-    DataController dataController = Get.find();
+    TransferNewController controller = Get.put(TransferNewController());
     return MaxThemeBuilder(
       builder: (context, theme, themeController) {
         return Scaffold(
           // resizeToAvoidBottomInset: true,
-          backgroundColor: outcomeColor,
+          backgroundColor: transferColor,
           appBar: AppBar(
             centerTitle: true,
-            backgroundColor: outcomeColor,
+            backgroundColor: transferColor,
             leading: IconButton(
               onPressed: () {
                 Get.back();
@@ -40,7 +38,7 @@ class OutcomeNewPage extends StatelessWidget {
               ),
             ),
             title: const Text(
-              'Expense',
+              'Transfer',
               style: TextStyle(color: Colors.white, fontSize: 18),
             ),
           ),
@@ -50,7 +48,7 @@ class OutcomeNewPage extends StatelessWidget {
               children: [
                 SizedBox(
                   width: Get.width,
-                  height: 180,
+                  height: 200,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 18,
@@ -106,8 +104,7 @@ class OutcomeNewPage extends StatelessWidget {
                 ),
                 Container(
                   width: double.infinity,
-                  // height: Get.height-250,
-                  height: MediaQuery.of(context).size.height - 100,
+                  height: MediaQuery.of(context).size.height - 150,
                   decoration: const BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.only(
@@ -119,80 +116,13 @@ class OutcomeNewPage extends StatelessWidget {
                     padding: const EdgeInsets.all(18),
                     child: Column(
                       children: [
-                        ValueListenableBuilder(
-                          valueListenable: controller.selectedCategory,
-                          builder: (context, value, child) {
-                            return Container(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 16),
-                              decoration: BoxDecoration(
-                                border: Border.all(color: Colors.grey),
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              child: DropdownButtonHideUnderline(
-                                child: DropdownButton<String>(
-                                  value: value,
-                                  elevation: 8,
-                                  borderRadius: BorderRadius.circular(20),
-                                  menuWidth: Get.width * 0.6,
-                                  menuMaxHeight: 300,
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 2),
-                                  style: const TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                  hint: const Text(
-                                    'Category',
-                                    style: TextStyle(
-                                      color: Color(0XFF91919F),
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ),
-                                  isExpanded: true,
-                                  icon: Icon(
-                                    Iconsax.arrow_right_3,
-                                    color: theme.background,
-                                  ),
-                                  items: dataController.categoryTags
-                                      .map((String value) {
-                                    return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Card(
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(10),
-                                          child: Row(
-                                            children: [
-                                              SvgPicture.string(
-                                                  AppSvgs.svgGreenDot),
-                                              const Gap(10),
-                                              Text(
-                                                value,
-                                                style: const TextStyle(
-                                                  color: Color(0xFF5D5C5C),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    );
-                                  }).toList(),
-                                  onChanged: (newValue) {
-                                    controller.selectedCategory.value =
-                                        newValue;
-                                  },
-                                ),
-                              ),
-                            );
-                          },
-                        ),
+                        FromToFields(),
                         const SizedBox(height: 20),
                         TextField(
                           onTapOutside: (event) {
                             dismissKeyboard();
                           },
-                          controller: controller.txtRemark,
+                          controller: controller.txtDescription,
                           keyboardType: TextInputType.text,
                           decoration: InputDecoration(
                             enabledBorder: OutlineInputBorder(
@@ -229,28 +159,6 @@ class OutcomeNewPage extends StatelessWidget {
                             hintStyle: const TextStyle(
                                 color: Color(0XFF91919F),
                                 fontWeight: FontWeight.w400),
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        TextField(
-                          onTapOutside: (event) {
-                            dismissKeyboard();
-                          },
-                          controller: controller.txtWallet,
-                          keyboardType: TextInputType.text,
-                          decoration: InputDecoration(
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15),
-                              borderSide: const BorderSide(color: Colors.grey),
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            hintText: 'Wallet',
-                            hintStyle: const TextStyle(
-                              color: Color(0XFF91919F),
-                              fontWeight: FontWeight.w400,
-                            ),
                           ),
                         ),
                         const SizedBox(height: 20),
@@ -375,5 +283,83 @@ class OutcomeNewPage extends StatelessWidget {
     } else {
       return const Text('No image selected');
     }
+  }
+}
+
+// ignore: must_be_immutable
+class FromToFields extends StatelessWidget {
+  TransferNewController controller = Get.find();
+
+  FromToFields({super.key});
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: TextField(
+                onTapOutside: (event) {
+                  dismissKeyboard();
+                },
+                controller: controller.txtFrom,
+                keyboardType: TextInputType.text,
+                decoration: InputDecoration(
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15),
+                    borderSide: const BorderSide(color: Colors.grey),
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  hintText: 'From',
+                  hintStyle: const TextStyle(
+                      color: Color(0XFF91919F), fontWeight: FontWeight.w400),
+                ),
+              ),
+            ),
+            const SizedBox(
+              width: 40,
+            ),
+            Expanded(
+              child: TextField(
+                onTapOutside: (event) {
+                  dismissKeyboard();
+                },
+                controller: controller.txtTo,
+                keyboardType: TextInputType.text,
+                decoration: InputDecoration(
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15),
+                    borderSide: const BorderSide(color: Colors.grey),
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  hintText: 'To',
+                  hintStyle: const TextStyle(
+                      color: Color(0XFF91919F), fontWeight: FontWeight.w400),
+                ),
+              ),
+            ),
+          ],
+        ),
+        Align(
+          alignment: Alignment.center,
+          child: Container(
+            height: 60,
+            width: 60,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              border: Border.all(color: Colors.grey.shade300),
+              shape: BoxShape.circle,
+            ),
+            child: Center(
+              child: SvgPicture.string(AppSvgs.svgSwap),
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }

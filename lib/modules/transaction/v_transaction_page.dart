@@ -7,7 +7,7 @@ import 'package:spend_wise/_servies/theme_services/w_custon_theme_builder.dart';
 import 'package:spend_wise/modules/transaction/c_transaction_page.dart';
 import 'package:get/get.dart';
 import 'package:gap/gap.dart';
-import 'package:spend_wise/modules/transaction_details/details/v_transaction_details.dart';
+import 'package:spend_wise/modules/transaction/transaction_detail/v_transaction_details.dart';
 
 import '../../_common/_widget/maxListTile.dart';
 

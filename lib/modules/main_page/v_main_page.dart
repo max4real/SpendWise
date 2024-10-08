@@ -5,13 +5,13 @@ import 'package:get/get.dart';
 import 'package:spend_wise/_common/constants/app_svg.dart';
 // import 'package:spend_wise/_common/data/data_controller.dart';
 import 'package:spend_wise/_servies/theme_services/w_custon_theme_builder.dart';
-import 'package:spend_wise/modules/transaction_create/outcome_new/v_outcome_new.dart';
-import 'package:spend_wise/modules/transaction_create/transfer_new/v_transfer_new.dart';
+import 'package:spend_wise/modules/transaction/transaction_create/outcome_new/v_outcome_new.dart';
+import 'package:spend_wise/modules/transaction/transaction_create/transfer_new/v_transfer_new.dart';
 import 'package:spend_wise/modules/home/v_home_page.dart';
 import 'package:spend_wise/modules/main_page/c_main_page.dart';
 
 import '../budget/v_budget.dart';
-import '../transaction_create/income_new/v_income_new.dart';
+import '../transaction/transaction_create/income_new/v_income_new.dart';
 import '../transaction/v_transaction_page.dart';
 
 class MainPage extends StatelessWidget {
