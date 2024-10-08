@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
+import 'package:spend_wise/_common/_widget/maxCustomCard.dart';
 import 'package:spend_wise/_servies/theme_services/w_custon_theme_builder.dart';
 import 'package:spend_wise/modules/budget/budget_create/v_budget_create.dart';
+import 'package:spend_wise/modules/budget/budget_details/v_budget_detail.dart';
 import 'package:spend_wise/modules/budget/c_budget.dart';
 import 'package:get/get.dart';
 
@@ -77,16 +79,38 @@ class BudgetPage extends StatelessWidget {
               ),
             ),
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 18),
-              child: Expanded(
-                child: Center(
-                  child: Text(
-                    'You don’t have a budget.\nLet’s make one so you in control.',
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ),
-            ),
+                padding: const EdgeInsets.only(top: 10, left: 13, right: 13),
+                child: ValueListenableBuilder(
+                  valueListenable: controller.budgetDataList,
+                  builder: (context, value, child) {
+                    if (value) {
+                      return const Center(
+                        child: Text(
+                          'You don’t have a budget.\nLet’s make one so you in control.',
+                          textAlign: TextAlign.center,
+                        ),
+                      );
+                    } else {
+                      return ListView.builder(
+                        itemCount: 5,
+                        itemBuilder: (context, index) {
+                          return GestureDetector(
+                            onTap: () {
+                              Get.to(() => const BudgetDetailPage());
+                            },
+                            child: MaxCustonCard(
+                              tag: index % 2 == 0 ? 'Shopping' : 'Food',
+                              xExceed: index % 2 == 0 ? false : true,
+                              totoal: 100000,
+                              used: 85000,
+                              remaining: 15000,
+                            ),
+                          );
+                        },
+                      );
+                    }
+                  },
+                )),
           ),
         );
       },

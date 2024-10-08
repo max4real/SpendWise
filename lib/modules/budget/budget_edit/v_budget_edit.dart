@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:spend_wise/_common/data/data_controller.dart';
-import 'package:spend_wise/modules/budget/budget_create/c_budget_create.dart';
+import 'package:spend_wise/modules/budget/budget_edit/c_budget_edit.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 
 import '../../../_common/constants/app_svg.dart';
+import '../../../_common/data/data_controller.dart';
 import '../../../_servies/theme_services/w_custon_theme_builder.dart';
-import 'package:get/get.dart';
 
-class BudgetCreatePage extends StatelessWidget {
-  const BudgetCreatePage({super.key});
+class BudgetEditPage extends StatelessWidget {
+  const BudgetEditPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    BudgetCreateController controller = Get.put(BudgetCreateController());
+    BudgetEditController controller = Get.put(BudgetEditController());
     DataController dataController = Get.find();
     return MaxThemeBuilder(
       builder: (context, theme, themeController) {
@@ -264,9 +264,7 @@ class BudgetCreatePage extends StatelessWidget {
                         ),
                         const Gap(25),
                         GestureDetector(
-                          onTap: () {
-                            controller.printData();
-                          },
+                          onTap: () {},
                           child: Container(
                             decoration: BoxDecoration(
                               color: theme.background,

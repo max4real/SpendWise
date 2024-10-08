@@ -87,3 +87,8 @@ void maxSuccessDialog(String message, bool type_) {
     barrierDismissible: true,
   );
 }
+
+String formatNumber(dynamic data) {
+  var formatter = NumberFormat('#,##0');
+  return formatter.format(data);
+}
