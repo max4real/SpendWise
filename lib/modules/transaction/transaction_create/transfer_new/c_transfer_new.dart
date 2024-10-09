@@ -6,8 +6,9 @@ class TransferNewController extends GetxController {
   TextEditingController txtAmount = TextEditingController();
   TextEditingController txtRemark = TextEditingController();
   TextEditingController txtDescription = TextEditingController();
-  TextEditingController txtFrom = TextEditingController();
-  TextEditingController txtTo = TextEditingController();
+
+  ValueNotifier<String?> selectedSubTypeFrom = ValueNotifier(null);
+  ValueNotifier<String?> selectedSubTypeTo = ValueNotifier(null);
 
   ValueNotifier<XFile?> selectedImage = ValueNotifier(null);
   ValueNotifier<bool> imagePickState = ValueNotifier(false);

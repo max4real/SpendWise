@@ -22,6 +22,13 @@ class DataController extends GetxController {
     'Bank',
     'Mobile Banking',
   ];
+
+  //Get SubType list from Account List's subtype
+  List<String> accSubType = [
+    'KBZ Bank',
+    'KBZ Pay',
+    'Wallet',
+  ];
 }
 
 void dismissKeyboard() {

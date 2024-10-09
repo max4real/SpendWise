@@ -72,6 +72,7 @@ class TransferNewPage extends StatelessWidget {
                                 onTapOutside: (event) {
                                   dismissKeyboard();
                                 },
+                                // inputFormatters: [CommaTextInputFormatter()],
                                 cursorColor: theme.background,
                                 cursorHeight: 30,
                                 style: const TextStyle(
@@ -289,77 +290,146 @@ class TransferNewPage extends StatelessWidget {
 // ignore: must_be_immutable
 class FromToFields extends StatelessWidget {
   TransferNewController controller = Get.find();
+  DataController dataController = Get.find();
 
   FromToFields({super.key});
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Row(
+    return MaxThemeBuilder(
+      builder: (context, theme, themeController) {
+        return Stack(
           children: [
-            Expanded(
-              child: TextField(
-                onTapOutside: (event) {
-                  dismissKeyboard();
-                },
-                controller: controller.txtFrom,
-                keyboardType: TextInputType.text,
-                decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15),
-                    borderSide: const BorderSide(color: Colors.grey),
+            Row(
+              children: [
+                Expanded(
+                  child: ValueListenableBuilder(
+                    valueListenable: controller.selectedSubTypeFrom,
+                    builder: (context, value, child) {
+                      return Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey),
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: DropdownButtonHideUnderline(
+                            child: DropdownButton<String>(
+                          value: value,
+                          elevation: 8,
+                          borderRadius: BorderRadius.circular(20),
+                          menuWidth: Get.width * 0.6,
+                          menuMaxHeight: 300,
+                          padding: const EdgeInsets.symmetric(vertical: 2),
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w400,
+                          ),
+                          hint: const Text(
+                            'From',
+                            style: TextStyle(
+                              color: Color(0XFF91919F),
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                          isExpanded: true,
+                          icon: Icon(
+                            Iconsax.arrow_right_3,
+                            color: theme.background,
+                          ),
+                          items: dataController.accSubType.map((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(
+                                value,
+                                style: const TextStyle(
+                                  color: Color(0xFF5D5C5C),
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                          onChanged: (newValue) {
+                            controller.selectedSubTypeFrom.value = newValue;
+                          },
+                        )),
+                      );
+                    },
                   ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  hintText: 'From',
-                  hintStyle: const TextStyle(
-                      color: Color(0XFF91919F), fontWeight: FontWeight.w400),
                 ),
-              ),
-            ),
-            const SizedBox(
-              width: 40,
-            ),
-            Expanded(
-              child: TextField(
-                onTapOutside: (event) {
-                  dismissKeyboard();
-                },
-                controller: controller.txtTo,
-                keyboardType: TextInputType.text,
-                decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15),
-                    borderSide: const BorderSide(color: Colors.grey),
+                const SizedBox(
+                  width: 40,
+                ),
+                Expanded(
+                  child: ValueListenableBuilder(
+                    valueListenable: controller.selectedSubTypeTo,
+                    builder: (context, value, child) {
+                      return Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey),
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: DropdownButtonHideUnderline(
+                            child: DropdownButton<String>(
+                          value: value,
+                          elevation: 8,
+                          borderRadius: BorderRadius.circular(20),
+                          menuWidth: Get.width * 0.6,
+                          menuMaxHeight: 300,
+                          padding: const EdgeInsets.symmetric(vertical: 2),
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w400,
+                          ),
+                          hint: const Text(
+                            'To',
+                            style: TextStyle(
+                              color: Color(0XFF91919F),
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                          isExpanded: true,
+                          icon: Icon(
+                            Iconsax.arrow_right_3,
+                            color: theme.background,
+                          ),
+                          items: dataController.accSubType.map((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(
+                                value,
+                                style: const TextStyle(
+                                  color: Color(0xFF5D5C5C),
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                          onChanged: (newValue) {
+                            controller.selectedSubTypeTo.value = newValue;
+                          },
+                        )),
+                      );
+                    },
                   ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  hintText: 'To',
-                  hintStyle: const TextStyle(
-                      color: Color(0XFF91919F), fontWeight: FontWeight.w400),
+                ),
+              ],
+            ),
+            Align(
+              alignment: Alignment.center,
+              child: Container(
+                height: 60,
+                width: 60,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(color: Colors.grey.shade300),
+                  shape: BoxShape.circle,
+                ),
+                child: Center(
+                  child: SvgPicture.string(AppSvgs.svgSwap),
                 ),
               ),
             ),
           ],
-        ),
-        Align(
-          alignment: Alignment.center,
-          child: Container(
-            height: 60,
-            width: 60,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(color: Colors.grey.shade300),
-              shape: BoxShape.circle,
-            ),
-            child: Center(
-              child: SvgPicture.string(AppSvgs.svgSwap),
-            ),
-          ),
-        ),
-      ],
+        );
+      },
     );
   }
 }

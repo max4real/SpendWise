@@ -7,8 +7,9 @@ class IncomeNewController extends GetxController {
   TextEditingController txtAmount = TextEditingController();
   TextEditingController txtRemark = TextEditingController();
   TextEditingController txtDescription = TextEditingController();
-  TextEditingController txtWallet = TextEditingController();
+  // TextEditingController txtWallet = TextEditingController();
   ValueNotifier<String?> selectedCategory = ValueNotifier(null);
+  ValueNotifier<String?> selectedSubType = ValueNotifier(null);
   ValueNotifier<XFile?> selectedImage = ValueNotifier(null);
 
   ValueNotifier<bool> imagePickState = ValueNotifier(false);
@@ -34,5 +35,8 @@ class IncomeNewController extends GetxController {
       imagePickState.value = true;
     }
     return result;
+  }
+  void ptrintData(){
+    print(txtAmount.text);
   }
 }
