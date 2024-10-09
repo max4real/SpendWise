@@ -29,6 +29,31 @@ class DataController extends GetxController {
     'KBZ Pay',
     'Wallet',
   ];
+  String getImage(String name) {
+    if (name == "KBZ Bank") {
+      return 'assets/images/logo/KBZ_Bank_logo.png';
+    } else if (name == "AYA Bank") {
+      return 'assets/images/logo/AYA_Bank_logo.png';
+    } else if (name == "Yoma Bank") {
+      return 'assets/images/logo/yoma_bank_logo.jpg';
+    } else if (name == "CB Bank") {
+      return 'assets/images/logo/cb_bank_logo.png';
+    } else if (name == "AGD Bank") {
+      return 'assets/images/logo/AGD.png';
+    } else if (name == "Other") {
+      return 'assets/images/reset_mail.png';
+    } else if (name == "KBZ Pay") {
+      return 'assets/images/logo/k_pay.png';
+    } else if (name == "Wave Pay") {
+      return 'assets/images/logo/wave_pay.png';
+    } else if (name == "CB Mobile Banking") {
+      return 'assets/images/logo/CB.png';
+    } else if (name == "OK\$") {
+      return 'assets/images/logo/ok_dollar.png';
+    } else {
+      return "assets/images/reset_mail.png";
+    }
+  }
 }
 
 void dismissKeyboard() {

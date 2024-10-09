@@ -10,6 +10,7 @@ import 'package:spend_wise/_common/data/data_controller.dart';
 import 'package:spend_wise/_servies/theme_services/w_custon_theme_builder.dart';
 import 'package:get/get.dart';
 import 'package:spend_wise/modules/account/account_create/v_account_create.dart';
+import 'package:spend_wise/modules/account/account_detail/v_account_detail.dart';
 
 class AccountListPage extends StatelessWidget {
   const AccountListPage({super.key});
@@ -88,19 +89,24 @@ class AccountListPage extends StatelessWidget {
                 child: ListView.builder(
                   itemCount: 3,
                   itemBuilder: (context, index) {
-                    return Card(
-                      margin: const EdgeInsets.all(3),
-                      elevation: 0.5,
-                      child: ListTile(
-                        leading: SvgPicture.string(AppSvgs.svgAccountWallet),
-                        title: const Text(
-                          "Wallet",
-                          style: TextStyle(fontSize: 16),
-                        ),
-                        trailing: Text(
-                          '${formatNumber(540000)} Ks',
-                          style: const TextStyle(
-                              fontSize: 13, fontWeight: FontWeight.w600),
+                    return GestureDetector(
+                      onTap: () {
+                        Get.to(() => const AccountDetailPage());
+                      },
+                      child: Card(
+                        margin: const EdgeInsets.all(3),
+                        elevation: 0.5,
+                        child: ListTile(
+                          leading: SvgPicture.string(AppSvgs.svgAccountWallet),
+                          title: const Text(
+                            "Wallet",
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          trailing: Text(
+                            '${formatNumber(540000)} Ks',
+                            style: const TextStyle(
+                                fontSize: 13, fontWeight: FontWeight.w600),
+                          ),
                         ),
                       ),
                     );
