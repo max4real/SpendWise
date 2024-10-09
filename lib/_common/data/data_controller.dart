@@ -16,6 +16,12 @@ class DataController extends GetxController {
     'Borrow',
     'Other',
   ];
+
+  List<String> accType = [
+    'Wallet',
+    'Bank',
+    'Mobile Banking',
+  ];
 }
 
 void dismissKeyboard() {

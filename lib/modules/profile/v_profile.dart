@@ -21,13 +21,12 @@ class ProfilePage extends StatelessWidget {
           backgroundColor: const Color(0XFFF6F6F6),
           body: SafeArea(
             child: Padding(
-              padding: const EdgeInsets.only(left: 18, right: 18, top: 10),
+              padding: const EdgeInsets.only(left: 18, right: 18, top: 30),
               child: Column(
                 children: [
-                  Container(
+                  SizedBox(
                     width: double.infinity,
-                    height: 150,
-                    // color: Colors.deepPurple,
+                    height: 120,
                     child: Row(
                       children: [
                         CircleAvatar(
@@ -74,9 +73,10 @@ class ProfilePage extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const Gap(10),
+                  const Gap(20),
                   Card(
-                    elevation: 5,
+                    color: Colors.white,
+                    elevation: 1,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 18),
                       child: Column(
