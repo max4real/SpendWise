@@ -18,6 +18,7 @@ class AccountListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // AccountListController controller = Get.put(AccountListController());
+    DataController dataController = Get.find();
     return MaxThemeBuilder(
       builder: (context, theme, themeController) {
         return Scaffold(
@@ -85,6 +86,7 @@ class AccountListPage extends StatelessWidget {
                   ],
                 ),
               ),
+              const Gap(10),
               Expanded(
                 child: ListView.builder(
                   itemCount: 3,
@@ -97,9 +99,22 @@ class AccountListPage extends StatelessWidget {
                         margin: const EdgeInsets.all(3),
                         elevation: 0.5,
                         child: ListTile(
-                          leading: SvgPicture.string(AppSvgs.svgAccountWallet),
+                          leading: Container(
+                            width: 70,
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: const Color(0XFFF1F1FA),
+                              // color: Colors.yellow,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Image.asset(
+                              dataController.getImage('KBZ Pay'),
+                              // dataController.getImage('Wave Pay'),
+                              // dataController.getImage('KBZ Bank'),
+                            ),
+                          ),
                           title: const Text(
-                            "Wallet",
+                            "KBZ Pay",
                             style: TextStyle(fontSize: 16),
                           ),
                           trailing: Text(

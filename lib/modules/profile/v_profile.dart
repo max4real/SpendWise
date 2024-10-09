@@ -73,80 +73,99 @@ class ProfilePage extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const Gap(20),
-                  Card(
-                    color: Colors.white,
-                    elevation: 1,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 18),
-                      child: Column(
-                        children: [
-                          ListTile(
-                            minTileHeight: 70,
-                            onTap: () {
-                              Get.to(() => const AccountListPage());
-                            },
-                            leading:
-                                SvgPicture.string(AppSvgs.svgProfileAccount),
-                            title: const Text(
-                              'Account',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w400,
-                                fontSize: 16,
-                              ),
+                  // const Gap(20),
+                  const Divider(),
+                  Column(
+                    children: [
+                      Card(
+                        child: ListTile(
+                          minTileHeight: 70,
+                          onTap: () {
+                            Get.to(() => const AccountListPage());
+                          },
+                          leading: SvgPicture.string(
+                            AppSvgs.svgProfileAccount,
+                            width: 40,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(13.0),
+                          ),
+                          title: const Text(
+                            'Account',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 16,
                             ),
                           ),
-                          const Divider(),
-                          ListTile(
-                            minTileHeight: 70,
-                            onTap: () {
-                              maxSnackBar(context, "Coming Soon!");
-                            },
-                            leading:
-                                SvgPicture.string(AppSvgs.svgProfileSetting),
-                            title: const Text(
-                              'Settings',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w400,
-                                fontSize: 16,
-                              ),
-                            ),
-                          ),
-                          const Divider(),
-                          ListTile(
-                            minTileHeight: 70,
-                            onTap: () {
-                              maxSnackBar(context, "Coming Soon!");
-                            },
-                            leading:
-                                SvgPicture.string(AppSvgs.svgProfileExport),
-                            title: const Text(
-                              'Export Data',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w400,
-                                fontSize: 16,
-                              ),
-                            ),
-                          ),
-                          const Divider(),
-                          ListTile(
-                            minTileHeight: 70,
-                            onTap: () {
-                              maxSnackBar(context, "Logout");
-                            },
-                            leading:
-                                SvgPicture.string(AppSvgs.svgProfileLogout),
-                            title: const Text(
-                              'Logout',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w400,
-                                fontSize: 16,
-                              ),
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
-                    ),
+                      Card(
+                        child: ListTile(
+                          minTileHeight: 70,
+                          onTap: () {
+                            maxSnackBar(context, "Coming Soon!");
+                          },
+                          leading: SvgPicture.string(
+                            AppSvgs.svgProfileSetting,
+                            width: 40,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(13.0),
+                          ),
+                          title: const Text(
+                            'Settings',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Card(
+                        child: ListTile(
+                          minTileHeight: 70,
+                          onTap: () {
+                            maxSnackBar(context, "Coming Soon!");
+                          },
+                          leading: SvgPicture.string(
+                            AppSvgs.svgProfileExport,
+                            width: 40,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(13.0),
+                          ),
+                          title: const Text(
+                            'Export Data',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Card(
+                        child: ListTile(
+                          minTileHeight: 70,
+                          onTap: () {
+                            maxSnackBar(context, "Logout");
+                          },
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(13.0),
+                          ),
+                          leading: SvgPicture.string(
+                            AppSvgs.svgProfileLogout,
+                            width: 40,
+                          ),
+                          title: const Text(
+                            'Logout',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   )
                 ],
               ),

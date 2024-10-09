@@ -125,14 +125,15 @@ class TransactionPage extends StatelessWidget {
                     itemBuilder: (context, index) {
                       return GestureDetector(
                         onTap: () {
-                          Get.to(() =>  TransactionDetailsPage(color: incomeColor));
+                          Get.to(
+                              () => TransactionDetailsPage(color: outcomeColor));
                         },
                         child: MaxListTile(
                           title: 'Shopping $index',
                           subtitle: 'This week car gas',
                           amount: 54000,
                           time: DateTime.now(),
-                          transaction: index % 2 == 0 ? true : false,
+                          transaction: index % 2 == 0 ? 'Income' : 'Expense',
                         ),
                       );
                     },

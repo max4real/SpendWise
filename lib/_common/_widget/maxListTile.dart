@@ -12,7 +12,7 @@ class MaxListTile extends StatelessWidget {
   String subtitle;
   double amount;
   DateTime time;
-  bool transaction;
+  String transaction;
   MaxListTile(
       {super.key,
       required this.title,
@@ -23,6 +23,26 @@ class MaxListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Color displayColor;
+    String displayAmount = '';
+    String displayIcon = '';
+    if (transaction == "Income") {
+      displayColor = incomeColor;
+      displayAmount = "+${formatNumber(amount)}";
+      displayIcon = AppSvgs.svgAddIncomeIcon;
+    } else if (transaction == "Expense") {
+      displayColor = outcomeColor;
+      displayAmount = "-${formatNumber(amount)}";
+      displayIcon = AppSvgs.svgAddOutcomeIcon;
+    } else if (transaction == "Transfer") {
+      displayColor = transferColor;
+      displayAmount = formatNumber(amount);
+      displayIcon = AppSvgs.svgAddTransferIcon;
+    } else {
+      displayColor = background;
+      displayAmount = "-$amount";
+      displayIcon = AppSvgs.svgAddOutcomeIcon;
+    }
     return MaxThemeBuilder(
       builder: (context, theme, themeController) {
         return Card(
@@ -30,12 +50,10 @@ class MaxListTile extends StatelessWidget {
             leading: Container(
               padding: const EdgeInsets.all(5),
               decoration: BoxDecoration(
-                color: transaction ? incomeColor : outcomeColor,
+                color: displayColor,
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: transaction
-                  ? SvgPicture.string(AppSvgs.svgAddIncomeIcon)
-                  : SvgPicture.string(AppSvgs.svgAddOutcomeIcon),
+              child: SvgPicture.string(displayIcon),
             ),
             title: Text(
               title,
@@ -54,9 +72,9 @@ class MaxListTile extends StatelessWidget {
               children: [
                 const SizedBox(height: 5),
                 Text(
-                  transaction ? '+$amount' : '-$amount',
+                  displayAmount,
                   style: TextStyle(
-                    color: transaction ? incomeColor : outcomeColor,
+                    color: displayColor,
                     fontSize: 14,
                   ),
                 ),

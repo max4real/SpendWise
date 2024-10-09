@@ -44,6 +44,15 @@ class AccountDetailPage extends StatelessWidget {
             actions: [
               IconButton(
                 onPressed: () {
+                  maxSnackBar(context, 'Delete Account');
+                },
+                icon: const Icon(
+                  Iconsax.trash,
+                  size: 22,
+                ),
+              ),
+              IconButton(
+                onPressed: () {
                   Get.to(() => const AccountEditPage());
                 },
                 icon: SvgPicture.string(
@@ -98,7 +107,7 @@ class AccountDetailPage extends StatelessWidget {
                         subtitle: "lunch and dinner",
                         amount: 7500,
                         time: DateTime.now(),
-                        transaction: index % 2 == 0 ? true : false,
+                        transaction: index % 2 == 0 ? 'Income' : 'Expense',
                       );
                     },
                   ),
