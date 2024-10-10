@@ -137,7 +137,9 @@ class VerificationPage extends StatelessWidget {
                         style: TextStyle(fontSize: 15),
                       ),
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          controller.sendCodeAgain();
+                        },
                         child: ValueListenableBuilder(
                           valueListenable: controller.xSendAgain,
                           builder: (context, value, child) {

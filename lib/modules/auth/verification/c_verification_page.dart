@@ -36,7 +36,7 @@ class VerificationController extends GetxController {
       if (remainingSeconds.value > 0) {
         remainingSeconds.value--;
       } else {
-        xSendAgain.value=true;
+        xSendAgain.value = true;
         timer.cancel();
       }
     });
@@ -55,6 +55,17 @@ class VerificationController extends GetxController {
     } else {
       print(value);
       return 'Incorrect Pin';
+    }
+  }
+
+  void sendCodeAgain() {
+    if (xSendAgain.value) {
+      xSendAgain.value = false;
+      print('send again');
+      remainingSeconds.value = 300;
+      startCountdown();
+    } else {
+      print("not now");
     }
   }
 }
