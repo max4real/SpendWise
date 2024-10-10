@@ -2,14 +2,15 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:spend_wise/_servies/theme_services/d_dark_theme.dart';
 
 class VerificationController extends GetxController {
   String strEmail = 'komyintmyatsoe@icloud.com';
   TextEditingController pinController = TextEditingController();
   FocusNode focusNode = FocusNode();
   ValueNotifier<int> remainingSeconds = ValueNotifier(300);
-  Widget textEamil= Text("strEmail",style:  TextStyle(fontSize: 15,color: background));
+  ValueNotifier<bool> xSendAgain = ValueNotifier(false);
+  // Widget textEamil =
+  //     Text("strEmail", style: TextStyle(fontSize: 15, color: background));
 
   Timer? timer;
   @override
@@ -35,6 +36,7 @@ class VerificationController extends GetxController {
       if (remainingSeconds.value > 0) {
         remainingSeconds.value--;
       } else {
+        xSendAgain.value=true;
         timer.cancel();
       }
     });
@@ -44,5 +46,15 @@ class VerificationController extends GetxController {
     final int minutes = seconds ~/ 60;
     final int remainingSeconds = seconds % 60;
     return '${minutes.toString().padLeft(2, '0')}:${remainingSeconds.toString().padLeft(2, '0')}';
+  }
+
+  String? validateCode(String? value) {
+    if (value == '222222') {
+      print(value);
+      return null;
+    } else {
+      print(value);
+      return 'Incorrect Pin';
+    }
   }
 }

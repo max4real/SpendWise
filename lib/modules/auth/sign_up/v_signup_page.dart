@@ -3,7 +3,6 @@ import 'package:spend_wise/_servies/theme_services/w_custon_theme_builder.dart';
 import 'package:spend_wise/modules/auth/login/v_login_page.dart';
 import 'package:spend_wise/modules/auth/sign_up/c_signup_page.dart';
 import 'package:get/get.dart';
-import 'package:spend_wise/modules/auth/verification/v_verification_page.dart';
 
 import '../../../_common/data/data_controller.dart';
 
@@ -146,7 +145,7 @@ class SignUpPage extends StatelessWidget {
                   const SizedBox(height: 15),
                   GestureDetector(
                     onTap: () {
-                      Get.to(() => const VerificationPage());
+                      controller.proceedToVarification();
                     },
                     child: Container(
                       decoration: BoxDecoration(

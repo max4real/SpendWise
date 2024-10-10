@@ -64,13 +64,15 @@ class VerificationPage extends StatelessWidget {
                         separatorBuilder: (index) => const SizedBox(width: 8),
                         hapticFeedbackType: HapticFeedbackType.lightImpact,
                         validator: (value) {
-                          return value == '222222' ? null : 'Pin is incorrect';
+                          // return value == '222222' ? null : 'Pin is incorrect';
+                          return controller.validateCode(value);
                         },
                         onCompleted: (pin) {
-                          debugPrint('onCompleted: $pin');
+                          // debugPrint('onCompleted: $pin');
+                          controller.validateCode(pin);
                         },
                         onChanged: (value) {
-                          debugPrint('onChanged: $value');
+                          // debugPrint('onChanged: $value');
                         },
                         onTapOutside: (event) => dismissKeyboard(),
                         cursor: Column(
@@ -128,21 +130,28 @@ class VerificationPage extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  GestureDetector(
-                    onTap: () {},
-                    child: RichText(
-                      text: TextSpan(
-                        text: 'I didn’t received the code?',
-                        style:
-                            const TextStyle(fontSize: 15, color: Colors.black),
-                        children: <TextSpan>[
-                          TextSpan(
-                            text: ' Send again.',
-                            style: TextStyle(color: theme.background),
-                          ),
-                        ],
+                  Row(
+                    children: [
+                      const Text(
+                        'I didn’t received the code?',
+                        style: TextStyle(fontSize: 15),
                       ),
-                    ),
+                      GestureDetector(
+                        onTap: () {},
+                        child: ValueListenableBuilder(
+                          valueListenable: controller.xSendAgain,
+                          builder: (context, value, child) {
+                            return Text(
+                              ' Send Again.',
+                              style: TextStyle(
+                                  color:
+                                      value ? theme.background : Colors.black,
+                                  fontSize: 15),
+                            );
+                          },
+                        ),
+                      )
+                    ],
                   ),
                 ],
               ),

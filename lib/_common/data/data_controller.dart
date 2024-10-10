@@ -126,6 +126,57 @@ void maxSuccessDialog(String message, bool type_) {
   );
 }
 
+void maxMessageDialog(String message) {
+  Get.dialog(
+    Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              height: 50,
+              width: 50,
+              decoration: BoxDecoration(
+                color: transferColor,
+                shape: BoxShape.circle,
+              ),
+              // child: const Icon(
+              //   Icons.info,
+              //   color: Colors.white,
+              //   size: 36,
+              // ),
+              child: const Center(
+                child: Text(
+                  '!',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              message,
+              style: const TextStyle(
+                fontSize: 16,
+                color: Colors.black,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
+    ),
+    barrierDismissible: true,
+  );
+}
+
 String formatNumber(dynamic data) {
   var formatter = NumberFormat('#,##0');
   return formatter.format(data);
