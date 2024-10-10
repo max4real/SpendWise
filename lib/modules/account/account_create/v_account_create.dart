@@ -103,7 +103,8 @@ class AccountCreatePage extends StatelessWidget {
                 Container(
                   width: double.infinity,
                   // height: Get.height-250,
-                  height: MediaQuery.of(context).size.height - 300,
+                  height: 380,
+                  // height: MediaQuery.of(context).size.height - 300,
                   decoration: const BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.only(

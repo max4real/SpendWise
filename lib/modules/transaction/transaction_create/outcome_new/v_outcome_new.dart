@@ -107,8 +107,10 @@ class OutcomeNewPage extends StatelessWidget {
                 ),
                 Container(
                   width: double.infinity,
+                  // height: 380,
+                  height: 570,
                   // height: Get.height-250,
-                  height: MediaQuery.of(context).size.height - 100,
+                  // height: MediaQuery.of(context).size.height - 100,
                   decoration: const BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.only(
@@ -293,8 +295,7 @@ class OutcomeNewPage extends StatelessWidget {
                                     );
                                   }).toList(),
                                   onChanged: (newValue) {
-                                    controller.selectedSubType.value =
-                                        newValue;
+                                    controller.selectedSubType.value = newValue;
                                   },
                                 ),
                               ),

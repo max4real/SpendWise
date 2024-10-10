@@ -111,7 +111,8 @@ class IncomeNewPage extends StatelessWidget {
                 Container(
                   width: double.infinity,
                   // height: Get.height-250,
-                  height: MediaQuery.of(context).size.height - 100,
+                  height: 570,
+                  // height: MediaQuery.of(context).size.height - 100,
                   decoration: const BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.only(
