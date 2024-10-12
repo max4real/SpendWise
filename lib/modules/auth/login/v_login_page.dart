@@ -4,7 +4,6 @@ import 'package:spend_wise/modules/auth/forgot_password/v_forgot_password.dart';
 import 'package:spend_wise/modules/auth/login/c_login_page.dart';
 import 'package:get/get.dart';
 import 'package:spend_wise/modules/auth/sign_up/v_signup_page.dart';
-import 'package:spend_wise/modules/main_page/v_main_page.dart';
 
 import '../../../_servies/theme_services/w_custon_theme_builder.dart';
 
@@ -92,7 +91,7 @@ class LoginPage extends StatelessWidget {
                   const SizedBox(height: 45),
                   GestureDetector(
                     onTap: () {
-                      Get.offAll(() => const MainPage());
+                      controller.proceedToLogin();
                     },
                     child: Container(
                       decoration: BoxDecoration(

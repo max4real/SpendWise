@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:spend_wise/_servies/theme_services/w_custon_theme_builder.dart';
 import 'package:spend_wise/modules/auth/forgot_password/c_forgot_password.dart';
 import 'package:get/get.dart';
-import 'package:spend_wise/modules/auth/forgot_password/v_reset_gateway.dart';
 
 import '../../../_common/data/data_controller.dart';
 
@@ -57,7 +56,7 @@ class ForgotPasswordPage extends StatelessWidget {
                   const SizedBox(height: 30),
                   GestureDetector(
                     onTap: () {
-                      Get.off(() => const ResetGatewayPage());
+                      controller.sendOTP();
                     },
                     child: Container(
                       decoration: BoxDecoration(

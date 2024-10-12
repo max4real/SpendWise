@@ -3,12 +3,12 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:spend_wise/_servies/network_services/api_endpoint.dart';
-import 'package:spend_wise/modules/auth/login/v_login_page.dart';
-import 'package:spend_wise/modules/auth/sign_up/c_signup_page.dart';
+import 'package:spend_wise/modules/auth/forgot_password/c_forgot_password.dart';
+import 'package:spend_wise/modules/auth/forgot_password/reset_password/v_reset_password.dart';
 
-import '../../../_common/data/data_controller.dart';
+import '../../../../_common/data/data_controller.dart';
 
-class VerificationController extends GetxController {
+class ForgotVerificationController extends GetxController {
   String strEmail = '';
 
   TextEditingController pinController = TextEditingController();
@@ -34,8 +34,8 @@ class VerificationController extends GetxController {
 
   void initLoad() {
     startCountdown();
-    SignUpController signUpController = Get.find();
-    strEmail = signUpController.txtEmail.text;
+    ForgotPasswordController forgotPasswordController = Get.find();
+    strEmail = forgotPasswordController.txtEmail.text;
   }
 
   void startCountdown() {
@@ -66,7 +66,8 @@ class VerificationController extends GetxController {
   // }
 
   Future<void> varifyEmail(String? pin) async {
-    String url = ApiEndpoint.baseUrl + ApiEndpoint.authVerifyEmail;
+    String url = ApiEndpoint.baseUrl +
+        ApiEndpoint.authVerifyEmail; //change to forgot password url
     xFetching.value = false;
     GetConnect client = GetConnect(timeout: const Duration(seconds: 10));
     try {
@@ -81,7 +82,7 @@ class VerificationController extends GetxController {
       Get.back();
       if (response.isOk) {
         maxSuccessDialog(response.body['message'].toString(), true);
-        Get.offAll(() => const LoginPage());
+        Get.to(() => const ResetPasswordpage());
       } else {
         maxSuccessDialog(response.body['message'].toString(), false);
       }

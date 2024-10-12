@@ -2,15 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
 import 'package:spend_wise/_common/data/data_controller.dart';
 import 'package:spend_wise/_servies/theme_services/w_custon_theme_builder.dart';
-import 'package:spend_wise/modules/auth/verification/c_verification_page.dart';
+import 'package:spend_wise/modules/auth/forgot_password/forgot_password_verification/c_forgot_password_verification_page.dart';
 import 'package:get/get.dart';
 
-class VerificationPage extends StatelessWidget {
-  const VerificationPage({super.key});
+class ForgotVerificationPage extends StatelessWidget {
+  const ForgotVerificationPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    VerificationController controller = Get.put(VerificationController());
+    ForgotVerificationController controller =
+        Get.put(ForgotVerificationController());
     return MaxThemeBuilder(
       builder: (context, theme, themeController) {
         const focusedBorderColor = Color.fromRGBO(23, 171, 144, 1);
