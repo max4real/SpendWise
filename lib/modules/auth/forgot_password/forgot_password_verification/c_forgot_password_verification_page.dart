@@ -10,6 +10,7 @@ import '../../../../_common/data/data_controller.dart';
 
 class ForgotVerificationController extends GetxController {
   String strEmail = '';
+  String strResetToken = '';
 
   TextEditingController pinController = TextEditingController();
   FocusNode focusNode = FocusNode();
@@ -55,34 +56,19 @@ class ForgotVerificationController extends GetxController {
     return '${minutes.toString().padLeft(2, '0')}:${remainingSeconds.toString().padLeft(2, '0')}';
   }
 
-  // String? validateCode(String? value) {
-  //   if (value == '222222') {
-  //     print(value);
-  //     return null;
-  //   } else {
-  //     print(value);
-  //     return 'Incorrect Pin';
-  //   }
-  // }
-
   Future<void> varifyEmail(String? pin) async {
-    String url = ApiEndpoint.baseUrl +
-        ApiEndpoint.authVerifyEmail; //change to forgot password url
-    xFetching.value = false;
+    String url = ApiEndpoint.baseUrl + ApiEndpoint.authVerifyOTP;
     GetConnect client = GetConnect(timeout: const Duration(seconds: 10));
     try {
-      Get.dialog(const Center(
-        child: CircularProgressIndicator(
-          color: Colors.green,
-        ),
-      ));
+      Get.dialog(const Center(child: CircularProgressIndicator()));
 
-      final response = await client.post(url, {"email": strEmail, "code": pin});
+      final response = await client.post(url, {"code": pin});
 
       Get.back();
       if (response.isOk) {
-        maxSuccessDialog(response.body['message'].toString(), true);
-        Get.to(() => const ResetPasswordpage());
+        String resetToken = response.body["resetToken"].toString();
+        strResetToken = resetToken;
+        Get.to(() => const ResetPasswordPage());
       } else {
         maxSuccessDialog(response.body['message'].toString(), false);
       }
@@ -92,11 +78,27 @@ class ForgotVerificationController extends GetxController {
   void sendCodeAgain() {
     if (xSendAgain.value) {
       xSendAgain.value = false;
-      print('send again');
+      sendOTP();
       remainingSeconds.value = 60;
       startCountdown();
-    } else {
-      print("not now");
     }
+  }
+
+  Future<void> sendOTP() async {
+    String url = ApiEndpoint.baseUrl + ApiEndpoint.authForgotPassword;
+    GetConnect client = GetConnect(timeout: const Duration(seconds: 20));
+
+    try {
+      Get.dialog(const Center(child: CircularProgressIndicator()));
+
+      final response = await client.post(url, {"email": strEmail});
+
+      Get.back();
+      if (response.isOk) {
+        maxSuccessDialog(response.body['message'].toString(), true);
+      } else {
+        maxSuccessDialog(response.body['message'].toString(), false);
+      }
+    } catch (e) {}
   }
 }

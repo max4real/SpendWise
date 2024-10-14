@@ -30,7 +30,7 @@ class GatewayController extends GetxController {
       } else {
         print('Token - ' + token_);
         print('2');
-        Get.offAll(() => const LoginGatewayPage());
+        Get.offAll(() => const LoginPage());
       }
     } else {
       if (email_ == '') {
@@ -47,7 +47,7 @@ class GatewayController extends GetxController {
 
   Future<bool> checkToken(String? token) async {
     // String url = '';
-    if (token=='hi') {
+    if (token == 'hi') {
       return true;
     } else {
       return false;

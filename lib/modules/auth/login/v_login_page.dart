@@ -112,7 +112,7 @@ class LoginPage extends StatelessWidget {
                   const SizedBox(height: 20),
                   TextButton(
                     onPressed: () {
-                      Get.off(() => const ForgotPasswordPage());
+                      Get.to(() => const ForgotPasswordPage());
                     },
                     child: Text(
                       "Forgot Password?",

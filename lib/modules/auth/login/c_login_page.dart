@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:spend_wise/_servies/network_services/api_endpoint.dart';
 
 import '../../../_common/data/data_controller.dart';
+import '../../main_page/v_main_page.dart';
 
 class LoginPageController extends GetxController {
   DataController dataController = Get.find();
@@ -56,10 +57,12 @@ class LoginPageController extends GetxController {
       if (response.isOk) {
         String token = response.body["access_token"].toString();
         dataController.apiToken = token;
-        saveToken('helo');
+        saveToken(token);
         saveEmail(txtEmail.text);
-        maxSuccessDialog(response.body['message'].toString(), true);
-        // Get.offAll(() => const MainPage());
+        print('Saved Email - ' + txtEmail.text);
+        print('Saved Token - ' + token);
+        
+        Get.offAll(() => const MainPage());
       } else {
         maxSuccessDialog(response.body['message'].toString(), false);
       }
