@@ -12,13 +12,12 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
     injectDependencies();
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'max notes',
+      title: 'Spend Wise',
       useInheritedMediaQuery: true,
       locale: const Locale('en', 'EN'),
       fallbackLocale: const Locale('en', 'US'),
@@ -33,4 +32,5 @@ class MyApp extends StatelessWidget {
     Get.put(DataController());
     Get.put(ThemeController());
   }
+  
 }

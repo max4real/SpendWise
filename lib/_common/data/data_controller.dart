@@ -1,10 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:spend_wise/_servies/theme_services/d_dark_theme.dart';
 
 class DataController extends GetxController {
   String apiToken = '';
+  String spToken = '';
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+    initLoad();
+  }
+
+  void initLoad() {
+    getToken();
+  }
+
+  Future<void> getToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('token');
+    if (token != null) {
+      spToken = token;
+    } else {
+      spToken = "";
+    }
+  }
+
   List<String> categoryTags = [
     'Shopping',
     'Subscription',
@@ -91,8 +114,8 @@ void maxSuccessDialog(String message, bool type_) {
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(
-              height: 60,
-              width: 60,
+              height: 40,
+              width: 40,
               decoration: BoxDecoration(
                 color: type_ ? incomeColor : outcomeColor,
                 shape: BoxShape.circle,

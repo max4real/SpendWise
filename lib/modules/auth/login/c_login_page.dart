@@ -5,7 +5,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:spend_wise/_servies/network_services/api_endpoint.dart';
 
 import '../../../_common/data/data_controller.dart';
-import '../../main_page/v_main_page.dart';
 
 class LoginPageController extends GetxController {
   DataController dataController = Get.find();
@@ -44,26 +43,23 @@ class LoginPageController extends GetxController {
     GetConnect client = GetConnect(timeout: const Duration(seconds: 20));
 
     try {
-      Get.dialog(const Center(
-        child: CircularProgressIndicator(
-          color: Colors.green,
-        ),
-      ));
+      Get.dialog(const Center(child: CircularProgressIndicator()));
 
       final response = await client
           .post(url, {"email": txtEmail.text, "password": txtPassword.text});
 
-      String token = response.body["access_token"].toString();
-      dataController.apiToken = token;
-
       // String meUrl = ApiEndpoint.baseUrl + ApiEndpoint.meUrl;
       // final meResponse =
-      //     await client.get(meUrl, headers: {"token": dataController.token});
+      //     await client.get(url, headers: {"token": dataController.token},);
 
       Get.back();
       if (response.isOk) {
+        String token = response.body["access_token"].toString();
+        dataController.apiToken = token;
+        saveToken('helo');
         saveEmail(txtEmail.text);
-        Get.offAll(() => const MainPage());
+        maxSuccessDialog(response.body['message'].toString(), true);
+        // Get.offAll(() => const MainPage());
       } else {
         maxSuccessDialog(response.body['message'].toString(), false);
       }
@@ -84,5 +80,10 @@ class LoginPageController extends GetxController {
     } else {
       txtEmail.text = "";
     }
+  }
+
+  Future<void> saveToken(String token) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('token', token);
   }
 }
