@@ -212,8 +212,8 @@ class HomePage extends StatelessWidget {
                           duration: const Duration(seconds: 1),
                           LineChartData(
                             // lineTouchData: const LineTouchData(enabled: false),
-                            gridData: const FlGridData(show: false),
-                            titlesData: const FlTitlesData(show: false),
+                            gridData: const FlGridData(show: true),
+                            titlesData: const FlTitlesData(show: true),
                             borderData: FlBorderData(show: false),
                             lineBarsData: [
                               LineChartBarData(
@@ -234,7 +234,7 @@ class HomePage extends StatelessWidget {
                                 ),
                                 spots: value,
                                 dotData: const FlDotData(
-                                  show: false,
+                                  show: true,
                                 ),
                               ),
                             ],
@@ -259,7 +259,7 @@ class HomePage extends StatelessWidget {
                           borderRadius: BorderRadius.circular(10),
                           indicatorBorderRadius: BorderRadius.circular(10),
                         ),
-                        values: const [0, 1, 2, 3],
+                        values: const [0, 1, 2],
                         iconOpacity: 1.0,
                         selectedIconScale: 1.0,
                         indicatorSize: const Size.fromWidth(100),
@@ -279,8 +279,7 @@ class HomePage extends StatelessWidget {
                         },
                         customIconBuilder: (context, local, global) {
                           final text = const [
-                            'Today',
-                            'Week',
+                            'Last Week',
                             'Month',
                             'Year',
                           ][local.index];
