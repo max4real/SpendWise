@@ -107,7 +107,7 @@ class MyTestPage extends StatelessWidget {
                   alignment: Alignment.topRight,
                   child: IconButton.filled(
                     onPressed: () {
-                      controller.selectedImage.value = null;
+                      controller.apiImage.value = null;
                     },
                     icon: const Icon(
                       Icons.clear_rounded,
