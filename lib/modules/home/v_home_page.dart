@@ -7,6 +7,7 @@ import 'package:spend_wise/_common/_widget/maxListTile.dart';
 import 'package:spend_wise/_servies/theme_services/w_custon_theme_builder.dart';
 import 'package:get/get.dart';
 import 'package:spend_wise/modules/home/c_home_page.dart';
+import 'package:spend_wise/my_test/v_test.dart';
 
 import '../../_common/constants/app_svg.dart';
 
@@ -32,7 +33,9 @@ class HomePage extends StatelessWidget {
             ),
             actions: [
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Get.to(()=>const MyTestPage());
+                },
                 icon: Icon(
                   Iconsax.notification_bing,
                   color: theme.background,

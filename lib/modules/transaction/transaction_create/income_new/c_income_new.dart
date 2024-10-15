@@ -36,7 +36,8 @@ class IncomeNewController extends GetxController {
     }
     return result;
   }
-  void ptrintData(){
+
+  void ptrintData() {
     print(txtAmount.text);
   }
 }
