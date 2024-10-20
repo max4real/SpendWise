@@ -11,13 +11,14 @@ import 'package:spend_wise/_servies/theme_services/w_custon_theme_builder.dart';
 import 'package:get/get.dart';
 import 'package:spend_wise/modules/account/account_create/v_account_create.dart';
 import 'package:spend_wise/modules/account/account_detail/v_account_detail.dart';
+import 'package:spend_wise/modules/account/c_account_list.dart';
 
 class AccountListPage extends StatelessWidget {
   const AccountListPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // AccountListController controller = Get.put(AccountListController());
+    AccountListController controller = Get.put(AccountListController());
     DataController dataController = Get.find();
     return MaxThemeBuilder(
       builder: (context, theme, themeController) {
@@ -72,14 +73,19 @@ class AccountListPage extends StatelessWidget {
                               color: Color(0XFF91919F),
                             ),
                           ),
-                          Text(
-                            "${formatNumber(154000)} Ks",
-                            style: const TextStyle(
-                              fontSize: 35,
-                              color: Colors.black,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
+                          ValueListenableBuilder(
+                            valueListenable: controller.totalBalance,
+                            builder: (context, value, child) {
+                              return Text(
+                                "${formatNumber(value)} Ks",
+                                style: const TextStyle(
+                                  fontSize: 35,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              );
+                            },
+                          )
                         ],
                       ),
                     )
@@ -88,50 +94,74 @@ class AccountListPage extends StatelessWidget {
               ),
               const Gap(10),
               Expanded(
-                child: ListView.builder(
-                  itemCount: 3,
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: () {
-                        Get.to(() => const AccountDetailPage());
-                      },
-                      child: Card(
-                        margin: const EdgeInsets.all(3),
-                        elevation: 0.5,
-                        child: ListTile(
-                          leading: Container(
-                            width: 70,
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              color: const Color(0XFFF1F1FA),
-                              // color: Colors.yellow,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Image.asset(
-                              dataController.getImage('KBZ Pay'),
-                              // dataController.getImage('Wave Pay'),
-                              // dataController.getImage('KBZ Bank'),
-                            ),
-                          ),
-                          title: const Text(
-                            "KBZ Pay",
-                            style: TextStyle(fontSize: 16),
-                          ),
-                          trailing: Text(
-                            '${formatNumber(540000)} Ks',
-                            style: const TextStyle(
-                                fontSize: 13, fontWeight: FontWeight.w600),
-                          ),
-                        ),
-                      ),
-                    );
+                child: ValueListenableBuilder(
+                  valueListenable: controller.xFetching,
+                  builder: (context, xFetching, child) {
+                    if (xFetching) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else {
+                      return ValueListenableBuilder(
+                        valueListenable: controller.accountList,
+                        builder: (context, value, child) {
+                          if (value.isEmpty) {
+                            return const Center(
+                              child: Text('No Account Yet.'),
+                            );
+                          } else {
+                            return ListView.builder(
+                              itemCount: value.length,
+                              itemBuilder: (context, index) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    Get.to(() => const AccountDetailPage());
+                                  },
+                                  child: Card(
+                                    margin: const EdgeInsets.all(3),
+                                    elevation: 0.5,
+                                    child: ListTile(
+                                      leading: Container(
+                                        width: 70,
+                                        padding: const EdgeInsets.all(8),
+                                        decoration: BoxDecoration(
+                                          color: const Color(0XFFF1F1FA),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        child: Image.asset(
+                                          dataController.getImage(
+                                              value[index].accSubType),
+                                        ),
+                                      ),
+                                      title: Text(
+                                        value[index].accName,
+                                        style: const TextStyle(fontSize: 16),
+                                      ),
+                                      trailing: Text(
+                                        "${formatNumber(value[index].accBalance)} Ks",
+                                        style: const TextStyle(
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                          }
+                        },
+                      );
+                    }
                   },
                 ),
               ),
               const Gap(10),
               GestureDetector(
                 onTap: () {
-                  Get.to(() => const AccountCreatePage());
+                  Get.to(() => const AccountCreatePage())?.whenComplete(() {
+                    controller.initLoad();
+                  });
                 },
                 child: Container(
                   decoration: BoxDecoration(

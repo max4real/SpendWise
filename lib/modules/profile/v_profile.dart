@@ -147,7 +147,7 @@ class ProfilePage extends StatelessWidget {
                         child: ListTile(
                           minTileHeight: 70,
                           onTap: () {
-                            maxSnackBar(context, "Logout");
+                            controller.logOut();
                           },
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(13.0),

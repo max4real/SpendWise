@@ -22,4 +22,7 @@ class ApiEndpoint {
 
   static const String meAPI= '/auth/me';
 
+  //-------------Account-------------//
+static const String account='/account';
+
 }

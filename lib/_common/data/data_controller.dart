@@ -53,25 +53,25 @@ class DataController extends GetxController {
     'Wallet',
   ];
   String getImage(String name) {
-    if (name == "KBZ Bank") {
+    if (name == "KBZBANK") {
       return 'assets/images/logo/KBZ_Bank_logo.png';
-    } else if (name == "AYA Bank") {
+    } else if (name == "AYABANK") {
       return 'assets/images/logo/AYA_Bank_logo.png';
-    } else if (name == "Yoma Bank") {
+    } else if (name == "YOMABANK") {
       return 'assets/images/logo/yoma_bank_logo.jpg';
-    } else if (name == "CB Bank") {
+    } else if (name == "CBBANK") {
       return 'assets/images/logo/cb_bank_logo.png';
-    } else if (name == "AGD Bank") {
+    } else if (name == "AGDBANK") {
       return 'assets/images/logo/AGD.png';
-    } else if (name == "Other") {
+    } else if (name == "OTHER") {
       return 'assets/images/reset_mail.png';
-    } else if (name == "KBZ Pay") {
+    } else if (name == "KBZPAY") {
       return 'assets/images/logo/k_pay.png';
-    } else if (name == "Wave Pay") {
+    } else if (name == "WAVEPAY") {
       return 'assets/images/logo/wave_pay.png';
-    } else if (name == "CB Mobile Banking") {
-      return 'assets/images/logo/CB.png';
-    } else if (name == "OK\$") {
+    } else if (name == "AYAPAY") {
+      return 'assets/images/logo/AYA Pay.jpg';
+    } else if (name == "OKDOLLAR") {
       return 'assets/images/logo/ok_dollar.png';
     } else {
       return "assets/images/reset_mail.png";

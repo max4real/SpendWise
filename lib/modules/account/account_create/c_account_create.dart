@@ -1,12 +1,18 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:spend_wise/_servies/network_services/api_endpoint.dart';
+
+import '../../../_common/data/data_controller.dart';
 
 class AccountCreateController extends GetxController {
+  DataController dataController = Get.find();
   TextEditingController txtAmount = TextEditingController();
   TextEditingController txtName = TextEditingController();
   ValueNotifier<String?> selectedType = ValueNotifier(null);
+  String type = '';
   String subType = '';
-  
+
   ValueNotifier<bool> xShowBank = ValueNotifier(false);
   ValueNotifier<bool> xShowMobileBank = ValueNotifier(false);
 
@@ -34,6 +40,7 @@ class AccountCreateController extends GetxController {
 
     if (selected == 'Wallet') {
       txtName.text = "Wallet";
+      subType = 'WALLET';
       xShowMobileBank.value = false;
       xShowBank.value = false;
     } else if (selected == 'Bank') {
@@ -45,14 +52,85 @@ class AccountCreateController extends GetxController {
     }
   }
 
-  void printData() {
+  void checkAllField() {
+    if (txtAmount.text.isEmpty) {
+      maxMessageDialog('Please Enter Balance.');
+    } else if (txtName.text.isEmpty) {
+      maxMessageDialog('Please Enter Name.');
+    } else if (selectedType.value == null) {
+      maxMessageDialog('Please Select Account Type.');
+    } else if (subType == '') {
+      maxMessageDialog('Please Select Account Sub Type.');
+    }
+  }
+
+  void proceedToSave() {
+    checkAllField();
+    if (txtAmount.text.isNotEmpty &&
+        txtName.text.isNotEmpty &&
+        selectedType.value != null &&
+        subType != '') {
+      saveAccount();
+    }
+  }
+
+  Future<void> saveAccount() async {
     print(txtAmount.text);
-    print(txtName.text);
-    print(selectedType.value);
-    print(subType);
+    print("name - " + txtName.text);
+    getType();
+    print("type - " + type);
+    print("sub type - " + subType);
+
+    String url = ApiEndpoint.baseUrl2 + ApiEndpoint.account;
+
+    GetConnect client = GetConnect(timeout: const Duration(seconds: 10));
+    try {
+      Get.dialog(const Center(
+        child: CircularProgressIndicator(),
+      ));
+
+      final response = await client.post(
+        url,
+        {
+          "name": txtName.text,
+          "type": type,
+          "subType": subType,
+          "balance": int.tryParse(txtAmount.text) ?? -1,
+        },
+        headers: {
+          'Authorization': 'Bearer ${dataController.apiToken}',
+          'Content-Type': 'application/json',
+        },
+      );
+
+      Get.back();
+      if (response.isOk) {
+        print(response.body['_metadata']['message'].toString());
+        // maxSuccessDialog(
+        //     response.body['_metadata']['message'].toString(), true);
+        Get.back();
+        
+      } else {
+        print(response.body['_metadata']['message'].toString());
+        maxSuccessDialog(
+            response.body['_metadata']['message'].toString(), false);
+      }
+    } catch (e1) {}
+  }
+
+  void getType() {
+    switch (selectedType.value) {
+      case 'Wallet':
+        type = 'WALLET';
+      case 'Bank':
+        type = 'BANK';
+      case 'Mobile Banking':
+        type = 'PAY';
+    }
   }
 
   void clearAllControl() {
+    subType = '';
     bankKBZ.value = false;
     bankAYA.value = false;
     bankYoma.value = false;
@@ -70,7 +148,7 @@ class AccountCreateController extends GetxController {
     if (name == 'KBZBANK') {
       bankKBZ.value = !value;
       txtName.text = value ? '' : 'KBZ Bank - ';
-      subType = value ? '' : 'KBZ Bank';
+      subType = value ? '' : 'KBZBANK';
       bankAYA.value = false;
       bankYoma.value = false;
       bankCB.value = false;
@@ -80,7 +158,7 @@ class AccountCreateController extends GetxController {
       bankKBZ.value = false;
       bankAYA.value = !value;
       txtName.text = value ? '' : 'AYA Bank - ';
-      subType = value ? '' : 'AYA Bank';
+      subType = value ? '' : 'AYABANK';
       bankYoma.value = false;
       bankCB.value = false;
       bankAGD.value = false;
@@ -90,7 +168,7 @@ class AccountCreateController extends GetxController {
       bankAYA.value = false;
       bankYoma.value = !value;
       txtName.text = value ? '' : 'Yoma Bank - ';
-      subType = value ? '' : 'Yoma Bank';
+      subType = value ? '' : 'YOMABANK';
       bankCB.value = false;
       bankAGD.value = false;
       bankOther.value = false;
@@ -100,7 +178,7 @@ class AccountCreateController extends GetxController {
       bankYoma.value = false;
       bankCB.value = !value;
       txtName.text = value ? '' : 'CB Bank - ';
-      subType = value ? '' : 'CB Bank';
+      subType = value ? '' : 'CBBANK';
       bankAGD.value = false;
       bankOther.value = false;
     } else if (name == 'AGDBANK') {
@@ -110,7 +188,7 @@ class AccountCreateController extends GetxController {
       bankCB.value = false;
       bankAGD.value = !value;
       txtName.text = value ? '' : 'AGD Bank - ';
-      subType = value ? '' : 'AGD Bank';
+      subType = value ? '' : 'AGDBANK';
       bankOther.value = false;
     } else if (name == 'OTHERBANK') {
       bankKBZ.value = false;
@@ -120,7 +198,7 @@ class AccountCreateController extends GetxController {
       bankAGD.value = false;
       bankOther.value = !value;
       txtName.text = value ? '' : 'Other - ';
-      subType = value ? '' : 'Other';
+      subType = value ? '' : 'OTHER';
     }
   }
 
@@ -128,7 +206,7 @@ class AccountCreateController extends GetxController {
     if (name == "KPAY") {
       kPay.value = !value;
       txtName.text = value ? '' : 'KBZ Pay - ';
-      subType = value ? '' : 'KBZ Pay';
+      subType = value ? '' : 'KBZPAY';
       wavePay.value = false;
       okDollar.value = false;
       cbMobile.value = false;
@@ -136,22 +214,22 @@ class AccountCreateController extends GetxController {
       kPay.value = false;
       wavePay.value = !value;
       txtName.text = value ? '' : 'Wave Pay - ';
-      subType = value ? '' : 'Wave Pay';
+      subType = value ? '' : 'WAVEPAY';
       okDollar.value = false;
       cbMobile.value = false;
-    } else if (name == "CB") {
+    } else if (name == "AYA Pay") {
       kPay.value = false;
       wavePay.value = false;
       okDollar.value = false;
       cbMobile.value = !value;
-      txtName.text = value ? '' : 'CB Mobile Banking - ';
-      subType = value ? '' : 'CB Mobile Banking';
+      txtName.text = value ? '' : 'AYA Pay - ';
+      subType = value ? '' : 'AYAPAY';
     } else if (name == "OKDOLLAR") {
       kPay.value = false;
       wavePay.value = false;
       okDollar.value = !value;
       txtName.text = value ? '' : 'OK\$ - ';
-      subType = value ? '' : 'OK\$';
+      subType = value ? '' : 'OKDOLLAR';
       cbMobile.value = false;
     }
   }

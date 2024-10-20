@@ -413,10 +413,10 @@ class AccountCreatePage extends StatelessWidget {
                                         return GestureDetector(
                                           onTap: () {
                                             controller.controlMobileBankList(
-                                                'CB', value);
+                                                'AYA Pay', value);
                                           },
                                           child: MaxMultiButton2(
-                                            image: 'assets/images/logo/CB.png',
+                                            image: 'assets/images/logo/AYA Pay.jpg',
                                             value: value,
                                             size: false,
                                           ),
@@ -449,7 +449,7 @@ class AccountCreatePage extends StatelessWidget {
                         const Gap(25),
                         GestureDetector(
                           onTap: () {
-                            controller.printData();
+                            controller.proceedToSave();
                           },
                           child: Container(
                             decoration: BoxDecoration(
