@@ -66,7 +66,7 @@ class VerificationController extends GetxController {
   // }
 
   Future<void> varifyEmail(String? pin) async {
-    String url = ApiEndpoint.baseUrl + ApiEndpoint.authVerifyEmail;
+    String url = ApiEndpoint.baseUrl2 + ApiEndpoint.authVerifyEmail2;
     xFetching.value = false;
     GetConnect client = GetConnect(timeout: const Duration(seconds: 10));
     try {
@@ -80,10 +80,12 @@ class VerificationController extends GetxController {
 
       Get.back();
       if (response.isOk) {
-        maxSuccessDialog(response.body['message'].toString(), true);
+        maxSuccessDialog(
+            response.body['_metadata']['message'].toString(), true);
         Get.offAll(() => const LoginPage());
       } else {
-        maxSuccessDialog(response.body['message'].toString(), false);
+        maxSuccessDialog(
+            response.body['_metadata']['message'].toString(), false);
       }
     } catch (e1) {}
   }
@@ -92,10 +94,31 @@ class VerificationController extends GetxController {
     if (xSendAgain.value) {
       xSendAgain.value = false;
       print('send again');
+      sendOTPAgain();
       remainingSeconds.value = 60;
       startCountdown();
     } else {
       print("not now");
     }
+  }
+
+  Future<void> sendOTPAgain() async {
+    String url = ApiEndpoint.baseUrl2 + ApiEndpoint.authResendOTP2;
+    xFetching.value = false;
+    GetConnect client = GetConnect(timeout: const Duration(seconds: 10));
+    try {
+      Get.dialog(const Center(child: CircularProgressIndicator()));
+
+      final response = await client.post(url, {"email": strEmail});
+
+      Get.back();
+      if (response.isOk) {
+        maxSuccessDialog(
+            response.body['_metadata']['message'].toString(), true);
+      } else {
+        maxSuccessDialog(
+            response.body['_metadata']['message'].toString(), false);
+      }
+    } catch (e1) {}
   }
 }

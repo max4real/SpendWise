@@ -48,7 +48,7 @@ class SignUpController extends GetxController {
   }
 
   Future<void> makeRegister() async {
-    String url = ApiEndpoint.baseUrl + ApiEndpoint.authRegister;
+    String url = ApiEndpoint.baseUrl2 + ApiEndpoint.authRegister2;
     xFetching.value = false;
     GetConnect client = GetConnect(timeout: const Duration(seconds: 10));
     try {
@@ -57,18 +57,19 @@ class SignUpController extends GetxController {
       ));
 
       final response = await client.post(url, {
+        "name": txtName.text,
         "email": txtEmail.text,
         "password": txtPassword.text,
-        "name": txtName.text,
       });
 
       Get.back();
       if (response.isOk) {
-        print(response.body['message'].toString());
+        print(response.body['_metadata']['message'].toString());
         saveEmail(txtEmail.text);
         Get.to(() => const VerificationPage());
       } else {
-        maxSuccessDialog(response.body['message'].toString(), false);
+        print(response.body['_metadata']['message'].toString());
+        maxSuccessDialog(response.body['_metadata']['message'].toString(), false);
       }
     } catch (e1) {}
   }

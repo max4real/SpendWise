@@ -40,7 +40,7 @@ class LoginPageController extends GetxController {
   }
 
   Future<void> makeLogin() async {
-    String url = ApiEndpoint.baseUrl + ApiEndpoint.authLogin;
+    String url = ApiEndpoint.baseUrl2 + ApiEndpoint.authLogin2;
     GetConnect client = GetConnect(timeout: const Duration(seconds: 20));
 
     try {
@@ -49,22 +49,37 @@ class LoginPageController extends GetxController {
       final response = await client
           .post(url, {"email": txtEmail.text, "password": txtPassword.text});
 
-      // String meUrl = ApiEndpoint.baseUrl + ApiEndpoint.meUrl;
-      // final meResponse =
-      //     await client.get(url, headers: {"token": dataController.token},);
-
       Get.back();
       if (response.isOk) {
-        String token = response.body["access_token"].toString();
+        String token = response.body["_data"]['token'].toString();
         dataController.apiToken = token;
         saveToken(token);
         saveEmail(txtEmail.text);
+
         print('Saved Email - ' + txtEmail.text);
         print('Saved Token - ' + token);
-        
-        Get.offAll(() => const MainPage());
+
+        String meUrl = ApiEndpoint.baseUrl2 + ApiEndpoint.meAPI;
+        final meResponse = await client.get(
+          meUrl,
+          headers: {
+            'Authorization': 'Bearer ${dataController.apiToken}',
+            'Content-Type': 'application/json',
+          },
+        );
+
+        if (meResponse.isOk) {
+          Get.offAll(() => const MainPage());
+          // maxSuccessDialog(
+          //     '${meResponse.body['_data']['name']}\n${meResponse.body['_data']['email']}',
+          //     true);
+        } else {
+          maxSuccessDialog(
+              meResponse.body['_metadata']['message'].toString(), false);
+        }
       } else {
-        maxSuccessDialog(response.body['message'].toString(), false);
+        maxSuccessDialog(
+            response.body['_metadata']['message'].toString(), false);
       }
     } catch (e) {}
   }

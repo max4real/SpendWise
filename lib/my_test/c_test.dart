@@ -25,7 +25,7 @@ class TestController extends GetxController {
   }
 
   Future<void> saveImage() async {
-    String url = '';
+    String url = 'https://a-saung-ls3v.onrender.com/api/v1/image';
     if (selectedImage.value != null) {
       final File imageFile = File(selectedImage.value!.path);
 
@@ -35,7 +35,6 @@ class TestController extends GetxController {
             imageFile,
             filename: imageFile.path.split('/').last,
           ),
-          'text': title,
         },
       );
 
@@ -45,17 +44,16 @@ class TestController extends GetxController {
       );
 
       if (response.isOk) {
+        print(response.body['_data']['filename']);
         maxSuccessDialog("Image uploaded successfully!", true);
       } else {
         maxSuccessDialog(
-            "Failed to upload image. Status: ${response.statusCode}", true);
+            "Failed to upload image. Status: ${response}", false);
       }
     }
   }
 
-  Future<void> loadImage() async {
-
-  }
+  Future<void> loadImage() async {}
 }
 
 // Future<void> createGroup() async {

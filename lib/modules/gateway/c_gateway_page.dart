@@ -2,7 +2,9 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:spend_wise/modules/auth/login/v_login_page.dart';
 import 'package:spend_wise/modules/auth/v_login_gateway.dart';
-import 'package:spend_wise/modules/home/v_home_page.dart';
+import 'package:spend_wise/modules/main_page/v_main_page.dart';
+
+import '../../_servies/network_services/api_endpoint.dart';
 
 class GatewayController extends GetxController {
   @override
@@ -26,7 +28,7 @@ class GatewayController extends GetxController {
       if (await checkToken(token_)) {
         print('Token - ' + token_);
         print('1');
-        Get.offAll(() => const HomePage());
+        Get.offAll(() => const MainPage());
       } else {
         print('Token - ' + token_);
         print('2');
@@ -46,8 +48,17 @@ class GatewayController extends GetxController {
   }
 
   Future<bool> checkToken(String? token) async {
-    // String url = '';
-    if (token == 'hi') {
+    String meUrl = ApiEndpoint.baseUrl2 + ApiEndpoint.meAPI;
+    GetConnect client = GetConnect(timeout: const Duration(seconds: 20));
+    final meResponse = await client.get(
+      meUrl,
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (meResponse.isOk) {
       return true;
     } else {
       return false;
