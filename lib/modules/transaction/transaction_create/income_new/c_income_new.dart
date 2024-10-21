@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:spend_wise/_common/data/data_controller.dart';
 
 class IncomeNewController extends GetxController {
-  // late StringTagController stringTagController;
+  DataController dataController = Get.find();
   TextEditingController txtAmount = TextEditingController();
+
+  ValueNotifier<String?> selectedCategory = ValueNotifier(null);
+  TextEditingController txtCustomCategory = TextEditingController();
+
   TextEditingController txtRemark = TextEditingController();
   TextEditingController txtDescription = TextEditingController();
-  // TextEditingController txtWallet = TextEditingController();
-  ValueNotifier<String?> selectedCategory = ValueNotifier(null);
   ValueNotifier<String?> selectedSubType = ValueNotifier(null);
   ValueNotifier<XFile?> selectedImage = ValueNotifier(null);
 
+  ValueNotifier<bool> xCustom = ValueNotifier(false);
   ValueNotifier<bool> imagePickState = ValueNotifier(false);
 
   List<String> walletList = [];
@@ -20,11 +24,16 @@ class IncomeNewController extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
+    initLoad();
   }
 
   @override
   void dispose() {
     super.dispose();
+  }
+
+  void initLoad() {
+    dataController.fetchAccountList();
   }
 
   Future<XFile?> pickImage() async {
@@ -39,5 +48,10 @@ class IncomeNewController extends GetxController {
 
   void ptrintData() {
     print(txtAmount.text);
+  }
+
+  void switchCustom() {
+    xCustom.value = !xCustom.value;
+    print(xCustom.value);
   }
 }

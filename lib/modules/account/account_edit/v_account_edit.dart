@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:spend_wise/models/m_account_model.dart';
 import 'package:spend_wise/modules/account/account_edit/c_account_edit.dart';
 
 import '../../../_common/_widget/maxMultiButton_2.dart';
@@ -11,13 +12,16 @@ import '../../../_common/data/data_controller.dart';
 import '../../../_servies/theme_services/w_custon_theme_builder.dart';
 
 class AccountEditPage extends StatelessWidget {
-  const AccountEditPage({super.key});
+  final AccountModel accountModel;
+  const AccountEditPage({super.key, required this.accountModel});
 
   @override
   Widget build(BuildContext context) {
     AccountEditController controller = Get.put(AccountEditController());
     // controller.initLoad('50000', 'KBZ Pay - ', 'Mobile Banking', 'KBZ Pay');
-    controller.initLoad('50000', 'KBZ Bank - ', 'Bank', 'KBZ Bank');
+    controller.initLoad(accountModel.accId, accountModel.accBalance,
+        accountModel.accName, accountModel.accType, accountModel.accSubType);
+
     DataController dataController = Get.find();
     return MaxThemeBuilder(
       builder: (context, theme, themeController) {
@@ -66,6 +70,7 @@ class AccountEditPage extends StatelessWidget {
                           children: [
                             Expanded(
                               child: TextField(
+                                enabled: false,
                                 controller: controller.txtAmount,
                                 keyboardType: TextInputType.number,
                                 onTapOutside: (event) {
@@ -117,6 +122,7 @@ class AccountEditPage extends StatelessWidget {
                     child: Column(
                       children: [
                         TextField(
+                          focusNode: controller.focusNode,
                           onTapOutside: (event) {
                             dismissKeyboard();
                           },
@@ -196,10 +202,11 @@ class AccountEditPage extends StatelessWidget {
                                       ),
                                     );
                                   }).toList(),
-                                  onChanged: (newValue) {
-                                    controller.selectedType.value = newValue;
-                                    controller.checkType(newValue);
-                                  },
+                                  // onChanged: (newValue) {
+                                  //   controller.selectedType.value = newValue;
+                                  //   controller.checkType(newValue);
+                                  // },
+                                  onChanged: null
                                 ),
                               ),
                             );
@@ -408,15 +415,16 @@ class AccountEditPage extends StatelessWidget {
                                       },
                                     ),
                                     ValueListenableBuilder(
-                                      valueListenable: controller.cbMobile,
+                                      valueListenable: controller.ayaPay,
                                       builder: (context, value, child) {
                                         return GestureDetector(
                                           onTap: () {
                                             controller.controlMobileBankList(
-                                                'CB', value);
+                                                'AYA Pay', value);
                                           },
                                           child: MaxMultiButton2(
-                                            image: 'assets/images/logo/CB.png',
+                                            image:
+                                                'assets/images/logo/AYA Pay.jpg',
                                             value: value,
                                             size: false,
                                           ),
@@ -449,7 +457,7 @@ class AccountEditPage extends StatelessWidget {
                         const Gap(25),
                         GestureDetector(
                           onTap: () {
-                            controller.printData();
+                            controller.proceedToSave();
                           },
                           child: Container(
                             decoration: BoxDecoration(

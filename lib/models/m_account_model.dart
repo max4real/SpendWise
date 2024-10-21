@@ -1,10 +1,12 @@
 class AccountModel {
+  String accId;
   int accBalance;
   String accName;
   String accType;
   String accSubType;
 
   AccountModel({
+    required this.accId,
     required this.accBalance,
     required this.accName,
     required this.accType,
@@ -13,6 +15,7 @@ class AccountModel {
 
   factory AccountModel.fromAPI({required Map<String, dynamic> data}) {
     return AccountModel(
+      accId: data['id'].toString(),
       accBalance: data['balance'] as int,
       accName: data['name'].toString(),
       accType: data['type'].toString(),

@@ -2,9 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:spend_wise/_servies/network_services/api_endpoint.dart';
 import 'package:spend_wise/_servies/theme_services/d_dark_theme.dart';
 
+import '../../models/m_account_model.dart';
+
 class DataController extends GetxController {
+  ValueNotifier<List<AccountModel>> accountList = ValueNotifier([]);
+
   String apiToken = '';
   String spToken = '';
   @override
@@ -14,7 +19,7 @@ class DataController extends GetxController {
     initLoad();
   }
 
-  void initLoad() {
+  Future initLoad() async {
     getToken();
   }
 
@@ -47,11 +52,48 @@ class DataController extends GetxController {
   ];
 
   //Get SubType list from Account List's subtype
-  List<String> accSubType = [
-    'KBZ Bank',
-    'KBZ Pay',
-    'Wallet',
-  ];
+  // List<String> accSubType = [
+  //   // 'KBZ Bank',
+  //   // 'KBZ Pay',
+  //   // 'Wallet',
+  // ];
+
+  ValueNotifier<List<String>> accSubType = ValueNotifier([]);
+
+  Future<void> fetchAccountList() async {
+    String url = ApiEndpoint.baseUrl2 + ApiEndpoint.account;
+    GetConnect client = GetConnect(timeout: const Duration(seconds: 10));
+
+    try {
+      final response = await client.get(
+        url,
+        headers: {
+          'Authorization': 'Bearer $apiToken',
+          'Content-Type': 'application/json',
+        },
+      );
+
+      if (response.isOk) {
+        List<AccountModel> temp = [];
+        List<String> temp2 = [];
+
+        Iterable iterable = response.body['_data'] ?? [];
+
+        for (var element in iterable) {
+          AccountModel rawData = AccountModel.fromAPI(data: element);
+          temp.add(rawData);
+          temp2.add(rawData.accName);
+        }
+        accountList.value = [...temp];
+        accSubType.value = [...temp2];
+      } else {
+        print(response.body['_metadata']['message']);
+        maxSuccessDialog(
+            response.body['_metadata']['message'].toString(), false);
+      }
+    } catch (e) {}
+  }
+
   String getImage(String name) {
     if (name == "KBZBANK") {
       return 'assets/images/logo/KBZ_Bank_logo.png';
@@ -64,6 +106,7 @@ class DataController extends GetxController {
     } else if (name == "AGDBANK") {
       return 'assets/images/logo/AGD.png';
     } else if (name == "OTHER") {
+      ///-----
       return 'assets/images/reset_mail.png';
     } else if (name == "KBZPAY") {
       return 'assets/images/logo/k_pay.png';
@@ -73,6 +116,9 @@ class DataController extends GetxController {
       return 'assets/images/logo/AYA Pay.jpg';
     } else if (name == "OKDOLLAR") {
       return 'assets/images/logo/ok_dollar.png';
+    } else if (name == 'WALLET') {
+      ///----
+      return "assets/images/logo/Wallet_logo.png";
     } else {
       return "assets/images/reset_mail.png";
     }

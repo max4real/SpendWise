@@ -122,73 +122,141 @@ class OutcomeNewPage extends StatelessWidget {
                     padding: const EdgeInsets.all(18),
                     child: Column(
                       children: [
-                        ValueListenableBuilder(
-                          valueListenable: controller.selectedCategory,
-                          builder: (context, value, child) {
-                            return Container(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 16),
-                              decoration: BoxDecoration(
-                                border: Border.all(color: Colors.grey),
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              child: DropdownButtonHideUnderline(
-                                child: DropdownButton<String>(
-                                  value: value,
-                                  elevation: 8,
-                                  borderRadius: BorderRadius.circular(20),
-                                  menuWidth: Get.width * 0.6,
-                                  menuMaxHeight: 300,
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 2),
-                                  style: const TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                  hint: const Text(
-                                    'Category',
-                                    style: TextStyle(
-                                      color: Color(0XFF91919F),
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ),
-                                  isExpanded: true,
-                                  icon: Icon(
-                                    Iconsax.arrow_right_3,
-                                    color: theme.background,
-                                  ),
-                                  items: dataController.categoryTags
-                                      .map((String value) {
-                                    return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Card(
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(10),
-                                          child: Row(
-                                            children: [
-                                              SvgPicture.string(
-                                                  AppSvgs.svgGreenDot),
-                                              const Gap(10),
-                                              Text(
-                                                value,
-                                                style: const TextStyle(
-                                                  color: Color(0xFF5D5C5C),
-                                                ),
-                                              ),
-                                            ],
+                        Row(
+                          children: [
+                            Expanded(
+                                flex: 5,
+                                child: ValueListenableBuilder(
+                                  valueListenable: controller.xCustom,
+                                  builder: (context, xCustom, child) {
+                                    if (xCustom) {
+                                      return TextField(
+                                        onTapOutside: (event) {
+                                          dismissKeyboard();
+                                        },
+                                        controller:
+                                            controller.txtCustomCategory,
+                                        keyboardType: TextInputType.text,
+                                        decoration: InputDecoration(
+                                          enabledBorder: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                            borderSide: const BorderSide(
+                                                color: Colors.grey),
                                           ),
+                                          border: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                          ),
+                                          hintText: 'New Category',
+                                          hintStyle: const TextStyle(
+                                              color: Color(0XFF91919F),
+                                              fontWeight: FontWeight.w400),
                                         ),
+                                      );
+                                    } else {
+                                      return ValueListenableBuilder(
+                                        valueListenable:
+                                            controller.selectedCategory,
+                                        builder: (context, value, child) {
+                                          return Container(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 16),
+                                            decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  color: Colors.grey),
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
+                                            ),
+                                            child: DropdownButtonHideUnderline(
+                                              child: DropdownButton<String>(
+                                                value: value,
+                                                elevation: 8,
+                                                borderRadius:
+                                                    BorderRadius.circular(20),
+                                                menuWidth: Get.width * 0.6,
+                                                menuMaxHeight: 300,
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 2),
+                                                style: const TextStyle(
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.w400,
+                                                ),
+                                                hint: const Text(
+                                                  'Category',
+                                                  style: TextStyle(
+                                                    color: Color(0XFF91919F),
+                                                    fontWeight: FontWeight.w400,
+                                                  ),
+                                                ),
+                                                isExpanded: true,
+                                                icon: Icon(
+                                                  Iconsax.arrow_right_3,
+                                                  color: theme.background,
+                                                ),
+                                                items: dataController
+                                                    .categoryTags
+                                                    .map((String value) {
+                                                  return DropdownMenuItem<
+                                                      String>(
+                                                    value: value,
+                                                    child: Card(
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(10),
+                                                        child: Row(
+                                                          children: [
+                                                            SvgPicture.string(
+                                                                AppSvgs
+                                                                    .svgGreenDot),
+                                                            const Gap(10),
+                                                            Text(
+                                                              value,
+                                                              style:
+                                                                  const TextStyle(
+                                                                color: Color(
+                                                                    0xFF5D5C5C),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  );
+                                                }).toList(),
+                                                onChanged: (newValue) {
+                                                  controller.selectedCategory
+                                                      .value = newValue;
+                                                },
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      );
+                                    }
+                                  },
+                                )),
+                            Expanded(
+                                flex: 1,
+                                child: ValueListenableBuilder(
+                                  valueListenable: controller.xCustom,
+                                  builder: (context, xCustom, child) {
+                                    return IconButton(
+                                      onPressed: () {
+                                        controller.switchCustom();
+                                      },
+                                      icon: Icon(
+                                        xCustom ? Icons.check : Icons.add,
+                                        color: xCustom
+                                            ? theme.background
+                                            : Colors.black,
                                       ),
                                     );
-                                  }).toList(),
-                                  onChanged: (newValue) {
-                                    controller.selectedCategory.value =
-                                        newValue;
                                   },
-                                ),
-                              ),
-                            );
-                          },
+                                )),
+                          ],
                         ),
                         const SizedBox(height: 20),
                         TextField(
@@ -236,69 +304,74 @@ class OutcomeNewPage extends StatelessWidget {
                         ),
                         const SizedBox(height: 20),
                         ValueListenableBuilder(
-                          valueListenable: controller.selectedSubType,
-                          builder: (context, value, child) {
-                            return Container(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 16),
-                              decoration: BoxDecoration(
-                                border: Border.all(color: Colors.grey),
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              child: DropdownButtonHideUnderline(
-                                child: DropdownButton<String>(
-                                  value: value,
-                                  elevation: 8,
-                                  borderRadius: BorderRadius.circular(20),
-                                  menuWidth: Get.width * 0.6,
-                                  menuMaxHeight: 300,
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 2),
-                                  style: const TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w400,
+                          valueListenable: dataController.accSubType,
+                          builder: (context, accSubType, child) {
+                            return ValueListenableBuilder(
+                              valueListenable: controller.selectedSubType,
+                              builder: (context, value, child) {
+                                return Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 16),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(color: Colors.grey),
+                                    borderRadius: BorderRadius.circular(15),
                                   ),
-                                  hint: const Text(
-                                    'Account',
-                                    style: TextStyle(
-                                      color: Color(0XFF91919F),
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ),
-                                  isExpanded: true,
-                                  icon: Icon(
-                                    Iconsax.arrow_right_3,
-                                    color: theme.background,
-                                  ),
-                                  items: dataController.accSubType
-                                      .map((String value) {
-                                    return DropdownMenuItem<String>(
+                                  child: DropdownButtonHideUnderline(
+                                    child: DropdownButton<String>(
                                       value: value,
-                                      child: Card(
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(10),
-                                          child: Row(
-                                            children: [
-                                              SvgPicture.string(
-                                                  AppSvgs.svgGreenDot),
-                                              const Gap(10),
-                                              Text(
-                                                value,
-                                                style: const TextStyle(
-                                                  color: Color(0xFF5D5C5C),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
+                                      elevation: 8,
+                                      borderRadius: BorderRadius.circular(20),
+                                      menuWidth: Get.width * 0.6,
+                                      menuMaxHeight: 300,
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 2),
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                      hint: const Text(
+                                        'Account',
+                                        style: TextStyle(
+                                          color: Color(0XFF91919F),
+                                          fontWeight: FontWeight.w400,
                                         ),
                                       ),
-                                    );
-                                  }).toList(),
-                                  onChanged: (newValue) {
-                                    controller.selectedSubType.value = newValue;
-                                  },
-                                ),
-                              ),
+                                      isExpanded: true,
+                                      icon: Icon(
+                                        Iconsax.arrow_right_3,
+                                        color: theme.background,
+                                      ),
+                                      items: accSubType.map((String value) {
+                                        return DropdownMenuItem<String>(
+                                          value: value,
+                                          child: Card(
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(10),
+                                              child: Row(
+                                                children: [
+                                                  SvgPicture.string(
+                                                      AppSvgs.svgGreenDot),
+                                                  const Gap(10),
+                                                  Text(
+                                                    value,
+                                                    style: const TextStyle(
+                                                      color: Color(0xFF5D5C5C),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      }).toList(),
+                                      onChanged: (newValue) {
+                                        controller.selectedSubType.value =
+                                            newValue;
+                                      },
+                                    ),
+                                  ),
+                                );
+                              },
                             );
                           },
                         ),
@@ -385,7 +458,7 @@ class OutcomeNewPage extends StatelessWidget {
                         const SizedBox(height: 30),
                         GestureDetector(
                           onTap: () {
-                            // Get.to(() => const VerificationPage());
+                            controller.proceedToSave();
                           },
                           child: Container(
                             decoration: BoxDecoration(

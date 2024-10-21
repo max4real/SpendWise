@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:spend_wise/_common/data/data_controller.dart';
 
 class TransferNewController extends GetxController {
+  DataController dataController = Get.find();
   TextEditingController txtAmount = TextEditingController();
   TextEditingController txtRemark = TextEditingController();
   TextEditingController txtDescription = TextEditingController();
@@ -17,11 +19,16 @@ class TransferNewController extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
+    initLoad();
   }
 
   @override
   void dispose() {
     super.dispose();
+  }
+
+  void initLoad() {
+    dataController.fetchAccountList();
   }
 
   Future<XFile?> pickImage() async {

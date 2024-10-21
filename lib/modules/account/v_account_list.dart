@@ -115,7 +115,11 @@ class AccountListPage extends StatelessWidget {
                               itemBuilder: (context, index) {
                                 return GestureDetector(
                                   onTap: () {
-                                    Get.to(() => const AccountDetailPage());
+                                    Get.to(() => AccountDetailPage(
+                                            accountModel: value[index]))
+                                        ?.whenComplete(() {
+                                      controller.initLoad();
+                                    });
                                   },
                                   child: Card(
                                     margin: const EdgeInsets.all(3),

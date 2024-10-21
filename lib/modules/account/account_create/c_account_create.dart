@@ -75,11 +75,7 @@ class AccountCreateController extends GetxController {
   }
 
   Future<void> saveAccount() async {
-    print(txtAmount.text);
-    print("name - " + txtName.text);
     getType();
-    print("type - " + type);
-    print("sub type - " + subType);
 
     String url = ApiEndpoint.baseUrl2 + ApiEndpoint.account;
 
@@ -106,10 +102,7 @@ class AccountCreateController extends GetxController {
       Get.back();
       if (response.isOk) {
         print(response.body['_metadata']['message'].toString());
-        // maxSuccessDialog(
-        //     response.body['_metadata']['message'].toString(), true);
         Get.back();
-        
       } else {
         print(response.body['_metadata']['message'].toString());
         maxSuccessDialog(

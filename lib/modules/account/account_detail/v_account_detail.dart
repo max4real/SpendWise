@@ -8,16 +8,20 @@ import 'package:spend_wise/_common/constants/app_svg.dart';
 import 'package:spend_wise/_common/data/data_controller.dart';
 import 'package:spend_wise/_servies/theme_services/w_custon_theme_builder.dart';
 import 'package:get/get.dart';
+import 'package:spend_wise/models/m_account_model.dart';
+import 'package:spend_wise/modules/account/account_detail/c_account_detail.dart';
 // import 'package:spend_wise/modules/account/account_detail/c_account_detail.dart';
 import 'package:spend_wise/modules/account/account_edit/v_account_edit.dart';
 
 class AccountDetailPage extends StatelessWidget {
-  const AccountDetailPage({super.key});
+  final AccountModel accountModel;
+  const AccountDetailPage({super.key, required this.accountModel});
 
   @override
   Widget build(BuildContext context) {
-    // AccountDetailController controller = Get.put(AccountDetailController());
     DataController dataController = Get.find();
+    AccountDetailController controller = Get.put(AccountDetailController());
+    controller.initLoad(accountModel);
     return MaxThemeBuilder(
       builder: (context, theme, themeController) {
         return Scaffold(
@@ -44,7 +48,7 @@ class AccountDetailPage extends StatelessWidget {
             actions: [
               IconButton(
                 onPressed: () {
-                  maxSnackBar(context, 'Delete Account');
+                  showDeleteSheet();
                 },
                 icon: const Icon(
                   Iconsax.trash,
@@ -53,7 +57,9 @@ class AccountDetailPage extends StatelessWidget {
               ),
               IconButton(
                 onPressed: () {
-                  Get.to(() => const AccountEditPage());
+                  Get.to(() => AccountEditPage(
+                        accountModel: accountModel,
+                      ));
                 },
                 icon: SvgPicture.string(
                   AppSvgs.svgProfileEdit,
@@ -80,18 +86,23 @@ class AccountDetailPage extends StatelessWidget {
                           width: 100,
                           padding: const EdgeInsets.all(10),
                           child: Image.asset(
-                            dataController.getImage('KBZ Bank'),
+                            dataController.getImage(accountModel.accSubType),
                           ),
                         ),
                       ),
                       const Gap(10),
-                      const Text(
-                        'KBZ Bank',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600, fontSize: 16),
+                      ValueListenableBuilder(
+                        valueListenable: controller.accName,
+                        builder: (context, value, child) {
+                          return Text(
+                            value,
+                            style: const TextStyle(
+                                fontWeight: FontWeight.w600, fontSize: 16),
+                          );
+                        },
                       ),
                       Text(
-                        '${formatNumber(45900)} Ks',
+                        '${formatNumber(accountModel.accBalance)} Ks',
                         style: const TextStyle(
                             fontWeight: FontWeight.w600, fontSize: 23),
                       ),
@@ -99,24 +110,117 @@ class AccountDetailPage extends StatelessWidget {
                   ),
                 ),
                 Expanded(
-                  child: ListView.builder(
-                    itemCount: 10,
-                    itemBuilder: (context, index) {
-                      return MaxListTile(
-                        title: 'Food',
-                        subtitle: "lunch and dinner",
-                        amount: 7500,
-                        time: DateTime.now(),
-                        transaction: index % 2 == 0 ? 'Income' : 'Expense',
+                    child: ValueListenableBuilder(
+                  valueListenable: controller.xFetching,
+                  builder: (context, xFetching, child) {
+                    if (xFetching) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
                       );
-                    },
-                  ),
-                )
+                    } else {
+                      return ValueListenableBuilder(
+                        valueListenable: controller.transactionList,
+                        builder: (context, transactionList, child) {
+                          return ListView.builder(
+                            itemCount: 10,
+                            itemBuilder: (context, index) {
+                              return MaxListTile(
+                                title: 'Food',
+                                subtitle: "lunch and dinner",
+                                amount: 7500,
+                                time: DateTime.now(),
+                                transaction:
+                                    index % 2 == 0 ? 'Income' : 'Expense',
+                              );
+                            },
+                          );
+                        },
+                      );
+                    }
+                  },
+                ))
               ],
             ),
           ),
         );
       },
+    );
+  }
+
+  void showDeleteSheet() {
+    AccountDetailController controller = Get.find();
+    Get.bottomSheet(
+      backgroundColor: Colors.white,
+      MaxThemeBuilder(
+        builder: (context, theme, themeController) {
+          return Padding(
+            padding: const EdgeInsets.only(
+              left: 18,
+              right: 18,
+              top: 18,
+            ),
+            child: SizedBox(
+              width: double.infinity,
+              height: 200,
+              child: Column(
+                children: [
+                  const Text(
+                    "Delete this Account?",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 18,
+                    ),
+                  ),
+                  const Gap(10),
+                  const Text(
+                    "Are you sure do you wanna delete this Account?",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 16,
+                      color: Color(0XFF91919F),
+                    ),
+                  ),
+                  const Gap(20),
+                  Row(
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          Get.back();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: theme.background2,
+                          minimumSize: const Size(150, 40),
+                        ),
+                        child: Text(
+                          "No",
+                          style:
+                              TextStyle(color: theme.background, fontSize: 18),
+                        ),
+                      ),
+                      const Spacer(),
+                      ElevatedButton(
+                        onPressed: () {
+                          Get.back();
+                          controller.deleteAccount();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: theme.background,
+                          minimumSize: const Size(150, 40),
+                        ),
+                        child: Text(
+                          "Yes",
+                          style: TextStyle(color: theme.text1, fontSize: 18),
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          );
+        },
+      ),
     );
   }
 }

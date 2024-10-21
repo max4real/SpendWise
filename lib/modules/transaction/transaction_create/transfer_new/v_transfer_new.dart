@@ -303,53 +303,58 @@ class FromToFields extends StatelessWidget {
               children: [
                 Expanded(
                   child: ValueListenableBuilder(
-                    valueListenable: controller.selectedSubTypeFrom,
-                    builder: (context, value, child) {
-                      return Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey),
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: DropdownButtonHideUnderline(
-                            child: DropdownButton<String>(
-                          value: value,
-                          elevation: 8,
-                          borderRadius: BorderRadius.circular(20),
-                          menuWidth: Get.width * 0.6,
-                          menuMaxHeight: 300,
-                          padding: const EdgeInsets.symmetric(vertical: 2),
-                          style: const TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w400,
-                          ),
-                          hint: const Text(
-                            'From',
-                            style: TextStyle(
-                              color: Color(0XFF91919F),
-                              fontWeight: FontWeight.w400,
+                    valueListenable: dataController.accSubType,
+                    builder: (context, accSubType, child) {
+                      return ValueListenableBuilder(
+                        valueListenable: controller.selectedSubTypeFrom,
+                        builder: (context, value, child) {
+                          return Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.grey),
+                              borderRadius: BorderRadius.circular(15),
                             ),
-                          ),
-                          isExpanded: true,
-                          icon: Icon(
-                            Iconsax.arrow_right_3,
-                            color: theme.background,
-                          ),
-                          items: dataController.accSubType.map((String value) {
-                            return DropdownMenuItem<String>(
+                            child: DropdownButtonHideUnderline(
+                                child: DropdownButton<String>(
                               value: value,
-                              child: Text(
-                                value,
-                                style: const TextStyle(
-                                  color: Color(0xFF5D5C5C),
+                              elevation: 8,
+                              borderRadius: BorderRadius.circular(20),
+                              menuWidth: Get.width * 0.6,
+                              menuMaxHeight: 300,
+                              padding: const EdgeInsets.symmetric(vertical: 2),
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w400,
+                              ),
+                              hint: const Text(
+                                'From',
+                                style: TextStyle(
+                                  color: Color(0XFF91919F),
+                                  fontWeight: FontWeight.w400,
                                 ),
                               ),
-                            );
-                          }).toList(),
-                          onChanged: (newValue) {
-                            controller.selectedSubTypeFrom.value = newValue;
-                          },
-                        )),
+                              isExpanded: true,
+                              icon: Icon(
+                                Iconsax.arrow_right_3,
+                                color: theme.background,
+                              ),
+                              items: accSubType.map((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(
+                                    value,
+                                    style: const TextStyle(
+                                      color: Color(0xFF5D5C5C),
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
+                              onChanged: (newValue) {
+                                controller.selectedSubTypeFrom.value = newValue;
+                              },
+                            )),
+                          );
+                        },
                       );
                     },
                   ),
@@ -359,53 +364,58 @@ class FromToFields extends StatelessWidget {
                 ),
                 Expanded(
                   child: ValueListenableBuilder(
-                    valueListenable: controller.selectedSubTypeTo,
-                    builder: (context, value, child) {
-                      return Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey),
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        child: DropdownButtonHideUnderline(
-                            child: DropdownButton<String>(
-                          value: value,
-                          elevation: 8,
-                          borderRadius: BorderRadius.circular(20),
-                          menuWidth: Get.width * 0.6,
-                          menuMaxHeight: 300,
-                          padding: const EdgeInsets.symmetric(vertical: 2),
-                          style: const TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w400,
-                          ),
-                          hint: const Text(
-                            'To',
-                            style: TextStyle(
-                              color: Color(0XFF91919F),
-                              fontWeight: FontWeight.w400,
+                    valueListenable: dataController.accSubType,
+                    builder: (context, accSubType, child) {
+                      return ValueListenableBuilder(
+                        valueListenable: controller.selectedSubTypeTo,
+                        builder: (context, value, child) {
+                          return Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.grey),
+                              borderRadius: BorderRadius.circular(15),
                             ),
-                          ),
-                          isExpanded: true,
-                          icon: Icon(
-                            Iconsax.arrow_right_3,
-                            color: theme.background,
-                          ),
-                          items: dataController.accSubType.map((String value) {
-                            return DropdownMenuItem<String>(
+                            child: DropdownButtonHideUnderline(
+                                child: DropdownButton<String>(
                               value: value,
-                              child: Text(
-                                value,
-                                style: const TextStyle(
-                                  color: Color(0xFF5D5C5C),
+                              elevation: 8,
+                              borderRadius: BorderRadius.circular(20),
+                              menuWidth: Get.width * 0.6,
+                              menuMaxHeight: 300,
+                              padding: const EdgeInsets.symmetric(vertical: 2),
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w400,
+                              ),
+                              hint: const Text(
+                                'To',
+                                style: TextStyle(
+                                  color: Color(0XFF91919F),
+                                  fontWeight: FontWeight.w400,
                                 ),
                               ),
-                            );
-                          }).toList(),
-                          onChanged: (newValue) {
-                            controller.selectedSubTypeTo.value = newValue;
-                          },
-                        )),
+                              isExpanded: true,
+                              icon: Icon(
+                                Iconsax.arrow_right_3,
+                                color: theme.background,
+                              ),
+                              items: accSubType.map((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(
+                                    value,
+                                    style: const TextStyle(
+                                      color: Color(0xFF5D5C5C),
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
+                              onChanged: (newValue) {
+                                controller.selectedSubTypeTo.value = newValue;
+                              },
+                            )),
+                          );
+                        },
                       );
                     },
                   ),

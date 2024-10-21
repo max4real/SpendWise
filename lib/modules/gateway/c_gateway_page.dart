@@ -59,6 +59,7 @@ class GatewayController extends GetxController {
     );
 
     if (meResponse.isOk) {
+      print(meResponse.body['_data']['name']);
       return true;
     } else {
       return false;
