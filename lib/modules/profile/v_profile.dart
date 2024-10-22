@@ -6,8 +6,10 @@ import 'package:spend_wise/_common/constants/app_svg.dart';
 import 'package:spend_wise/_common/data/data_controller.dart';
 import 'package:spend_wise/_servies/theme_services/w_custon_theme_builder.dart';
 import 'package:spend_wise/modules/account/v_account_list.dart';
+import 'package:spend_wise/modules/category/v_category.dart';
 import 'package:spend_wise/modules/profile/c_profile.dart';
 import 'package:get/get.dart';
+import 'package:spend_wise/modules/setting/v_setting.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -103,7 +105,29 @@ class ProfilePage extends StatelessWidget {
                         child: ListTile(
                           minTileHeight: 70,
                           onTap: () {
-                            maxSnackBar(context, "Coming Soon!");
+                            Get.to(() => const CategoryPage());
+                          },
+                          leading: SvgPicture.string(
+                            AppSvgs.svgCategory,
+                            width: 40,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(13.0),
+                          ),
+                          title: const Text(
+                            'Category',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Card(
+                        child: ListTile(
+                          minTileHeight: 70,
+                          onTap: () {
+                            Get.to(() => const SettingPage());
                           },
                           leading: SvgPicture.string(
                             AppSvgs.svgProfileSetting,

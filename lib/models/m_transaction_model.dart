@@ -1,20 +1,21 @@
 class TransactionModel {
   String tranType;
   double tranAmount;
-  String categoryTag;
+  String categoryID;
   String tranRemark;
   String tranDescription;
-  String tranAccount;
+  String tranAccountID;
   DateTime createDateTime;
   String tranAttachement;
   TransactionModel({
     required this.tranType,
     required this.tranAmount,
-    required this.categoryTag,
+    required this.categoryID,
     required this.tranRemark,
     required this.tranDescription,
-    required this.tranAccount,
+    required this.tranAccountID,
     required this.createDateTime,
     required this.tranAttachement,
   });
+  
 }

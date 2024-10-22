@@ -4,12 +4,11 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:spend_wise/_servies/network_services/api_endpoint.dart';
 import 'package:spend_wise/_servies/theme_services/d_dark_theme.dart';
+import 'package:spend_wise/models/m_caetgory_model.dart';
 
 import '../../models/m_account_model.dart';
 
 class DataController extends GetxController {
-  ValueNotifier<List<AccountModel>> accountList = ValueNotifier([]);
-
   String apiToken = '';
   String spToken = '';
   @override
@@ -59,6 +58,7 @@ class DataController extends GetxController {
   // ];
 
   ValueNotifier<List<String>> accSubType = ValueNotifier([]);
+  ValueNotifier<List<AccountModel>> accountList = ValueNotifier([]);
 
   Future<void> fetchAccountList() async {
     String url = ApiEndpoint.baseUrl2 + ApiEndpoint.account;
@@ -74,6 +74,7 @@ class DataController extends GetxController {
       );
 
       if (response.isOk) {
+        print(response.body['_metadata']['message']);
         List<AccountModel> temp = [];
         List<String> temp2 = [];
 
@@ -82,10 +83,49 @@ class DataController extends GetxController {
         for (var element in iterable) {
           AccountModel rawData = AccountModel.fromAPI(data: element);
           temp.add(rawData);
-          temp2.add(rawData.accName);
+          temp2.add(rawData.accSubType);
         }
         accountList.value = [...temp];
         accSubType.value = [...temp2];
+      } else {
+        print(response.body['_metadata']['message']);
+        maxSuccessDialog(
+            response.body['_metadata']['message'].toString(), false);
+      }
+    } catch (e) {}
+  }
+
+  ValueNotifier<List<String>> categoryListStr = ValueNotifier([]);
+  ValueNotifier<List<CategoryModel>> categoryList = ValueNotifier([]);
+
+  Future<void> fetchCategoryList() async {
+    String url = ApiEndpoint.baseUrl2 + ApiEndpoint.category;
+    GetConnect client = GetConnect(timeout: const Duration(seconds: 10));
+
+    try {
+      final response = await client.get(
+        url,
+        headers: {
+          'Authorization': 'Bearer $apiToken',
+          'Content-Type': 'application/json',
+        },
+      );
+
+      if (response.isOk) {
+        print(response.body['_metadata']['message']);
+        List<CategoryModel> temp = [];
+        List<String> temp2 = [];
+
+        Iterable iterable = response.body['_data'] ?? [];
+
+        for (var element in iterable) {
+          CategoryModel rawData = CategoryModel.fromAPI(data: element);
+          temp.add(rawData);
+          temp2.add(rawData.categoryName);
+        }
+        categoryList.value = [...temp];
+        categoryListStr.value = [...temp2];
+        categoryListStr.value.sort((a, b) => a.compareTo(b));
       } else {
         print(response.body['_metadata']['message']);
         maxSuccessDialog(

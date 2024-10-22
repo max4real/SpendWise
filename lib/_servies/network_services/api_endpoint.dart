@@ -1,7 +1,7 @@
 class ApiEndpoint {
   static const String baseUrl = 'https://spend-wise-pe9c.onrender.com';
-  static const String baseUrl2 =
-      'https://spendwise-dwlh.onrender.com/api/v1';
+  static const String baseUrl2 = 'https://spendwise-ic57.onrender.com/api/v1';
+
   //-------------Auth-------------//
   static const String authRegister = '/auth/register';
   static const String authVerifyEmail = '/auth/verify-email';
@@ -20,9 +20,14 @@ class ApiEndpoint {
   static const String authVerifyOTP2 = '/auth/verify-otp';
   static const String authResetPassword2 = '/auth/reset-password';
 
-  static const String meAPI= '/auth/me';
+  static const String meAPI = '/auth/me';
 
   //-------------Account-------------//
-static const String account='/account';
+  static const String account = '/account';
 
+  //-------------Category-------------//
+  static const String category = '/category';
+
+  //-------------Category-------------//
+  static const String transaction = '/transaction';
 }
