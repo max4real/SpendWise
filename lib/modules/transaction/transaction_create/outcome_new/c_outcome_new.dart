@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -6,7 +8,7 @@ import 'package:spend_wise/_servies/network_services/api_endpoint.dart';
 
 class OutcomeNewController extends GetxController {
   DataController dataController = Get.find();
-  final String transactionType = "Expense";
+  final String transactionType = "EXPENSE";
   TextEditingController txtAmount = TextEditingController();
 
   ValueNotifier<String?> selectedCategory = ValueNotifier(null);
@@ -82,7 +84,7 @@ class OutcomeNewController extends GetxController {
 
   void proceedToSave() {
     if (checkAllField()) {
-      printData();
+      // printData();
       createGateway();
     }
   }
@@ -105,7 +107,19 @@ class OutcomeNewController extends GetxController {
     return '';
   }
 
-  Future<String> createCategory(String categoryName) async {
+  void createGateway() async {
+    if (xCustom.value) {
+      //create new category
+      createCategory(txtCustomCategory.text);
+    } else {
+      //use existing category
+      createTransaction(getCategoryID(selectedCategory.value.toString()));
+    }
+  }
+
+  Future<void> createCategory(String categoryName) async {
+    print('------------------------------------------------------------------');
+    print('------------------------- Create CATEGORY ------------------------');
     String url = ApiEndpoint.baseUrl2 + ApiEndpoint.category;
     GetConnect client = GetConnect(timeout: const Duration(seconds: 10));
     try {
@@ -123,56 +137,88 @@ class OutcomeNewController extends GetxController {
       );
       if (response.isOk) {
         String newCategoryID = response.body['_data']['id'].toString();
-        return newCategoryID;
+        if (newCategoryID != '') {
+          createTransaction(newCategoryID);
+        } else {
+          maxSuccessDialog("Something went wrong.", false);
+        }
       } else {
         print(response.body['_metadata']['message']);
         maxSuccessDialog(
             response.body['_metadata']['message'].toString(), false);
       }
     } catch (e) {}
-    return 'ID';
   }
 
   Future<void> createTransaction(String categoryID) async {
+    print('------------------------------------------------------------------');
+    print('----------------------- Create Transaction -----------------------');
     String url = ApiEndpoint.baseUrl2 + ApiEndpoint.transaction;
     GetConnect client = GetConnect(timeout: const Duration(seconds: 10));
 
     try {
-      Get.dialog(const Center(
-        child: CircularProgressIndicator(),
-      ));
+      Get.dialog(const Center(child: CircularProgressIndicator()));
+
+      MultipartFile? multipartFile;
+
+      if (selectedImage.value != null) {
+        final File imageFile = File(selectedImage.value!.path);
+        multipartFile = MultipartFile(
+          imageFile,
+          filename: imageFile.path.split('/').last,
+        );
+      } else {
+        multipartFile = null;
+      }
+
+      final formData = FormData(
+        {
+          'remark': txtRemark.text,
+          if (txtDescription.text.isNotEmpty)
+            'description': txtDescription.text,
+          'amount': int.tryParse(txtAmount.text) ?? -1,
+          'type': transactionType,
+          'to': getSubTypeID(selectedSubType.value.toString()),
+          'categoryId': categoryID,
+          if (multipartFile != null) 'image': multipartFile,
+        },
+      );
+
+      formData.fields.forEach((field) {
+        print('${field.key}: ${field.value}');
+      });
+      if (multipartFile != null) {
+        print('image: ${multipartFile.filename}');
+      }
 
       final response = await client.post(
         url,
-        {
-          'categoryID': categoryID,
-        },
+        formData,
+        // contentType: 'multipart/form-data',
         headers: {
           'Authorization': 'Bearer ${dataController.apiToken}',
-          'Content-Type': 'application/json',
+          // 'Content-Type': 'application/json',
+          // 'Content-Type': 'multipart/form-data'
         },
       );
 
       Get.back();
       if (response.isOk) {
-        print(response.body['_metadata']['message'].toString());
-        Get.back();
+        print("OK");
+        // print(response.body['_metadata']['message'].toString());
+        print(response.bodyString);
+        maxSuccessDialog(
+            response.body['_metadata']['message'].toString(), true);
+        // Get.back();
       } else {
-        print(response.body['_metadata']['message'].toString());
+        print("NOT OK");
+        // print(response.body['_metadata']['message'].toString());
+        print(response.bodyString);
         maxSuccessDialog(
             response.body['_metadata']['message'].toString(), false);
       }
-    } catch (e) {}
-  }
-
-  void createGateway() async {
-    if (xCustom.value) {
-      //create new category
-      String newCategoryID = await createCategory(txtCustomCategory.text);
-      createTransaction(newCategoryID);
-    } else {
-      //use existing category
-      createTransaction(getCategoryID(selectedCategory.value.toString()));
+    } catch (e) {
+      // print('Error: $e');
     }
   }
 
@@ -183,8 +229,8 @@ class OutcomeNewController extends GetxController {
     if (xCustom.value) {
       //create new
       print('Category - ' + txtCustomCategory.text);
-      String newCategoryID = await createCategory(txtCustomCategory.text);
-      print('new category id - ' + newCategoryID);
+      // String newCategoryID = await createCategory(txtCustomCategory.text);
+      // print('new category id - ' + newCategoryID);
     } else {
       //use existing
       print('Category - ' + selectedCategory.value.toString());
