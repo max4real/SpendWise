@@ -235,6 +235,105 @@ void maxSuccessDialog(String message, bool type_) {
   );
 }
 
+void maxSuccessDialog2(
+  String message,
+  bool type_,
+  Function ok,
+  String okButton,
+  // Function cancle,
+  // String cancleButton,
+) {
+  Get.dialog(
+    Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              height: 40,
+              width: 40,
+              decoration: BoxDecoration(
+                color: type_ ? incomeColor : outcomeColor,
+                shape: BoxShape.circle,
+              ),
+              child: type_
+                  ? const Icon(
+                      Icons.check,
+                      color: Colors.white,
+                      size: 36,
+                    )
+                  : const Icon(
+                      Icons.clear_rounded,
+                      color: Colors.white,
+                      size: 36,
+                    ),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              message,
+              style: const TextStyle(
+                fontSize: 16,
+                color: Colors.black,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 10),
+            // Row(
+            //   children: [
+            //     ElevatedButton(
+            //       onPressed: () {
+            //         cancle();
+            //       },
+            //       style: ElevatedButton.styleFrom(
+            //         backgroundColor: background2,
+            //         minimumSize: const Size(100, 30),
+            //       ),
+            //       child: Text(
+            //         cancleButton,
+            //         style: TextStyle(color: background, fontSize: 14),
+            //       ),
+            //     ),
+            //     const Spacer(),
+            //     ElevatedButton(
+            //       onPressed: () {
+            //         ok();
+            //       },
+            //       style: ElevatedButton.styleFrom(
+            //         backgroundColor: background,
+            //         minimumSize: const Size(100, 30),
+            //       ),
+            //       child: Text(
+            //         okButton,
+            //         style: TextStyle(color: text1, fontSize: 14),
+            //       ),
+            //     ),
+            //   ],
+            // )
+            ElevatedButton(
+              onPressed: () {
+                ok();
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: background,
+                minimumSize: const Size(120, 35),
+              ),
+              child: Text(
+                okButton,
+                style: TextStyle(color: text1, fontSize: 14),
+              ),
+            ),
+          ],
+        ),
+      ),
+    ),
+    barrierDismissible: false,
+  );
+}
+
 void maxMessageDialog(String message) {
   Get.dialog(
     Dialog(

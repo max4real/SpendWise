@@ -85,7 +85,7 @@ class IncomeNewController extends GetxController {
 
   void proceedToSave() {
     if (checkAllField()) {
-      printData();
+      // printData();
       createGateway();
     }
   }
@@ -119,6 +119,8 @@ class IncomeNewController extends GetxController {
   }
 
   Future<void> createCategory(String categoryName) async {
+    print('------------------------------------------------------------------');
+    print('------------------------- Create CATEGORY ------------------------');
     String url = ApiEndpoint.baseUrl2 + ApiEndpoint.category;
     GetConnect client = GetConnect(timeout: const Duration(seconds: 10));
     try {
@@ -150,8 +152,8 @@ class IncomeNewController extends GetxController {
   }
 
   Future<void> createTransaction(String categoryID) async {
-    print('--------------------------');
-    print('Create Transaction ------');
+    print('------------------------------------------------------------------');
+    print('----------------------- Create Transaction -----------------------');
     String url = ApiEndpoint.baseUrl2 + ApiEndpoint.transaction;
     GetConnect client = GetConnect(timeout: const Duration(seconds: 10));
 
@@ -178,7 +180,6 @@ class IncomeNewController extends GetxController {
           'amount': int.tryParse(txtAmount.text) ?? -1,
           'type': transactionType,
           'from': getSubTypeID(selectedSubType.value.toString()),
-          // 'to': ,
           'categoryId': categoryID,
           if (multipartFile != null) 'image': multipartFile,
         },
@@ -190,25 +191,49 @@ class IncomeNewController extends GetxController {
       if (multipartFile != null) {
         print('image: ${multipartFile.filename}');
       }
+
       final response = await client.post(
         url,
         formData,
+        // contentType: 'multipart/form-data',
         headers: {
           'Authorization': 'Bearer ${dataController.apiToken}',
-          'Content-Type': 'application/json',
+          // 'Content-Type': 'application/json',
+          // 'Content-Type': 'multipart/form-data'
         },
       );
 
       Get.back();
       if (response.isOk) {
-        print(response.body['_metadata']['message'].toString());
-        Get.back();
+        print(response.bodyString);
+        maxSuccessDialog2(
+          response.body['_metadata']['message'].toString(),
+          true,
+          () {
+            clearAllField();
+            Get.back();
+          },
+          'Continue',
+        );
       } else {
-        print(response.body['_metadata']['message'].toString());
+        print(response.bodyString);
         maxSuccessDialog(
             response.body['_metadata']['message'].toString(), false);
       }
-    } catch (e) {}
+    } catch (e) {
+      // print('Error: $e');
+    }
+  }
+
+  void clearAllField() {
+    txtAmount.text = '';
+    txtCustomCategory.text = '';
+    selectedCategory.value = null;
+    txtRemark.text = '';
+    txtDescription.text = '';
+    selectedSubType.value = null;
+    selectedImage.value = null;
+    imagePickState.value = false;
   }
 
   void printData() {

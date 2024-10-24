@@ -204,15 +204,17 @@ class OutcomeNewController extends GetxController {
 
       Get.back();
       if (response.isOk) {
-        print("OK");
-        // print(response.body['_metadata']['message'].toString());
         print(response.bodyString);
-        maxSuccessDialog(
-            response.body['_metadata']['message'].toString(), true);
-        // Get.back();
+        maxSuccessDialog2(
+          response.body['_metadata']['message'].toString(),
+          true,
+          () {
+            clearAllField();
+            Get.back();
+          },
+          'Continue',
+        );
       } else {
-        print("NOT OK");
-        // print(response.body['_metadata']['message'].toString());
         print(response.bodyString);
         maxSuccessDialog(
             response.body['_metadata']['message'].toString(), false);
@@ -220,6 +222,17 @@ class OutcomeNewController extends GetxController {
     } catch (e) {
       // print('Error: $e');
     }
+  }
+
+  void clearAllField() {
+    txtAmount.text = '';
+    txtCustomCategory.text = '';
+    selectedCategory.value = null;
+    txtRemark.text = '';
+    txtDescription.text = '';
+    selectedSubType.value = null;
+    selectedImage.value = null;
+    imagePickState.value = false;
   }
 
   void printData() async {
