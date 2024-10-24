@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:spend_wise/_common/data/data_controller.dart';
 import 'package:spend_wise/modules/auth/login/v_login_page.dart';
 import 'package:spend_wise/modules/auth/v_login_gateway.dart';
 import 'package:spend_wise/modules/main_page/v_main_page.dart';
@@ -7,6 +8,7 @@ import 'package:spend_wise/modules/main_page/v_main_page.dart';
 import '../../_servies/network_services/api_endpoint.dart';
 
 class GatewayController extends GetxController {
+  DataController dataController = Get.find();
   @override
   void onInit() {
     // TODO: implement onInit
@@ -26,21 +28,26 @@ class GatewayController extends GetxController {
     await Future.delayed(const Duration(milliseconds: 500));
     if (token_ != '') {
       if (await checkToken(token_)) {
-        print('Token - ' + token_);
+        print('SP Token - ' + token_);
+        print('Token - ' + dataController.apiToken);
+
         print('1');
         Get.offAll(() => const MainPage());
       } else {
-        print('Token - ' + token_);
+        print('SP Token - ' + token_);
+        print('Token - ' + dataController.apiToken);
         print('2');
         Get.offAll(() => const LoginPage());
       }
     } else {
       if (email_ == '') {
-        print('Token - ' + token_);
+        print('SP Token - ' + token_);
+        print('Token - ' + dataController.apiToken);
         print('3');
         Get.offAll(() => const LoginGatewayPage());
       } else {
-        print('Token - ' + token_);
+        print('SP Token - ' + token_);
+        print('Token - ' + dataController.apiToken);
         print('4');
         Get.off(() => const LoginPage());
       }

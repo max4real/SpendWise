@@ -27,8 +27,10 @@ class DataController extends GetxController {
     String? token = prefs.getString('token');
     if (token != null) {
       spToken = token;
+      apiToken = token;
     } else {
       spToken = "";
+      apiToken = "";
     }
   }
 

@@ -58,9 +58,6 @@ class LoginPageController extends GetxController {
         saveToken(token);
         saveEmail(txtEmail.text);
 
-        print('Saved Email - ' + txtEmail.text);
-        print('Saved Token - ' + token);
-
         String meUrl = ApiEndpoint.baseUrl2 + ApiEndpoint.meAPI;
         final meResponse = await client.get(
           meUrl,

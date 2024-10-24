@@ -43,7 +43,8 @@ class OutcomeNewController extends GetxController {
 
   Future<XFile?> pickImage() async {
     ImagePicker iPicker = ImagePicker();
-    XFile? result = await iPicker.pickImage(source: ImageSource.camera);
+    XFile? result =
+        await iPicker.pickImage(source: ImageSource.camera, imageQuality: 50);
     if (result != null) {
       selectedImage.value = result;
       imagePickState.value = true;

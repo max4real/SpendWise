@@ -44,7 +44,8 @@ class IncomeNewController extends GetxController {
 
   Future<XFile?> pickImage() async {
     ImagePicker iPicker = ImagePicker();
-    XFile? result = await iPicker.pickImage(source: ImageSource.camera);
+    XFile? result =
+        await iPicker.pickImage(source: ImageSource.camera, imageQuality: 50);
     if (result != null) {
       selectedImage.value = result;
       imagePickState.value = true;
@@ -155,7 +156,7 @@ class IncomeNewController extends GetxController {
     print('------------------------------------------------------------------');
     print('----------------------- Create Transaction -----------------------');
     String url = ApiEndpoint.baseUrl2 + ApiEndpoint.transaction;
-    GetConnect client = GetConnect(timeout: const Duration(minutes: 1)); 
+    GetConnect client = GetConnect(timeout: const Duration(minutes: 1));
 
     try {
       Get.dialog(const Center(child: CircularProgressIndicator()));

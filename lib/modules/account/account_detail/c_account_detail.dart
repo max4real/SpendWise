@@ -43,7 +43,7 @@ class AccountDetailController extends GetxController {
       Get.back();
       if (response.isOk) {
         print(response.body['_metadata']['message'].toString());
-        
+        print(response.bodyString);
       } else {
         print(response.body['_metadata']['message'].toString());
         maxSuccessDialog(
