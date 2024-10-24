@@ -105,7 +105,7 @@ class TransferNewPage extends StatelessWidget {
                 ),
                 Container(
                   width: double.infinity,
-                  height: MediaQuery.of(context).size.height - 140,
+                  height: MediaQuery.of(context).size.height - 150,
                   decoration: const BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.only(
@@ -123,7 +123,7 @@ class TransferNewPage extends StatelessWidget {
                           onTapOutside: (event) {
                             dismissKeyboard();
                           },
-                          controller: controller.txtDescription,
+                          controller: controller.txtRemark,
                           keyboardType: TextInputType.text,
                           decoration: InputDecoration(
                             enabledBorder: OutlineInputBorder(
@@ -245,7 +245,7 @@ class TransferNewPage extends StatelessWidget {
                         const SizedBox(height: 30),
                         GestureDetector(
                           onTap: () {
-                            // Get.to(() => const VerificationPage());
+                            controller.proceedToSave();
                           },
                           child: Container(
                             decoration: BoxDecoration(

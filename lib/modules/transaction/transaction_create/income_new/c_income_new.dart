@@ -206,6 +206,7 @@ class IncomeNewController extends GetxController {
       Get.back();
       if (response.isOk) {
         print(response.bodyString);
+        dataController.fetchCategoryList();
         maxSuccessDialog2(
           response.body['_metadata']['message'].toString(),
           true,
