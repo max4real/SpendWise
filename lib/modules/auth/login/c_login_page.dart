@@ -3,8 +3,10 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:spend_wise/_servies/network_services/api_endpoint.dart';
+import 'package:spend_wise/modules/account_setup/v_setup.dart';
 
 import '../../../_common/data/data_controller.dart';
+import '../../../models/m_account_model.dart';
 import '../../main_page/v_main_page.dart';
 
 class LoginPageController extends GetxController {
@@ -69,10 +71,11 @@ class LoginPageController extends GetxController {
         );
 
         if (meResponse.isOk) {
-          Get.offAll(() => const MainPage());
-          // maxSuccessDialog(
-          //     '${meResponse.body['_data']['name']}\n${meResponse.body['_data']['email']}',
-          //     true);
+          if (await isAccountListEmpty()) {
+            Get.offAll(() => const SetupGateway());
+          } else {
+            Get.offAll(() => const MainPage());
+          }
         } else {
           maxSuccessDialog(
               meResponse.body['_metadata']['message'].toString(), false);
@@ -83,6 +86,60 @@ class LoginPageController extends GetxController {
       }
     } catch (e) {}
   }
+
+  Future<bool> isAccountListEmpty() async {
+    print('Fetching account list');
+    String url = ApiEndpoint.baseUrl2 + ApiEndpoint.account;
+    GetConnect client = GetConnect(timeout: const Duration(seconds: 10));
+
+    try {
+      Get.dialog(const Center(child: CircularProgressIndicator()));
+
+      final response = await client.get(
+        url,
+        headers: {
+          'Authorization': 'Bearer ${dataController.apiToken}',
+          'Content-Type': 'application/json',
+        },
+      );
+      Get.back();
+      if (response.isOk) {
+        List<AccountModel> temp = [];
+
+        Iterable iterable = response.body['_data'] ?? [];
+
+        for (var element in iterable) {
+          AccountModel rawData = AccountModel.fromAPI(data: element);
+          temp.add(rawData);
+        }
+        if (temp.isEmpty) {
+          return true;
+        } else {
+          return false;
+        }
+      } else {
+        maxSuccessDialog(
+            response.body['_metadata']['message'].toString(), false);
+      }
+    } catch (e) {}
+    return false;
+  }
+
+  // Future<void> saveAccountSetupState(String state) async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   await prefs.setString('setup_state', state);
+  // }
+
+  // Future<String> getAccountSetupState() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   String? state = prefs.getString('setup_state');
+
+  //   if (state != null) {
+  //     return state;
+  //   } else {
+  //     return '';
+  //   }
+  // }
 
   Future<void> saveEmail(String email) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
