@@ -105,7 +105,7 @@ class TransferNewPage extends StatelessWidget {
                 ),
                 Container(
                   width: double.infinity,
-                  height: MediaQuery.of(context).size.height - 150,
+                  height: MediaQuery.of(context).size.height - 140,
                   decoration: const BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.only(

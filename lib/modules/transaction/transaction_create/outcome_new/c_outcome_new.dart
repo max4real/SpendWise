@@ -154,7 +154,7 @@ class OutcomeNewController extends GetxController {
     print('------------------------------------------------------------------');
     print('----------------------- Create Transaction -----------------------');
     String url = ApiEndpoint.baseUrl2 + ApiEndpoint.transaction;
-    GetConnect client = GetConnect(timeout: const Duration(seconds: 10));
+    GetConnect client = GetConnect(timeout: const Duration(minutes: 1));
 
     try {
       Get.dialog(const Center(child: CircularProgressIndicator()));
@@ -204,6 +204,7 @@ class OutcomeNewController extends GetxController {
 
       Get.back();
       if (response.isOk) {
+        print("ok");
         print(response.bodyString);
         dataController.fetchCategoryList();
         maxSuccessDialog2(
@@ -216,6 +217,7 @@ class OutcomeNewController extends GetxController {
           'Continue',
         );
       } else {
+        print('not ok');
         print(response.bodyString);
         maxSuccessDialog(
             response.body['_metadata']['message'].toString(), false);

@@ -11,7 +11,7 @@ class AccountDetailController extends GetxController {
   DataController dataController = Get.find();
   ValueNotifier<bool> xFetching = ValueNotifier(false);
   ValueNotifier<String> accName = ValueNotifier('');
-  ValueNotifier<List<TransactionModel>> transactionList = ValueNotifier([]);
+  ValueNotifier<List<TransactionListModel>> transactionList = ValueNotifier([]);
   @override
   void onInit() {
     // TODO: implement onInit
@@ -21,11 +21,36 @@ class AccountDetailController extends GetxController {
   void initLoad(AccountModel accountModel) {
     accName.value = accountModel.accName;
     accId = accountModel.accId;
-
-    ///fetch transaction list for each Account Subtype
+    fetchTransaction();
   }
 
-  Future<void> fetchTransaction() async {}
+  Future<void> fetchTransaction() async {
+    print(accId);
+    String url = '${ApiEndpoint.baseUrl2}${ApiEndpoint.account}/$accId';
+
+    GetConnect client = GetConnect(timeout: const Duration(seconds: 10));
+    try {
+      Get.dialog(const Center(child: CircularProgressIndicator()));
+
+      final response = await client.get(
+        url,
+        headers: {
+          'Authorization': 'Bearer ${dataController.apiToken}',
+          'Content-Type': 'application/json',
+        },
+      );
+
+      Get.back();
+      if (response.isOk) {
+        print(response.body['_metadata']['message'].toString());
+        
+      } else {
+        print(response.body['_metadata']['message'].toString());
+        maxSuccessDialog(
+            response.body['_metadata']['message'].toString(), false);
+      }
+    } catch (e1) {}
+  }
 
   Future<void> deleteAccount() async {
     String url = '${ApiEndpoint.baseUrl2}${ApiEndpoint.account}/$accId';

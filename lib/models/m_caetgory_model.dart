@@ -15,7 +15,7 @@ class CategoryModel {
       categoryID: data['id'].toString(),
       categoryName: data['name'].toString(),
       categoryIcon: data['icon'] ?? '',
-      categoryPrivacy: data['isPrivate'],
+      categoryPrivacy: data['isPrivate'] ?? '',
     );
   }
 }

@@ -155,7 +155,7 @@ class IncomeNewController extends GetxController {
     print('------------------------------------------------------------------');
     print('----------------------- Create Transaction -----------------------');
     String url = ApiEndpoint.baseUrl2 + ApiEndpoint.transaction;
-    GetConnect client = GetConnect(timeout: const Duration(seconds: 10));
+    GetConnect client = GetConnect(timeout: const Duration(minutes: 1)); 
 
     try {
       Get.dialog(const Center(child: CircularProgressIndicator()));
