@@ -24,30 +24,24 @@ class GatewayController extends GetxController {
 
   Future<void> initLoad() async {
     await getEmail();
-    await getToken();
     await Future.delayed(const Duration(milliseconds: 500));
-    if (token_ != '') {
-      if (await checkToken(token_)) {
-        print('SP Token - ' + token_);
-        print('Token - ' + dataController.apiToken);
-
+    if (dataController.apiToken != '') {
+      if (await checkToken(dataController.apiToken)) {
+        print('Token - ${dataController.apiToken}');
         print('1');
         Get.offAll(() => const MainPage());
       } else {
-        print('SP Token - ' + token_);
-        print('Token - ' + dataController.apiToken);
+        print('Token - ${dataController.apiToken}');
         print('2');
         Get.offAll(() => const LoginPage());
       }
     } else {
       if (email_ == '') {
-        print('SP Token - ' + token_);
-        print('Token - ' + dataController.apiToken);
+        print('Token - ${dataController.apiToken}');
         print('3');
         Get.offAll(() => const LoginGatewayPage());
       } else {
-        print('SP Token - ' + token_);
-        print('Token - ' + dataController.apiToken);
+        print('Token - ${dataController.apiToken}');
         print('4');
         Get.off(() => const LoginPage());
       }
@@ -82,18 +76,6 @@ class GatewayController extends GetxController {
       email_ = email;
     } else {
       email_ = "";
-    }
-  }
-
-  String token_ = '';
-  Future<void> getToken() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? token = prefs.getString('token');
-
-    if (token != null) {
-      token_ = token;
-    } else if (token == null) {
-      token_ = '';
     }
   }
 }

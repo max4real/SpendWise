@@ -68,6 +68,8 @@ class LoginPageController extends GetxController {
         );
 
         if (meResponse.isOk) {
+          print(meResponse.body['_data']['name']);
+          print('Token - ' + token);
           if (await isAccountListEmpty()) {
             Get.offAll(() => const SetupGateway());
           } else {

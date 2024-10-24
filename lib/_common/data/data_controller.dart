@@ -10,7 +10,7 @@ import '../../models/m_account_model.dart';
 
 class DataController extends GetxController {
   String apiToken = '';
-  String spToken = '';
+  // String spToken = '';
   @override
   void onInit() {
     // TODO: implement onInit
@@ -26,10 +26,10 @@ class DataController extends GetxController {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString('token');
     if (token != null) {
-      spToken = token;
+      // spToken = token;
       apiToken = token;
     } else {
-      spToken = "";
+      // spToken = "";
       apiToken = "";
     }
   }
