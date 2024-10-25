@@ -154,62 +154,129 @@ class TransactionDetailsPage extends StatelessWidget {
                                 ),
                                 Expanded(
                                   flex: 1,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      const Text(
-                                        'Category',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 14,
-                                          color: Color(0XFF91919F),
+                                  child: transactionListModel.tarnType ==
+                                          "TRANSFER"
+                                      ? Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            const Text(
+                                              'From',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 14,
+                                                color: Color(0XFF91919F),
+                                              ),
+                                            ),
+                                            const Gap(10),
+                                            Text(
+                                              transactionListModel.from != null
+                                                  ? transactionListModel.from!
+                                                  : '-',
+                                              textAlign: TextAlign.center,
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: const TextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w600,
+                                                color: Color(0XFF0D0E0F),
+                                              ),
+                                            ),
+                                          ],
+                                        )
+                                      : Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            const Text(
+                                              'Category',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 14,
+                                                color: Color(0XFF91919F),
+                                              ),
+                                            ),
+                                            const Gap(10),
+                                            Text(
+                                              transactionListModel.category !=
+                                                      null
+                                                  ? transactionListModel
+                                                      .category!.categoryName
+                                                  : '-',
+                                              textAlign: TextAlign.center,
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: const TextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w600,
+                                                color: Color(0XFF0D0E0F),
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                      ),
-                                      const Gap(10),
-                                      Text(
-                                        transactionListModel.category != null
-                                            ? transactionListModel
-                                                .category!.categoryName
-                                            : '-',
-                                        textAlign: TextAlign.center,
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: const TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w600,
-                                          color: Color(0XFF0D0E0F),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
                                 ),
                                 Expanded(
                                   flex: 1,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        'Wallet',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 14,
-                                          color: Color(0XFF91919F),
+                                  child: transactionListModel.tarnType ==
+                                          "TRANSFER"
+                                      ? Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            const Text(
+                                              'To',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 14,
+                                                color: Color(0XFF91919F),
+                                              ),
+                                            ),
+                                            const Gap(10),
+                                            Text(
+                                              transactionListModel.to != null
+                                                  ? transactionListModel.to!
+                                                  : "-",
+                                              textAlign: TextAlign.center,
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: const TextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w600,
+                                                color: Color(0XFF0D0E0F),
+                                              ),
+                                            ),
+                                          ],
+                                        )
+                                      : Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            const Text(
+                                              'Wallet',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 14,
+                                                color: Color(0XFF91919F),
+                                              ),
+                                            ),
+                                            const Gap(10),
+                                            Text(
+                                              transactionListModel.subType !=
+                                                      null
+                                                  ? transactionListModel
+                                                      .subType!
+                                                  : "-",
+                                              textAlign: TextAlign.center,
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: const TextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w600,
+                                                color: Color(0XFF0D0E0F),
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                      ),
-                                      Gap(10),
-                                      Text(
-                                        'Cash',
-                                        textAlign: TextAlign.center,
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w600,
-                                          color: Color(0XFF0D0E0F),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
                                 ),
                               ],
                             ),
@@ -225,6 +292,7 @@ class TransactionDetailsPage extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 18),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Align(
                         alignment: Alignment.centerLeft,
@@ -238,13 +306,17 @@ class TransactionDetailsPage extends StatelessWidget {
                       ),
                       const Gap(10),
                       Text(
-                        "blahhh balha sdfs" * 20,
+                        transactionListModel.description != null
+                            ? transactionListModel.description!
+                            : 'No Description',
                         maxLines: 3,
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
                           color: Color(0XFF0D0E0F),
                         ),
                       ),
+                      const Gap(15),
+                      SvgPicture.string(AppSvgs.svgDottedLine),
                       const Gap(10),
                       const Align(
                         alignment: Alignment.centerLeft,
@@ -279,7 +351,6 @@ class TransactionDetailsPage extends StatelessWidget {
                                               filterQuality: FilterQuality.high,
                                               transactionListModel.image!,
                                               fit: BoxFit.fill,
-                                              
                                             ),
                                           ),
                                         ),

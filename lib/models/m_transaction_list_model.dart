@@ -8,6 +8,10 @@ class TransactionListModel {
   DateTime createdAt;
   CategoryModel? category;
   String? image;
+  String? subType;
+  String? from;
+  String? to;
+  String? description;
 
   TransactionListModel({
     required this.id,
@@ -17,6 +21,10 @@ class TransactionListModel {
     required this.createdAt,
     this.category,
     this.image,
+    this.subType,
+    this.from,
+    this.to,
+    this.description,
   });
 
   factory TransactionListModel.forList({required Map<String, dynamic> data}) {
@@ -39,12 +47,28 @@ class TransactionListModel {
       {required Map<String, dynamic> data}) {
     CategoryModel? categoryModel;
     String? image;
+    String? subType;
+    String? from;
+    String? to;
+    String? description;
+
+    if (data['from'] != null) {
+      subType = data['from']['subType'] ?? "";
+      from = data['from']['subType'] ?? "";
+    }
+    if (data['to'] != null) {
+      subType = data['to']['subType'] ?? "";
+      to = data['to']['subType'] ?? "";
+    }
 
     if (data['category'] != null) {
       categoryModel = CategoryModel.fromAPI(data: data['category']);
     }
     if (data['image'] != null) {
       image = data['image'] ?? '';
+    }
+    if (data['description'] != null) {
+      description = data['description'] ?? '';
     }
 
     return TransactionListModel(
@@ -55,64 +79,31 @@ class TransactionListModel {
       createdAt: DateTime.tryParse(data['createdAt']) ?? DateTime.now(),
       category: categoryModel,
       image: image,
+      subType: subType,
+      from: from,
+      to: to,
+      description: description,
     );
   }
 }
 // {
-//         "id": "f9b55729-d4a9-4c7e-aeb6-5085d52d5be5",
-//         "remark": "SAY LATE",
-//         "image": "https://res.cloudinary.com/dwrgwvvdk/image/upload/v1729829184/spendwise/transaction/tkvtwc6ep685ec6ps3v6.jpg",
+//         "id": "67520fcb-3169-47b4-9a8a-42fb459a90d9",
+//         "remark": "say late wal",
+//         "image": "https://res.cloudinary.com/dwrgwvvdk/image/upload/v1729863382/spendwise/transaction/xmnyjjpsjhpnjzhfojuw.jpg",
 //         "amount": 3500,
 //         "type": "EXPENSE",
+//         "from": null,
+//         "to": {
+//           "id": "d950ea6e-d3de-47ae-be5a-83df954b9abb",
+//           "name": "AYA Bank - ",
+//           "type": "BANK",
+//           "subType": "AYABANK"
+//         },
 //         "category": {
-//           "id": "edfdd0e8-69c8-44e7-a3e9-a91dd1e8023c",
-//           "name": "General Use",
+//           "id": "6c48b7f8-0719-46b9-acdf-a3ae5a1b6c4d",
+//           "name": "Shopping",
 //           "icon": null,
 //           "isPrivate": false
 //         },
-//         "createdAt": "2024-10-25T04:06:24.611Z"
+//         "createdAt": "2024-10-25T13:36:23.036Z"
 //       },
-// {
-//         "id": "7d78abcf-852e-4b5e-8c9d-787edd5f5660",
-//         "remark": "gvv",
-//         "amount": 4555,
-//         "type": "INCOME",
-//         "category": {
-//           "id": "0a0caa12-c0e6-4df8-955d-5c8530536c0b",
-//           "name": "Food",
-//           "icon": null
-//         },
-//         "createdAt": "2024-10-24T10:33:44.444Z"
-//       },
-
-// remark*	[...]
-// description	[...]
-// amount*	[...]
-// type*	[...]
-// from	[...]
-// to	[...]
-// categoryId	[...]
-// image	
-
-// class TransactionModel {
-//   String tranID;
-//   String tranType;
-//   double tranAmount;
-//   String categoryID;
-//   String tranRemark;
-//   String tranDescription;
-//   String tranAccountID;
-//   DateTime createDateTime;
-//   String? tranAttachement;
-//   TransactionModel({
-//     required this.tranID,
-//     required this.tranType,
-//     required this.tranAmount,
-//     required this.categoryID,
-//     required this.tranRemark,
-//     required this.tranDescription,
-//     required this.tranAccountID,
-//     required this.createDateTime,
-//     this.tranAttachement,
-//   });
-// }
