@@ -279,6 +279,7 @@ class TransactionDetailsPage extends StatelessWidget {
                                               filterQuality: FilterQuality.high,
                                               transactionListModel.image!,
                                               fit: BoxFit.fill,
+                                              
                                             ),
                                           ),
                                         ),
