@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:spend_wise/models/m_account_model.dart';
-import 'package:spend_wise/models/m_transaction_model.dart';
+import 'package:spend_wise/models/m_transaction_list_model.dart';
 
 import '../../../_common/data/data_controller.dart';
 import '../../../_servies/network_services/api_endpoint.dart';
@@ -25,13 +25,12 @@ class AccountDetailController extends GetxController {
   }
 
   Future<void> fetchTransaction() async {
-    print(accId);
+    print("acc id - " + accId);
     String url = '${ApiEndpoint.baseUrl2}${ApiEndpoint.account}/$accId';
 
-    GetConnect client = GetConnect(timeout: const Duration(seconds: 10));
+    GetConnect client = GetConnect(timeout: const Duration(minutes: 1));
     try {
-      Get.dialog(const Center(child: CircularProgressIndicator()));
-
+      xFetching.value = true;
       final response = await client.get(
         url,
         headers: {
@@ -39,11 +38,19 @@ class AccountDetailController extends GetxController {
           'Content-Type': 'application/json',
         },
       );
-
-      Get.back();
+      xFetching.value = false;
       if (response.isOk) {
         print(response.body['_metadata']['message'].toString());
-        print(response.bodyString);
+
+        Iterable iterable = response.body['_data']['transactions'] ?? [];
+        List<TransactionListModel> temp = [];
+
+        for (var element in iterable) {
+          TransactionListModel rawData =
+              TransactionListModel.forList(data: element);
+          temp.add(rawData);
+        }
+        transactionList.value = [...temp];
       } else {
         print(response.body['_metadata']['message'].toString());
         maxSuccessDialog(

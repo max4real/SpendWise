@@ -122,15 +122,25 @@ class AccountDetailPage extends StatelessWidget {
                         valueListenable: controller.transactionList,
                         builder: (context, transactionList, child) {
                           return ListView.builder(
-                            itemCount: 10,
+                            itemCount: transactionList.length,
                             itemBuilder: (context, index) {
+                              String title = '';
+                              if (transactionList[index].tarnType ==
+                                  "TRANSFER") {
+                                title = 'Transfer';
+                              } else {
+                                title = 'Account Create';
+                              }
                               return MaxListTile(
-                                title: 'Food',
-                                subtitle: "lunch and dinner",
-                                amount: 7500,
-                                time: DateTime.now(),
-                                transaction:
-                                    index % 2 == 0 ? 'Income' : 'Expense',
+                                title: transactionList[index].category == null
+                                    ? title
+                                    : transactionList[index]
+                                        .category!
+                                        .categoryName,
+                                subtitle: transactionList[index].remark,
+                                amount: transactionList[index].amount,
+                                time: transactionList[index].createdAt,
+                                transaction: transactionList[index].tarnType,
                               );
                             },
                           );

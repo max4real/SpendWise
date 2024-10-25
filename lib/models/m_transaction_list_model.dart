@@ -18,27 +18,34 @@ class TransactionListModel {
   });
 
   factory TransactionListModel.forList({required Map<String, dynamic> data}) {
+    CategoryModel? categoryModel;
+
+    if (data['category'] != null) {
+      categoryModel = CategoryModel.fromAPI(data: data['category']);
+    }
+
     return TransactionListModel(
-        id: data['id'] ?? '',
-        remark: data['remark'] ?? '',
-        amount: data['amount'] ?? -1,
-        tarnType: data['type'] ?? '',
-        createdAt: DateTime.tryParse(data['createdAt']) ?? DateTime.now(),
-        category: CategoryModel.fromAPI(data: data['category']));
+      id: data['id'] ?? '',
+      remark: data['remark'] ?? '',
+      amount: data['amount'] as int,
+      tarnType: data['type'] ?? '',
+      createdAt: DateTime.tryParse(data['createdAt']) ?? DateTime.now(),
+      category: categoryModel,
+    );
   }
 }
 
 // {
-//         "id": "28a22d89-4e3c-4f58-8538-f6e21ff4bd03",
-//         "remark": "rff",
-//         "amount": 500000,
+//         "id": "7d78abcf-852e-4b5e-8c9d-787edd5f5660",
+//         "remark": "gvv",
+//         "amount": 4555,
 //         "type": "INCOME",
-//         "createdAt": "2024-10-24T08:36:50.897Z",
 //         "category": {
-//           "id": "eb3e297b-987c-4906-9299-18ec2d372027",
-//           "name": "Salary",
+//           "id": "0a0caa12-c0e6-4df8-955d-5c8530536c0b",
+//           "name": "Food",
 //           "icon": null
-//         }
+//         },
+//         "createdAt": "2024-10-24T10:33:44.444Z"
 //       },
 
 // remark*	[...]

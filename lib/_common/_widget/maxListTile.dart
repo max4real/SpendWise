@@ -6,14 +6,13 @@ import 'package:spend_wise/_servies/theme_services/w_custon_theme_builder.dart';
 
 import '../constants/app_svg.dart';
 
-// ignore: must_be_immutable
 class MaxListTile extends StatelessWidget {
-  String title;
-  String subtitle;
-  double amount;
-  DateTime time;
-  String transaction;
-  MaxListTile(
+  final String title;
+  final String subtitle;
+  final int amount;
+  final DateTime time;
+  final String transaction;
+  const MaxListTile(
       {super.key,
       required this.title,
       required this.subtitle,
@@ -26,15 +25,15 @@ class MaxListTile extends StatelessWidget {
     Color displayColor;
     String displayAmount = '';
     String displayIcon = '';
-    if (transaction == "Income") {
+    if (transaction == "INCOME") {
       displayColor = incomeColor;
       displayAmount = "+${formatNumber(amount)}";
       displayIcon = AppSvgs.svgAddIncomeIcon;
-    } else if (transaction == "Expense") {
+    } else if (transaction == "EXPENSE") {
       displayColor = outcomeColor;
       displayAmount = "-${formatNumber(amount)}";
       displayIcon = AppSvgs.svgAddOutcomeIcon;
-    } else if (transaction == "Transfer") {
+    } else if (transaction == "TRANSFER") {
       displayColor = transferColor;
       displayAmount = formatNumber(amount);
       displayIcon = AppSvgs.svgAddTransferIcon;
@@ -68,11 +67,11 @@ class MaxListTile extends StatelessWidget {
               style: const TextStyle(fontSize: 12),
             ),
             trailing: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 const SizedBox(height: 5),
                 Text(
-                  displayAmount,
+                  "$displayAmount Ks",
                   style: TextStyle(
                     color: displayColor,
                     fontSize: 14,
@@ -80,9 +79,9 @@ class MaxListTile extends StatelessWidget {
                 ),
                 const Spacer(),
                 Text(
-                  myTimeFormat(time),
+                  formatDateTimeForTile(time.add(addDuration_630)),
                   style: const TextStyle(
-                    fontSize: 12,
+                    fontSize: 10,
                   ),
                 ),
                 const SizedBox(height: 5),

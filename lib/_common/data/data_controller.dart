@@ -391,3 +391,22 @@ String formatNumber(dynamic data) {
   var formatter = NumberFormat('#,##0');
   return formatter.format(data);
 }
+
+String formatDateTimeForTile(DateTime dateTime) {
+  final now = DateTime.now();
+  final today = DateTime(now.year, now.month, now.day);
+  final yesterday = today.subtract(Duration(days: 1));
+
+  if (dateTime.isAfter(today)) {
+    // If the date is today
+    return 'Today ${DateFormat('hh:mm a').format(dateTime)}';
+  } else if (dateTime.isAfter(yesterday)) {
+    // If the date is yesterday
+    return 'Yesterday ${DateFormat('hh:mm a').format(dateTime)}';
+  } else {
+    // If the date is neither today nor yesterday
+    return DateFormat('MMM dd hh:mm a').format(dateTime);
+  }
+}
+
+const Duration addDuration_630 = Duration(hours: 6, minutes: 30);
