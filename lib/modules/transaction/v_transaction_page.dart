@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:intl/intl.dart';
+import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
+import 'package:loading_indicator/loading_indicator.dart';
 import 'package:spend_wise/_common/_widget/maxMultiButton.dart';
-import 'package:spend_wise/_common/data/data_controller.dart';
 import 'package:spend_wise/_servies/theme_services/d_dark_theme.dart';
 import 'package:spend_wise/_servies/theme_services/w_custon_theme_builder.dart';
 import 'package:spend_wise/modules/transaction/c_transaction_page.dart';
 import 'package:get/get.dart';
 import 'package:gap/gap.dart';
 import 'package:spend_wise/modules/transaction/transaction_detail/v_transaction_details.dart';
+import 'package:spend_wise/modules/transaction/widget/datatime_widget.dart';
 
 import '../../_common/_widget/maxListTile.dart';
 
@@ -21,11 +24,15 @@ class TransactionPage extends StatelessWidget {
       builder: (context, theme, themeController) {
         return Scaffold(
           appBar: AppBar(
-            leadingWidth: 100,
+            leadingWidth: 120,
             leading: Center(
               child: GestureDetector(
                 onTap: () {
-                  maxSnackBar(context, 'Period Filter');
+                  Get.bottomSheet(
+                    isDismissible: false,
+                    backgroundColor: Colors.black,
+                    DatatimeWidget(),
+                  );
                 },
                 child: Card(
                   child: Padding(
@@ -42,11 +49,12 @@ class TransactionPage extends StatelessWidget {
                         ),
                         const Spacer(),
                         ValueListenableBuilder(
-                          valueListenable: controller.periodFilter,
-                          builder: (context, periodFilter, child) {
-                            return Text(periodFilter);
+                          valueListenable: controller.startDate,
+                          builder: (context, startDate, child) {
+                            return Text(
+                                DateFormat('MMM yyyy').format(startDate));
                           },
-                        )
+                        ),
                       ],
                     ),
                   ),
@@ -59,7 +67,6 @@ class TransactionPage extends StatelessWidget {
                 builder: (context, value, child) {
                   return IconButton(
                     onPressed: () {
-                      // maxSnackBar(context, 'Filter');
                       showFilterSheet();
                     },
                     icon: value == 0
@@ -120,23 +127,100 @@ class TransactionPage extends StatelessWidget {
                 ),
                 const Gap(10),
                 Expanded(
-                  child: ListView.builder(
-                    itemCount: 10,
-                    itemBuilder: (context, index) {
-                      return GestureDetector(
-                        onTap: () {
-                          Get.to(
-                              () => TransactionDetailsPage(color: outcomeColor));
+                  child: Stack(
+                    children: [
+                      ValueListenableBuilder(
+                        valueListenable: controller.xFetching,
+                        builder: (context, xFetching, child) {
+                          if (xFetching) {
+                            return Center(
+                              // child: CircularProgressIndicator());
+                              child: SizedBox(
+                                width: 45,
+                                child: LoadingIndicator(
+                                  indicatorType: Indicator.ballPulseSync,
+                                  colors: [theme.background],
+                                ),
+                              ),
+                            );
+                          } else {
+                            return ValueListenableBuilder(
+                              valueListenable: controller.transactionList,
+                              builder: (context, transactionList, child) {
+                                if (transactionList.isEmpty) {
+                                  return const Center(
+                                    child: Text("No Transaction Yet!"),
+                                  );
+                                } else {
+                                  return LazyLoadScrollView(
+                                    onEndOfPage: () {
+                                      controller.loadMore();
+                                    },
+                                    child: ListView.builder(
+                                      itemCount: transactionList.length,
+                                      physics:
+                                          const AlwaysScrollableScrollPhysics(),
+                                      itemBuilder: (context, index) {
+                                        String title = '';
+                                        if (transactionList[index].tarnType ==
+                                            "TRANSFER") {
+                                          title = 'Transfer';
+                                        } else {
+                                          title = 'Account Create';
+                                        }
+                                        return GestureDetector(
+                                          onTap: () {
+                                            Get.to(() => TransactionDetailsPage(
+                                                color: outcomeColor));
+                                          },
+                                          child: MaxListTile(
+                                            title: transactionList[index]
+                                                        .category ==
+                                                    null
+                                                ? title
+                                                : transactionList[index]
+                                                    .category!
+                                                    .categoryName,
+                                            subtitle:
+                                                transactionList[index].remark,
+                                            amount:
+                                                transactionList[index].amount,
+                                            time: transactionList[index]
+                                                .createdAt,
+                                            transaction:
+                                                transactionList[index].tarnType,
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  );
+                                }
+                              },
+                            );
+                          }
                         },
-                        child: MaxListTile(
-                          title: 'Shopping $index',
-                          subtitle: 'This week car gas',
-                          amount: 54000,
-                          time: DateTime.now(),
-                          transaction: index % 2 == 0 ? 'Income' : 'Expense',
+                      ),
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: ValueListenableBuilder(
+                          valueListenable: controller.moreLoading,
+                          builder: (context, moreLoading, child) {
+                            if (!moreLoading) {
+                              // if (false) {
+                              return const SizedBox.shrink();
+                            } else {
+                              return SizedBox(
+                                width: 50,
+                                child: LoadingIndicator(
+                                  indicatorType: Indicator.ballPulseSync,
+                                  colors: [incomeColor],
+                                ),
+                              );
+                            }
+                          },
                         ),
-                      );
-                    },
+                      )
+                    ],
                   ),
                 ),
               ],

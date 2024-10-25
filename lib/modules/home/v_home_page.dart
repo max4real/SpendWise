@@ -3,6 +3,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:loading_indicator/loading_indicator.dart';
 import 'package:spend_wise/_common/_widget/maxListTile.dart';
 import 'package:spend_wise/_servies/theme_services/w_custon_theme_builder.dart';
 import 'package:get/get.dart';
@@ -34,7 +35,7 @@ class HomePage extends StatelessWidget {
             actions: [
               IconButton(
                 onPressed: () {
-                  Get.to(()=>const MyTestPage());
+                  Get.to(() => const MyTestPage());
                 },
                 icon: Icon(
                   Iconsax.notification_bing,
@@ -316,9 +317,11 @@ class HomePage extends StatelessWidget {
                             fontSize: 17, fontWeight: FontWeight.w500),
                       ),
                       const Spacer(),
-                      TextButton(
-                        onPressed: () {},
-                        child: const Text('See All'),
+                      IconButton(
+                        onPressed: () {
+                          controller.fetchTransactionList();
+                        },
+                        icon: const Icon(Iconsax.refresh_left_square),
                       ),
                     ],
                   ),
@@ -328,41 +331,64 @@ class HomePage extends StatelessWidget {
                   width: double.infinity,
                   height: 350,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 18),
-                    child: ListView(
-                      physics: const NeverScrollableScrollPhysics(),
-                      children: [
-                        MaxListTile(
-                          title: 'Shopping',
-                          subtitle: 'This week car gas',
-                          amount: 54000,
-                          time: DateTime.now(),
-                          transaction: 'Income',
-                        ),
-                        MaxListTile(
-                          title: 'Shopping',
-                          subtitle: 'This week car gas',
-                          amount: 54000,
-                          time: DateTime.now(),
-                          transaction: 'Expense',
-                        ),
-                        MaxListTile(
-                          title: 'Shopping',
-                          subtitle: 'This week car gas',
-                          amount: 54000,
-                          time: DateTime.now(),
-                          transaction: 'Transfer',
-                        ),
-                        MaxListTile(
-                          title: 'Shopping',
-                          subtitle: 'This week car gas',
-                          amount: 54000,
-                          time: DateTime.now(),
-                          transaction: 'Transfer',
-                        ),
-                      ],
-                    ),
-                  ),
+                      padding: const EdgeInsets.symmetric(horizontal: 18),
+                      child: ValueListenableBuilder(
+                        valueListenable: controller.xFetching,
+                        builder: (context, xFetching, child) {
+                          if (xFetching) {
+                            return  Center(
+                              // child: CircularProgressIndicator(),
+                              child: SizedBox(
+                                width: 45,
+                                child: LoadingIndicator(
+                                  indicatorType: Indicator.ballPulseSync,
+                                  colors: [theme.background],
+                                ),
+                              ),
+                            );
+                          } else {
+                            return ValueListenableBuilder(
+                              valueListenable: controller.transactionList,
+                              builder: (context, transactionList, child) {
+                                if (transactionList.isEmpty) {
+                                  return const Center(
+                                    child: Text('No Data Yet!'),
+                                  );
+                                } else {
+                                  return ListView.builder(
+                                    itemCount: transactionList.length,
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    itemBuilder: (context, index) {
+                                      String title = '';
+                                      if (transactionList[index].tarnType ==
+                                          "TRANSFER") {
+                                        title = 'Transfer';
+                                      } else {
+                                        title = 'Account Create';
+                                      }
+                                      return MaxListTile(
+                                        title:
+                                            transactionList[index].category ==
+                                                    null
+                                                ? title
+                                                : transactionList[index]
+                                                    .category!
+                                                    .categoryName,
+                                        subtitle: transactionList[index].remark,
+                                        amount: transactionList[index].amount,
+                                        time: transactionList[index].createdAt,
+                                        transaction:
+                                            transactionList[index].tarnType,
+                                      );
+                                    },
+                                  );
+                                }
+                              },
+                            );
+                          }
+                        },
+                      )),
                 )
               ],
             ),

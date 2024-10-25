@@ -7,6 +7,7 @@ class TransactionListModel {
   String tarnType;
   DateTime createdAt;
   CategoryModel? category;
+  String? image;
 
   TransactionListModel({
     required this.id,
@@ -15,6 +16,7 @@ class TransactionListModel {
     required this.tarnType,
     required this.createdAt,
     this.category,
+    this.image,
   });
 
   factory TransactionListModel.forList({required Map<String, dynamic> data}) {
@@ -33,8 +35,43 @@ class TransactionListModel {
       category: categoryModel,
     );
   }
-}
+  factory TransactionListModel.forListWithImage(
+      {required Map<String, dynamic> data}) {
+    CategoryModel? categoryModel;
+    String? image;
 
+    if (data['category'] != null) {
+      categoryModel = CategoryModel.fromAPI(data: data['category']);
+    }
+    if (data['image'] != null) {
+      image = data['image'] ?? '';
+    }
+
+    return TransactionListModel(
+      id: data['id'] ?? '',
+      remark: data['remark'] ?? '',
+      amount: data['amount'] as int,
+      tarnType: data['type'] ?? '',
+      createdAt: DateTime.tryParse(data['createdAt']) ?? DateTime.now(),
+      category: categoryModel,
+      image: image,
+    );
+  }
+}
+// {
+//         "id": "f9b55729-d4a9-4c7e-aeb6-5085d52d5be5",
+//         "remark": "SAY LATE",
+//         "image": "https://res.cloudinary.com/dwrgwvvdk/image/upload/v1729829184/spendwise/transaction/tkvtwc6ep685ec6ps3v6.jpg",
+//         "amount": 3500,
+//         "type": "EXPENSE",
+//         "category": {
+//           "id": "edfdd0e8-69c8-44e7-a3e9-a91dd1e8023c",
+//           "name": "General Use",
+//           "icon": null,
+//           "isPrivate": false
+//         },
+//         "createdAt": "2024-10-25T04:06:24.611Z"
+//       },
 // {
 //         "id": "7d78abcf-852e-4b5e-8c9d-787edd5f5660",
 //         "remark": "gvv",

@@ -1,9 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:spend_wise/_servies/network_services/api_endpoint.dart';
+import 'package:spend_wise/models/m_transaction_list_model.dart';
+
+import '../../_common/data/data_controller.dart';
 
 class TransactionController extends GetxController {
+  DataController dataController = Get.find();
+  int page = 1;
+  int size = 10;
+  ValueNotifier<bool> moreLoading = ValueNotifier(false);
+  ValueNotifier<bool> xFetching = ValueNotifier(true);
+
+  ValueNotifier<List<TransactionListModel>> transactionList = ValueNotifier([]);
+
   ValueNotifier<int> badgeCount = ValueNotifier(0);
-  ValueNotifier<String> periodFilter = ValueNotifier('Month');
+
+  ValueNotifier<DateTime> startDate =
+      ValueNotifier(DateTime(DateTime.now().year, DateTime.now().month, 1));
+
+  ValueNotifier<DateTime> endDate = ValueNotifier(
+      DateTime(DateTime.now().year, DateTime.now().month + 1 - 1, 0)
+          .subtract(const Duration(days: 1)));
+
   ValueNotifier<bool> filterIncome = ValueNotifier(false);
   ValueNotifier<bool> filterExpense = ValueNotifier(false);
   ValueNotifier<bool> filterTransfer = ValueNotifier(false);
@@ -17,6 +36,80 @@ class TransactionController extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
+    initLoad();
+  }
+
+  void initLoad() {
+    fetchTransactionList();
+  }
+
+  void loadMore() {
+    //try removing condition
+    moreLoading.value = true;
+    if (transactionList.value.length == page * size) {
+      page = page + 1;
+      fetchTransactionList();
+    } else {
+      moreLoading.value = false;
+    }
+  }
+
+  void changeMonth({required int month, required int year}) {
+    startDate.value = DateTime(year, month, 1);
+    endDate.value =
+        DateTime(year, month + 1, 1).subtract(const Duration(days: 1));
+    print(startDate.value);
+    print(endDate.value);
+    print(month);
+    print(year);
+    // toIso8601String
+    Get.back();
+
+    //call fetching method
+  }
+
+  void applyFilters() {
+    Get.back();
+  }
+
+  Future<void> fetchTransactionList() async {
+    print('fetching Transaction');
+    String url =
+        "${ApiEndpoint.baseUrl2}${ApiEndpoint.transaction}?page=$page&size=$size";
+
+    GetConnect client = GetConnect(timeout: const Duration(seconds: 30));
+
+    try {
+      final response = await client.get(
+        url,
+        headers: {
+          'Authorization': 'Bearer ${dataController.apiToken}',
+          'Content-Type': 'application/json',
+        },
+      );
+
+      if (response.isOk) {
+        print(response.body['_metadata']['message']);
+        List<TransactionListModel> temp =
+            page == 1 ? [] : [...transactionList.value];
+
+        Iterable iterable = response.body['_data']['result'] ?? [];
+
+        for (var element in iterable) {
+          TransactionListModel rawData =
+              TransactionListModel.forListWithImage(data: element);
+          temp.add(rawData);
+        }
+        transactionList.value = temp;
+        xFetching.value = false;
+        moreLoading.value = false;
+      } else {
+        xFetching.value = false;
+        print(response.body['_metadata']['message']);
+        maxSuccessDialog(
+            response.body['_metadata']['message'].toString(), false);
+      }
+    } catch (e) {}
   }
 
   void controlFilter(String name, bool value) {
@@ -79,9 +172,5 @@ class TransactionController extends GetxController {
       count++;
     }
     badgeCount.value = count;
-  }
-
-  void applyFilters() {
-    Get.back();
   }
 }

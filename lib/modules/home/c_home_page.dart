@@ -1,9 +1,20 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:spend_wise/_common/data/data_controller.dart';
+
+import '../../_servies/network_services/api_endpoint.dart';
+import '../../models/m_transaction_list_model.dart';
 
 class HomePageController extends GetxController {
   // TextEditingController txtBalance = TextEditingController(text: '153000');
+  int page = 1;
+  int size = 4;
+  DataController dataController = Get.find();
+
+  ValueNotifier<bool> xFetching = ValueNotifier(true);
+  ValueNotifier<List<TransactionListModel>> transactionList = ValueNotifier([]);
+
   ValueNotifier<double> totalBalance = ValueNotifier(153000);
   ValueNotifier<double> totalIncome = ValueNotifier(120000);
   ValueNotifier<double> totalOutcome = ValueNotifier(75000);
@@ -67,6 +78,11 @@ class HomePageController extends GetxController {
     // TODO: implement onInit
     super.onInit();
     chartDataList.value = [...data1];
+    initLoad();
+  }
+
+  void initLoad() {
+    fetchTransactionList();
   }
 
   void chartTabOnChnage(int index) {
@@ -80,5 +96,45 @@ class HomePageController extends GetxController {
       chartDataList.value.clear();
       chartDataList.value = [...data3];
     }
+  }
+
+  Future<void> fetchTransactionList() async {
+    print('fetching Transaction');
+    String url =
+        "${ApiEndpoint.baseUrl2}${ApiEndpoint.transaction}?page=$page&size=$size";
+
+    GetConnect client = GetConnect(timeout: const Duration(seconds: 30));
+
+    try {
+      xFetching.value = true;
+      final response = await client.get(
+        url,
+        headers: {
+          'Authorization': 'Bearer ${dataController.apiToken}',
+          'Content-Type': 'application/json',
+        },
+      );
+
+      if (response.isOk) {
+        print(response.body['_metadata']['message']);
+        List<TransactionListModel> temp =
+            page == 1 ? [] : [...transactionList.value];
+
+        Iterable iterable = response.body['_data']['result'] ?? [];
+
+        for (var element in iterable) {
+          TransactionListModel rawData =
+              TransactionListModel.forListWithImage(data: element);
+          temp.add(rawData);
+        }
+        transactionList.value = temp;
+        xFetching.value = false;
+      } else {
+        xFetching.value = false;
+        print(response.body['_metadata']['message']);
+        maxSuccessDialog(
+            response.body['_metadata']['message'].toString(), false);
+      }
+    } catch (e) {}
   }
 }
