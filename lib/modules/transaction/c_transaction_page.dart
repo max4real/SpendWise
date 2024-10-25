@@ -43,6 +43,12 @@ class TransactionController extends GetxController {
     fetchTransactionList();
   }
 
+  Future<void> reloadAll() async {
+    page = 1;
+    size = 10;
+    fetchTransactionList();
+  }
+
   void loadMore() {
     //try removing condition
     moreLoading.value = true;

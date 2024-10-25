@@ -30,6 +30,7 @@ class TransactionPage extends StatelessWidget {
                 onTap: () {
                   Get.bottomSheet(
                     isDismissible: false,
+                    enableDrag: false,
                     backgroundColor: Colors.black,
                     DatatimeWidget(),
                   );
@@ -52,7 +53,7 @@ class TransactionPage extends StatelessWidget {
                           valueListenable: controller.startDate,
                           builder: (context, startDate, child) {
                             return Text(
-                                DateFormat('MMM yyyy').format(startDate));
+                                DateFormat('MMM - yyyy').format(startDate));
                           },
                         ),
                       ],
@@ -156,42 +157,51 @@ class TransactionPage extends StatelessWidget {
                                     onEndOfPage: () {
                                       controller.loadMore();
                                     },
-                                    child: ListView.builder(
-                                      itemCount: transactionList.length,
-                                      physics:
-                                          const AlwaysScrollableScrollPhysics(),
-                                      itemBuilder: (context, index) {
-                                        String title = '';
-                                        if (transactionList[index].tarnType ==
-                                            "TRANSFER") {
-                                          title = 'Transfer';
-                                        } else {
-                                          title = 'Account Create';
-                                        }
-                                        return GestureDetector(
-                                          onTap: () {
-                                            Get.to(() => TransactionDetailsPage(
-                                                color: outcomeColor));
-                                          },
-                                          child: MaxListTile(
-                                            title: transactionList[index]
-                                                        .category ==
-                                                    null
-                                                ? title
-                                                : transactionList[index]
-                                                    .category!
-                                                    .categoryName,
-                                            subtitle:
-                                                transactionList[index].remark,
-                                            amount:
-                                                transactionList[index].amount,
-                                            time: transactionList[index]
-                                                .createdAt,
-                                            transaction:
-                                                transactionList[index].tarnType,
-                                          ),
-                                        );
+                                    child: RefreshIndicator(
+                                      onRefresh: () {
+                                        return controller.reloadAll();
                                       },
+                                      child: ListView.builder(
+                                        itemCount: transactionList.length,
+                                        physics:
+                                            const AlwaysScrollableScrollPhysics(),
+                                        itemBuilder: (context, index) {
+                                          String title = '';
+                                          if (transactionList[index].tarnType ==
+                                              "TRANSFER") {
+                                            title = 'Transfer';
+                                          } else {
+                                            title = 'Account Create';
+                                          }
+                                          return GestureDetector(
+                                            onTap: () {
+                                              Get.to(
+                                                () => TransactionDetailsPage(
+                                                    transactionListModel:
+                                                        transactionList[index]),
+                                              );
+                                            },
+                                            child: MaxListTile(
+                                              title: transactionList[index]
+                                                          .category ==
+                                                      null
+                                                  ? title
+                                                  : transactionList[index]
+                                                      .category!
+                                                      .categoryName,
+                                              subtitle:
+                                                  transactionList[index].remark,
+                                              amount:
+                                                  transactionList[index].amount,
+                                              time: transactionList[index]
+                                                  .createdAt,
+                                              transaction:
+                                                  transactionList[index]
+                                                      .tarnType,
+                                            ),
+                                          );
+                                        },
+                                      ),
                                     ),
                                   );
                                 }

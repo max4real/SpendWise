@@ -64,7 +64,7 @@ class HomePage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         const Text(
-                          'Account Balance',
+                          'Total Balance',
                           style: TextStyle(color: Color(0XFF91919F)),
                         ),
                         ValueListenableBuilder(

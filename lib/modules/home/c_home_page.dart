@@ -23,6 +23,18 @@ class HomePageController extends GetxController {
 
   ValueNotifier<List<FlSpot>> chartDataList = ValueNotifier([]);
 
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+    chartDataList.value = [...data1];
+    initLoad();
+  }
+
+  void initLoad() {
+    fetchTransactionList();
+  }
+
   List<FlSpot> data1 = const [
     FlSpot(0, 0),
     FlSpot(1, 0),
@@ -73,17 +85,6 @@ class HomePageController extends GetxController {
     FlSpot(22, 3500),
     FlSpot(24, 0),
   ];
-  @override
-  void onInit() {
-    // TODO: implement onInit
-    super.onInit();
-    chartDataList.value = [...data1];
-    initLoad();
-  }
-
-  void initLoad() {
-    fetchTransactionList();
-  }
 
   void chartTabOnChnage(int index) {
     if (index == 0) {

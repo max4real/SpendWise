@@ -4,16 +4,28 @@ import 'package:gap/gap.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:spend_wise/_common/constants/app_svg.dart';
 import 'package:spend_wise/_common/data/data_controller.dart';
+import 'package:spend_wise/_servies/theme_services/d_dark_theme.dart';
 import 'package:spend_wise/_servies/theme_services/w_custon_theme_builder.dart';
 import 'package:get/get.dart';
+import 'package:spend_wise/models/m_transaction_list_model.dart';
 
 // ignore: must_be_immutable
 class TransactionDetailsPage extends StatelessWidget {
-  Color color;
-  TransactionDetailsPage({super.key, required this.color});
+  final TransactionListModel transactionListModel;
+  const TransactionDetailsPage({super.key, required this.transactionListModel});
 
   @override
   Widget build(BuildContext context) {
+    Color color;
+    if (transactionListModel.tarnType == 'INCOME') {
+      color = incomeColor;
+    } else if (transactionListModel.tarnType == 'EXPENSE') {
+      color = outcomeColor;
+    } else if (transactionListModel.tarnType == 'TRANSFER') {
+      color = transferColor;
+    } else {
+      color = background;
+    }
     return MaxThemeBuilder(
       builder: (context, theme, themeController) {
         return Scaffold(
@@ -68,8 +80,8 @@ class TransactionDetailsPage extends StatelessWidget {
                         children: [
                           const Gap(10),
                           Text(
-                            "53000" + ' Ks',
-                            style: TextStyle(
+                            '${formatNumber(transactionListModel.amount)} Ks',
+                            style: const TextStyle(
                               fontSize: 35,
                               color: Color.fromARGB(255, 235, 234, 234),
                               fontWeight: FontWeight.w800,
@@ -77,10 +89,10 @@ class TransactionDetailsPage extends StatelessWidget {
                           ),
                           const Gap(10),
                           Text(
-                            'Salary for July',
+                            transactionListModel.remark,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 18,
                               color: Color.fromARGB(255, 235, 234, 234),
                               fontWeight: FontWeight.w400,
@@ -88,8 +100,9 @@ class TransactionDetailsPage extends StatelessWidget {
                           ),
                           const Gap(10),
                           Text(
-                            myFullDateTimeFormat(DateTime.now()),
-                            style: TextStyle(
+                            myFullDateTimeFormat(
+                                transactionListModel.createdAt),
+                            style: const TextStyle(
                               fontSize: 12,
                               color: Color.fromARGB(255, 235, 234, 234),
                               fontWeight: FontWeight.w400,
@@ -106,7 +119,7 @@ class TransactionDetailsPage extends StatelessWidget {
                         child: SizedBox(
                           width: MediaQuery.sizeOf(context).width * 0.9,
                           height: 90,
-                          child: const Card(
+                          child: Card(
                             elevation: 5,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -116,7 +129,7 @@ class TransactionDetailsPage extends StatelessWidget {
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Text(
+                                      const Text(
                                         'Type',
                                         style: TextStyle(
                                           fontWeight: FontWeight.w500,
@@ -124,14 +137,14 @@ class TransactionDetailsPage extends StatelessWidget {
                                           color: Color(0XFF91919F),
                                         ),
                                       ),
-                                      Gap(10),
+                                      const Gap(10),
                                       Text(
-                                        "Expense",
+                                        transactionListModel.tarnType,
                                         textAlign: TextAlign.center,
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                          fontSize: 16,
+                                        style: const TextStyle(
+                                          fontSize: 15,
                                           fontWeight: FontWeight.w600,
                                           color: Color(0XFF0D0E0F),
                                         ),
@@ -144,7 +157,7 @@ class TransactionDetailsPage extends StatelessWidget {
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Text(
+                                      const Text(
                                         'Category',
                                         style: TextStyle(
                                           fontWeight: FontWeight.w500,
@@ -152,14 +165,17 @@ class TransactionDetailsPage extends StatelessWidget {
                                           color: Color(0XFF91919F),
                                         ),
                                       ),
-                                      Gap(10),
+                                      const Gap(10),
                                       Text(
-                                        'Shopping',
+                                        transactionListModel.category != null
+                                            ? transactionListModel
+                                                .category!.categoryName
+                                            : '-',
                                         textAlign: TextAlign.center,
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                          fontSize: 16,
+                                        style: const TextStyle(
+                                          fontSize: 15,
                                           fontWeight: FontWeight.w600,
                                           color: Color(0XFF0D0E0F),
                                         ),
@@ -187,7 +203,7 @@ class TransactionDetailsPage extends StatelessWidget {
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
-                                          fontSize: 16,
+                                          fontSize: 15,
                                           fontWeight: FontWeight.w600,
                                           color: Color(0XFF0D0E0F),
                                         ),
@@ -223,7 +239,7 @@ class TransactionDetailsPage extends StatelessWidget {
                       const Gap(10),
                       Text(
                         "blahhh balha sdfs" * 20,
-                        maxLines: 2,
+                        maxLines: 3,
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
                           color: Color(0XFF0D0E0F),
@@ -246,34 +262,96 @@ class TransactionDetailsPage extends StatelessWidget {
                         height: 120,
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(20),
-                          child: Image.asset(
-                            'assets/images/image.png',
-                            fit: BoxFit.cover,
-                          ),
+                          child: transactionListModel.image != null &&
+                                  transactionListModel.image!.isNotEmpty
+                              ? GestureDetector(
+                                  onTap: () {
+                                    Get.dialog(
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 20, vertical: 100),
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                          child: Hero(
+                                            tag: transactionListModel.image!,
+                                            child: Image.network(
+                                              filterQuality: FilterQuality.high,
+                                              transactionListModel.image!,
+                                              fit: BoxFit.fill,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  child: Hero(
+                                    tag: transactionListModel.image!,
+                                    child: Image.network(
+                                      filterQuality: FilterQuality.low,
+                                      transactionListModel.image!,
+                                      fit: BoxFit.cover,
+                                      loadingBuilder: (BuildContext context,
+                                          Widget child,
+                                          ImageChunkEvent? loadingProgress) {
+                                        if (loadingProgress == null) {
+                                          return child;
+                                        } else {
+                                          return Center(
+                                            child: CircularProgressIndicator(
+                                              value: loadingProgress
+                                                          .expectedTotalBytes !=
+                                                      null
+                                                  ? loadingProgress
+                                                          .cumulativeBytesLoaded /
+                                                      (loadingProgress
+                                                              .expectedTotalBytes ??
+                                                          1)
+                                                  : null,
+                                            ),
+                                          );
+                                          // return const Center(
+                                          //   child: CircularProgressIndicator(),
+                                          // );
+                                        }
+                                      },
+                                    ),
+                                  ),
+                                )
+                              : const Center(
+                                  child: Text(
+                                    'No Attachment',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      color: Color(0XFF91919F),
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                ),
                         ),
                       ),
-                      const Gap(23),
-                      GestureDetector(
-                        onTap: () {
-                          // Get.to(() => const VerificationPage());
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: theme.background,
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 13, horizontal: 110),
-                          child: const Text(
-                            "Edit",
-                            style: TextStyle(
-                              fontSize: 18,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                        ),
-                      ),
+                      // const Gap(23),
+                      // GestureDetector(
+                      //   onTap: () {
+                      //     // Get.to(() => const VerificationPage());
+                      //   },
+                      //   child: Container(
+                      //     decoration: BoxDecoration(
+                      //       color: theme.background,
+                      //       borderRadius: BorderRadius.circular(15),
+                      //     ),
+                      //     padding: const EdgeInsets.symmetric(
+                      //         vertical: 13, horizontal: 110),
+                      //     child: const Text(
+                      //       "Edit",
+                      //       style: TextStyle(
+                      //         fontSize: 18,
+                      //         color: Colors.white,
+                      //         fontWeight: FontWeight.w400,
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
                     ],
                   ),
                 )
@@ -340,7 +418,8 @@ class TransactionDetailsPage extends StatelessWidget {
                         onPressed: () {
                           //Delete code
                           maxSuccessDialog(
-                              'Transaction has been successfully removed',true);
+                              'Transaction has been successfully removed',
+                              true);
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: theme.background,
