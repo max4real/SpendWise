@@ -186,7 +186,7 @@ void dismissKeyboard() {
 }
 
 String myFullDateTimeFormat(DateTime rawDate) {
-  String formatDate = DateFormat("EEEE d MMMM y  hh:mm a").format(rawDate);
+  String formatDate = DateFormat("EEEE d MMM y  hh:mm a").format(rawDate);
   return formatDate;
 }
 
@@ -407,18 +407,16 @@ String formatNumber(dynamic data) {
 }
 
 String formatDateTimeForTile(DateTime dateTime) {
+  final input = DateTime(dateTime.year, dateTime.month, dateTime.day);
   final now = DateTime.now();
   final today = DateTime(now.year, now.month, now.day);
-  final yesterday = today.subtract(Duration(days: 1));
+  final yesterday = today.subtract(const Duration(days: 1));
 
-  if (dateTime.isAfter(today)) {
-    // If the date is today
+  if (input == today) {
     return 'Today ${DateFormat('hh:mm a').format(dateTime)}';
-  } else if (dateTime.isAfter(yesterday)) {
-    // If the date is yesterday
+  } else if (input == yesterday) {
     return 'Yesterday ${DateFormat('hh:mm a').format(dateTime)}';
   } else {
-    // If the date is neither today nor yesterday
     return DateFormat('MMM dd hh:mm a').format(dateTime);
   }
 }

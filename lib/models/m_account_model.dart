@@ -16,7 +16,7 @@ class AccountModel {
   factory AccountModel.fromAPI({required Map<String, dynamic> data}) {
     return AccountModel(
       accId: data['id'].toString(),
-      accBalance: data['balance'] as int,
+      accBalance: int.tryParse(data['balance'].toString()) ?? -1,
       accName: data['name'].toString(),
       accType: data['type'].toString(),
       accSubType: data['subType'].toString(),

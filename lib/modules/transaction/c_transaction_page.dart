@@ -103,7 +103,7 @@ class TransactionController extends GetxController {
 
         for (var element in iterable) {
           TransactionListModel rawData =
-              TransactionListModel.forListWithImage(data: element);
+              TransactionListModel.forListWithAllField(data: element);
           temp.add(rawData);
         }
         transactionList.value = temp;

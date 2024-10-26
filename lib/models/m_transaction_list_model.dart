@@ -37,13 +37,14 @@ class TransactionListModel {
     return TransactionListModel(
       id: data['id'] ?? '',
       remark: data['remark'] ?? '',
-      amount: data['amount'] as int,
+      amount: int.tryParse(data['amount'].toString()) ?? -1,
       tarnType: data['type'] ?? '',
       createdAt: DateTime.tryParse(data['createdAt']) ?? DateTime.now(),
       category: categoryModel,
     );
   }
-  factory TransactionListModel.forListWithImage(
+
+  factory TransactionListModel.forListWithAllField(
       {required Map<String, dynamic> data}) {
     CategoryModel? categoryModel;
     String? image;
@@ -74,7 +75,7 @@ class TransactionListModel {
     return TransactionListModel(
       id: data['id'] ?? '',
       remark: data['remark'] ?? '',
-      amount: data['amount'] as int,
+      amount: int.tryParse(data['amount'].toString()) ?? -1,
       tarnType: data['type'] ?? '',
       createdAt: DateTime.tryParse(data['createdAt']) ?? DateTime.now(),
       category: categoryModel,

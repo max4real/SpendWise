@@ -98,14 +98,14 @@ class TransactionDetailsPage extends StatelessWidget {
                               fontWeight: FontWeight.w400,
                             ),
                           ),
-                          const Gap(10),
+                          const Gap(20),
                           Text(
-                            myFullDateTimeFormat(
-                                transactionListModel.createdAt),
+                            myFullDateTimeFormat(transactionListModel.createdAt
+                                .add(addDuration_630)),
                             style: const TextStyle(
                               fontSize: 12,
                               color: Color.fromARGB(255, 235, 234, 234),
-                              fontWeight: FontWeight.w400,
+                              fontWeight: FontWeight.w600,
                             ),
                           )
                         ],
@@ -294,15 +294,12 @@ class TransactionDetailsPage extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          'Description',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              color: Color(0XFF91919F),
-                              fontSize: 16),
-                        ),
+                      const Text(
+                        'Description',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            color: Color(0XFF91919F),
+                            fontSize: 16),
                       ),
                       const Gap(10),
                       Text(
@@ -318,15 +315,12 @@ class TransactionDetailsPage extends StatelessWidget {
                       const Gap(15),
                       SvgPicture.string(AppSvgs.svgDottedLine),
                       const Gap(10),
-                      const Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          'Attachment',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              color: Color(0XFF91919F),
-                              fontSize: 16),
-                        ),
+                      const Text(
+                        'Attachment',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            color: Color(0XFF91919F),
+                            fontSize: 16),
                       ),
                       const Gap(10),
                       SizedBox(

@@ -79,7 +79,9 @@ class MaxListTile extends StatelessWidget {
                 ),
                 const Spacer(),
                 Text(
-                  formatDateTimeForTile(time.add(addDuration_630)),
+                  formatDateTimeForTile(
+                    time.add(addDuration_630),
+                  ),
                   style: const TextStyle(
                     fontSize: 10,
                   ),
