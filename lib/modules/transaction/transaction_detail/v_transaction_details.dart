@@ -445,7 +445,7 @@ class TransactionDetailsPage extends StatelessWidget {
               height: 200,
               child: Column(
                 children: [
-                  Text(
+                  const Text(
                     "Remove this transaction?",
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
@@ -453,7 +453,7 @@ class TransactionDetailsPage extends StatelessWidget {
                     ),
                   ),
                   const Gap(10),
-                  Text(
+                  const Text(
                     "Are you sure do you wanna remove this transaction?",
                     textAlign: TextAlign.center,
                     style: TextStyle(

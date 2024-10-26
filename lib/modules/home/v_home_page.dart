@@ -11,6 +11,7 @@ import 'package:spend_wise/modules/home/c_home_page.dart';
 import 'package:spend_wise/my_test/v_test.dart';
 
 import '../../_common/constants/app_svg.dart';
+import '../transaction/transaction_detail/v_transaction_details.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -367,19 +368,28 @@ class HomePage extends StatelessWidget {
                                       } else {
                                         title = 'Account Create';
                                       }
-                                      return MaxListTile(
-                                        title:
-                                            transactionList[index].category ==
-                                                    null
-                                                ? title
-                                                : transactionList[index]
-                                                    .category!
-                                                    .categoryName,
-                                        subtitle: transactionList[index].remark,
-                                        amount: transactionList[index].amount,
-                                        time: transactionList[index].createdAt,
-                                        transaction:
-                                            transactionList[index].tarnType,
+                                      return GestureDetector(
+                                        onTap: () {
+                                              Get.to(
+                                                () => TransactionDetailsPage(
+                                                    transactionListModel:
+                                                        transactionList[index]),
+                                              );
+                                            },
+                                        child: MaxListTile(
+                                          title:
+                                              transactionList[index].category ==
+                                                      null
+                                                  ? title
+                                                  : transactionList[index]
+                                                      .category!
+                                                      .categoryName,
+                                          subtitle: transactionList[index].remark,
+                                          amount: transactionList[index].amount,
+                                          time: transactionList[index].createdAt,
+                                          transaction:
+                                              transactionList[index].tarnType,
+                                        ),
                                       );
                                     },
                                   );
