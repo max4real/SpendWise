@@ -5,12 +5,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:spend_wise/_servies/network_services/api_endpoint.dart';
 import 'package:spend_wise/_servies/theme_services/d_dark_theme.dart';
 import 'package:spend_wise/models/m_caetgory_model.dart';
+import 'package:spend_wise/models/m_me_model.dart';
 
 import '../../models/m_account_model.dart';
 
 class DataController extends GetxController {
+  late ValueNotifier<MeModel> meModelNotifier;
+
   String apiToken = '';
-  // String spToken = '';
+
   @override
   void onInit() {
     // TODO: implement onInit

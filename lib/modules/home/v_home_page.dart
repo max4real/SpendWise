@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:spend_wise/_common/_widget/maxListTile.dart';
+import 'package:spend_wise/_common/data/data_controller.dart';
 import 'package:spend_wise/_servies/theme_services/w_custon_theme_builder.dart';
 import 'package:get/get.dart';
 import 'package:spend_wise/modules/home/c_home_page.dart';
@@ -19,6 +20,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     HomePageController controller = Get.put(HomePageController());
+    DataController dataController = Get.find();
     return MaxThemeBuilder(
       builder: (context, theme, themeController) {
         return Scaffold(
@@ -69,10 +71,10 @@ class HomePage extends StatelessWidget {
                           style: TextStyle(color: Color(0XFF91919F)),
                         ),
                         ValueListenableBuilder(
-                          valueListenable: controller.totalBalance,
-                          builder: (context, totalBalance, child) {
+                          valueListenable: dataController.meModelNotifier,
+                          builder: (context, meModelNotifier, child) {
                             return Text(
-                              '$totalBalance Ks',
+                              "${meModelNotifier.totalBalance} Ks",
                               style: const TextStyle(
                                 color: Colors.black,
                                 fontSize: 25,
@@ -116,10 +118,12 @@ class HomePage extends StatelessWidget {
                                     ),
                                     const Spacer(),
                                     ValueListenableBuilder(
-                                      valueListenable: controller.totalIncome,
-                                      builder: (context, totalIncome, child) {
+                                      valueListenable:
+                                          dataController.meModelNotifier,
+                                      builder:
+                                          (context, meModelNotifier, child) {
                                         return Text(
-                                          '$totalIncome Ks',
+                                          '${meModelNotifier.totalIncome} Ks',
                                           style: const TextStyle(
                                             color: Colors.white,
                                             fontWeight: FontWeight.w600,
@@ -164,10 +168,12 @@ class HomePage extends StatelessWidget {
                                     ),
                                     const Spacer(),
                                     ValueListenableBuilder(
-                                      valueListenable: controller.totalOutcome,
-                                      builder: (context, totalOutcome, child) {
+                                      valueListenable:
+                                          dataController.meModelNotifier,
+                                      builder:
+                                          (context, meModelNotifier, child) {
                                         return Text(
-                                          '$totalOutcome Ks',
+                                          '${meModelNotifier.totoalExpense} Ks',
                                           style: const TextStyle(
                                             color: Colors.white,
                                             fontWeight: FontWeight.w600,
@@ -337,7 +343,7 @@ class HomePage extends StatelessWidget {
                         valueListenable: controller.xFetching,
                         builder: (context, xFetching, child) {
                           if (xFetching) {
-                            return  Center(
+                            return Center(
                               // child: CircularProgressIndicator(),
                               child: SizedBox(
                                 width: 45,
@@ -370,12 +376,12 @@ class HomePage extends StatelessWidget {
                                       }
                                       return GestureDetector(
                                         onTap: () {
-                                              Get.to(
-                                                () => TransactionDetailsPage(
-                                                    transactionListModel:
-                                                        transactionList[index]),
-                                              );
-                                            },
+                                          Get.to(
+                                            () => TransactionDetailsPage(
+                                                transactionListModel:
+                                                    transactionList[index]),
+                                          );
+                                        },
                                         child: MaxListTile(
                                           title:
                                               transactionList[index].category ==
@@ -384,9 +390,11 @@ class HomePage extends StatelessWidget {
                                                   : transactionList[index]
                                                       .category!
                                                       .categoryName,
-                                          subtitle: transactionList[index].remark,
+                                          subtitle:
+                                              transactionList[index].remark,
                                           amount: transactionList[index].amount,
-                                          time: transactionList[index].createdAt,
+                                          time:
+                                              transactionList[index].createdAt,
                                           transaction:
                                               transactionList[index].tarnType,
                                         ),

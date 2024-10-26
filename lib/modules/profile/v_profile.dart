@@ -9,6 +9,7 @@ import 'package:spend_wise/modules/account/v_account_list.dart';
 import 'package:spend_wise/modules/category/v_category.dart';
 import 'package:spend_wise/modules/profile/c_profile.dart';
 import 'package:get/get.dart';
+import 'package:spend_wise/modules/profile/profile_edit/v_profile_edit.dart';
 import 'package:spend_wise/modules/setting/v_setting.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -17,6 +18,7 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ProfileController controller = Get.put(ProfileController());
+    DataController dataController = Get.find();
     return MaxThemeBuilder(
       builder: (context, theme, themeController) {
         return Scaffold(
@@ -34,9 +36,14 @@ class ProfilePage extends StatelessWidget {
                         CircleAvatar(
                           radius: 40,
                           backgroundColor: theme.background.withOpacity(0.5),
-                          child: const Text(
-                            'M',
-                            style: TextStyle(fontSize: 40),
+                          child: ValueListenableBuilder(
+                            valueListenable: dataController.meModelNotifier,
+                            builder: (context, value, child) {
+                              return Text(
+                                value.name[0].toUpperCase(),
+                                style: const TextStyle(fontSize: 40),
+                              );
+                            },
                           ),
                         ),
                         const Gap(20),
@@ -44,23 +51,35 @@ class ProfilePage extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
-                              'Username',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 16,
-                                  color: Color(0XFF91919F)),
+                            ValueListenableBuilder(
+                              valueListenable: dataController.meModelNotifier,
+                              builder: (context, value, child) {
+                                return Text(
+                                  value.name,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 19,
+                                      color: Color(0XFF161719)),
+                                );
+                              },
                             ),
                             SizedBox(
                               width: 180,
-                              child: Text(
-                                controller.name,
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 2,
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 18,
-                                    color: Color(0XFF161719)),
+                              child: ValueListenableBuilder(
+                                valueListenable: dataController.meModelNotifier,
+                                builder: (context, value, child) {
+                                  return Text(
+                                    value.email,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2,
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 12,
+                                        color: Color(0XFF91919F)),
+                                  );
+                                },
                               ),
                             ),
                           ],
@@ -68,7 +87,15 @@ class ProfilePage extends StatelessWidget {
                         const Spacer(),
                         GestureDetector(
                           onTap: () {
-                            maxSnackBar(context, "Edit");
+                            Get.to(() => const ProfileEditPage());
+                            // dataController.meModelNotifier.value = MeModel(
+                            //   name: 'helloooo',
+                            //   email: 'hello@gmail.com',
+                            //   image: 'image',
+                            //   totalBalance: 0,
+                            //   totalIncome: 0,
+                            //   totoalExpense: 0,
+                            // );
                           },
                           child: SvgPicture.string(AppSvgs.svgProfileEdit),
                         )

@@ -7,6 +7,7 @@ import 'package:spend_wise/modules/account_setup/v_setup.dart';
 
 import '../../../_common/data/data_controller.dart';
 import '../../../models/m_account_model.dart';
+import '../../../models/m_me_model.dart';
 import '../../main_page/v_main_page.dart';
 
 class LoginPageController extends GetxController {
@@ -70,6 +71,10 @@ class LoginPageController extends GetxController {
         if (meResponse.isOk) {
           print(meResponse.body['_data']['name']);
           print('Token - ' + token);
+
+          MeModel rawData = MeModel.fromAPI(data: meResponse.body['_data']);
+          dataController.meModelNotifier = ValueNotifier(rawData);
+
           if (await isAccountListEmpty()) {
             Get.offAll(() => const SetupGateway());
           } else {

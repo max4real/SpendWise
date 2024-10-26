@@ -1,6 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:spend_wise/_common/data/data_controller.dart';
+import 'package:spend_wise/models/m_me_model.dart';
 import 'package:spend_wise/modules/auth/login/v_login_page.dart';
 import 'package:spend_wise/modules/auth/v_login_gateway.dart';
 import 'package:spend_wise/modules/main_page/v_main_page.dart';
@@ -61,6 +63,10 @@ class GatewayController extends GetxController {
 
     if (meResponse.isOk) {
       print(meResponse.body['_data']['name']);
+
+      MeModel rawData = MeModel.fromAPI(data: meResponse.body['_data']);
+      dataController.meModelNotifier = ValueNotifier(rawData);
+
       return true;
     } else {
       return false;
