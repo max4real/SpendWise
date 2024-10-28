@@ -126,18 +126,27 @@ class ProfilePage extends StatelessWidget {
                                         ),
                                         Align(
                                           alignment: Alignment.bottomRight,
-                                          child: IconButton(
-                                            onPressed: () {
-                                              controller.pickImage();
-                                            },
-                                            icon:  Icon(
-                                              Iconsax.gallery_add,
-                                              size: 20,
-                                              // color: Color(0XFF161719),
-                                              color: background,
+                                          child: Container(
+                                            width: 33,
+                                            height: 33,
+                                            decoration: BoxDecoration(
+                                              color: background2,
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                            ),
+                                            child: IconButton(
+                                              onPressed: () {
+                                                controller.pickImage();
+                                              },
+                                              icon: Icon(
+                                                Iconsax.gallery_add,
+                                                size: 18,
+                                                // color: Color(0XFF161719),
+                                                color: background,
+                                              ),
                                             ),
                                           ),
-                                        )
+                                        ),
                                       ],
                                     ),
                                   ),

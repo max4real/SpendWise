@@ -380,25 +380,41 @@ void maxImagePickerDialog(
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                IconButton.filledTonal(
-                  onPressed: () {
-                    fromGallary();
-                  },
-                  icon: Icon(
-                    Iconsax.gallery,
-                    size: 40,
-                    color: background,
+                Container(
+                  width: 60,
+                  height: 60,
+                  decoration: BoxDecoration(
+                    color: background2,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: IconButton(
+                    onPressed: () {
+                      fromGallary();
+                    },
+                    icon: Icon(
+                      Iconsax.gallery,
+                      size: 35,
+                      color: background,
+                    ),
                   ),
                 ),
                 const Gap(40),
-                IconButton.filledTonal(
-                  onPressed: () {
-                    fromCamera();
-                  },
-                  icon: Icon(
-                    Iconsax.camera,
-                    size: 40,
-                    color: background,
+                Container(
+                  width: 60,
+                  height: 60,
+                  decoration: BoxDecoration(
+                    color: background2,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: IconButton(
+                    onPressed: () {
+                      fromCamera();
+                    },
+                    icon: Icon(
+                      Iconsax.camera,
+                      size: 35,
+                      color: background,
+                    ),
                   ),
                 ),
               ],
