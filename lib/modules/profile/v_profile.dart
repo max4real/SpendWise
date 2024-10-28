@@ -5,9 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:spend_wise/_common/constants/app_svg.dart';
 import 'package:spend_wise/_common/data/data_controller.dart';
+import 'package:spend_wise/_servies/theme_services/d_dark_theme.dart';
 import 'package:spend_wise/_servies/theme_services/w_custon_theme_builder.dart';
 import 'package:spend_wise/modules/account/v_account_list.dart';
 import 'package:spend_wise/modules/category/v_category.dart';
@@ -128,10 +130,11 @@ class ProfilePage extends StatelessWidget {
                                             onPressed: () {
                                               controller.pickImage();
                                             },
-                                            icon: const Icon(
-                                              Icons.add_a_photo_outlined,
+                                            icon:  Icon(
+                                              Iconsax.gallery_add,
                                               size: 20,
-                                              color: Color(0XFF161719),
+                                              // color: Color(0XFF161719),
+                                              color: background,
                                             ),
                                           ),
                                         )

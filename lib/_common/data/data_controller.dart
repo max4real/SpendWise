@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:spend_wise/_servies/network_services/api_endpoint.dart';
@@ -259,8 +261,6 @@ void maxSuccessDialog2(
   bool type_,
   Function ok,
   String okButton,
-  // Function cancle,
-  // String cancleButton,
 ) {
   Get.dialog(
     Dialog(
@@ -350,6 +350,64 @@ void maxSuccessDialog2(
       ),
     ),
     barrierDismissible: false,
+  );
+}
+
+void maxImagePickerDialog(
+  String message,
+  Function fromCamera,
+  Function fromGallary,
+) {
+  Get.dialog(
+    Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              message,
+              style: const TextStyle(
+                fontSize: 16,
+                color: Colors.black,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                IconButton.filledTonal(
+                  onPressed: () {
+                    fromGallary();
+                  },
+                  icon: Icon(
+                    Iconsax.gallery,
+                    size: 40,
+                    color: background,
+                  ),
+                ),
+                const Gap(40),
+                IconButton.filledTonal(
+                  onPressed: () {
+                    fromCamera();
+                  },
+                  icon: Icon(
+                    Iconsax.camera,
+                    size: 40,
+                    color: background,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    ),
+    barrierDismissible: true,
   );
 }
 
