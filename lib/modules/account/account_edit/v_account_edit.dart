@@ -19,8 +19,13 @@ class AccountEditPage extends StatelessWidget {
   Widget build(BuildContext context) {
     AccountEditController controller = Get.put(AccountEditController());
     // controller.initLoad('50000', 'KBZ Pay - ', 'Mobile Banking', 'KBZ Pay');
-    controller.initLoad(accountModel.accId, accountModel.accBalance,
-        accountModel.accName, accountModel.accType, accountModel.accSubType);
+    controller.initLoad(
+      accountModel.accId,
+      accountModel.accBalance,
+      accountModel.accName,
+      accountModel.accType,
+      accountModel.accSubType,
+    );
 
     DataController dataController = Get.find();
     return MaxThemeBuilder(
@@ -155,59 +160,58 @@ class AccountEditPage extends StatelessWidget {
                               ),
                               child: DropdownButtonHideUnderline(
                                 child: DropdownButton<String>(
-                                  value: value,
-                                  elevation: 8,
-                                  borderRadius: BorderRadius.circular(20),
-                                  menuWidth: Get.width * 0.6,
-                                  menuMaxHeight: 300,
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 2),
-                                  style: const TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                  hint: const Text(
-                                    'Account Type',
-                                    style: TextStyle(
-                                      color: Color(0XFF91919F),
+                                    value: value,
+                                    elevation: 8,
+                                    borderRadius: BorderRadius.circular(20),
+                                    menuWidth: Get.width * 0.6,
+                                    menuMaxHeight: 300,
+                                    padding:
+                                        const EdgeInsets.symmetric(vertical: 2),
+                                    style: const TextStyle(
+                                      color: Colors.black,
                                       fontWeight: FontWeight.w400,
                                     ),
-                                  ),
-                                  isExpanded: true,
-                                  icon: Icon(
-                                    Iconsax.arrow_right_3,
-                                    color: theme.background,
-                                  ),
-                                  items: dataController.accType
-                                      .map((String value) {
-                                    return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Card(
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(10),
-                                          child: Row(
-                                            children: [
-                                              SvgPicture.string(
-                                                  AppSvgs.svgGreenDot),
-                                              const Gap(10),
-                                              Text(
-                                                value,
-                                                style: const TextStyle(
-                                                  color: Color(0xFF5D5C5C),
+                                    hint: const Text(
+                                      'Account Type',
+                                      style: TextStyle(
+                                        color: Color(0XFF91919F),
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                    isExpanded: true,
+                                    icon: Icon(
+                                      Iconsax.arrow_right_3,
+                                      color: theme.background,
+                                    ),
+                                    items: dataController.accType
+                                        .map((String value) {
+                                      return DropdownMenuItem<String>(
+                                        value: value,
+                                        child: Card(
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(10),
+                                            child: Row(
+                                              children: [
+                                                SvgPicture.string(
+                                                    AppSvgs.svgGreenDot),
+                                                const Gap(10),
+                                                Text(
+                                                  value,
+                                                  style: const TextStyle(
+                                                    color: Color(0xFF5D5C5C),
+                                                  ),
                                                 ),
-                                              ),
-                                            ],
+                                              ],
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    );
-                                  }).toList(),
-                                  // onChanged: (newValue) {
-                                  //   controller.selectedType.value = newValue;
-                                  //   controller.checkType(newValue);
-                                  // },
-                                  onChanged: null
-                                ),
+                                      );
+                                    }).toList(),
+                                    // onChanged: (newValue) {
+                                    //   controller.selectedType.value = newValue;
+                                    //   controller.checkType(newValue);
+                                    // },
+                                    onChanged: null),
                               ),
                             );
                           },

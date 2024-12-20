@@ -150,7 +150,8 @@ class AccountEditController extends GetxController {
   Future<void> editAccount() async {
     getType();
     printData();
-    String url = '${ApiEndpoint.baseUrl2}${ApiEndpoint.account}/$accId';
+    String url = '${ApiEndpoint.baseUrl}${ApiEndpoint.account}/$accId/name';
+    print(url);
 
     GetConnect client = GetConnect(timeout: const Duration(seconds: 10));
     try {
@@ -172,7 +173,7 @@ class AccountEditController extends GetxController {
 
       Get.back();
       if (response.isOk) {
-        print(response.body['_metadata']['message'].toString());
+        print(response.body['message'].toString());
 
         AccountDetailController accountDetailController = Get.find();
         accountDetailController.accName.value = txtName.text;
@@ -188,9 +189,8 @@ class AccountEditController extends GetxController {
 
         Get.back();
       } else {
-        print(response.body['_metadata']['message'].toString());
-        maxSuccessDialog(
-            response.body['_metadata']['message'].toString(), false);
+        print(response.body['message'].toString());
+        maxSuccessDialog(response.body['message'].toString(), false);
       }
     } catch (e1) {}
   }

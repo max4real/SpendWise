@@ -15,7 +15,6 @@ class VerificationController extends GetxController {
   FocusNode focusNode = FocusNode();
   ValueNotifier<int> remainingSeconds = ValueNotifier(60);
   ValueNotifier<bool> xSendAgain = ValueNotifier(false);
-  ValueNotifier<bool> xFetching = ValueNotifier(false);
 
   Timer? timer;
   @override
@@ -55,37 +54,31 @@ class VerificationController extends GetxController {
     return '${minutes.toString().padLeft(2, '0')}:${remainingSeconds.toString().padLeft(2, '0')}';
   }
 
-  // String? validateCode(String? value) {
-  //   if (value == '222222') {
-  //     print(value);
-  //     return null;
-  //   } else {
-  //     print(value);
-  //     return 'Incorrect Pin';
-  //   }
-  // }
-
   Future<void> varifyEmail(String? pin) async {
-    String url = ApiEndpoint.baseUrl2 + ApiEndpoint.authVerifyEmail2;
-    xFetching.value = false;
     GetConnect client = GetConnect(timeout: const Duration(seconds: 10));
     try {
-      Get.dialog(const Center(
-        child: CircularProgressIndicator(
-          color: Colors.green,
+      Get.dialog(
+        const Center(
+          child: CircularProgressIndicator(
+            color: Colors.green,
+          ),
         ),
-      ));
+      );
 
-      final response = await client.post(url, {"email": strEmail, "code": pin});
+      final response = await client.post(
+        ApiEndpoint.baseUrl + ApiEndpoint.authVerifyEmail,
+        {
+          "email": strEmail,
+          "code": pin,
+        },
+      );
 
       Get.back();
       if (response.isOk) {
-        maxSuccessDialog(
-            response.body['_metadata']['message'].toString(), true);
+        maxSuccessDialog(response.body['message'].toString(), true);
         Get.offAll(() => const LoginPage());
       } else {
-        maxSuccessDialog(
-            response.body['_metadata']['message'].toString(), false);
+        maxSuccessDialog(response.body['message'].toString(), false);
       }
     } catch (e1) {}
   }
@@ -93,31 +86,30 @@ class VerificationController extends GetxController {
   void sendCodeAgain() {
     if (xSendAgain.value) {
       xSendAgain.value = false;
-      print('send again');
       sendOTPAgain();
       remainingSeconds.value = 60;
       startCountdown();
-    } else {
-      print("not now");
     }
   }
 
   Future<void> sendOTPAgain() async {
-    String url = ApiEndpoint.baseUrl2 + ApiEndpoint.authResendOTP2;
-    xFetching.value = false;
     GetConnect client = GetConnect(timeout: const Duration(seconds: 10));
     try {
       Get.dialog(const Center(child: CircularProgressIndicator()));
 
-      final response = await client.post(url, {"email": strEmail});
+      final response = await client.post(
+        ApiEndpoint.baseUrl + ApiEndpoint.authResendOTP,
+        {
+          "email": strEmail,
+          "purpose": "SIGNUP",
+        },
+      );
 
       Get.back();
       if (response.isOk) {
-        maxSuccessDialog(
-            response.body['_metadata']['message'].toString(), true);
+        maxSuccessDialog(response.body['message'].toString(), true);
       } else {
-        maxSuccessDialog(
-            response.body['_metadata']['message'].toString(), false);
+        maxSuccessDialog(response.body['message'].toString(), false);
       }
     } catch (e1) {}
   }

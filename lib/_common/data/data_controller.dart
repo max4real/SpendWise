@@ -82,7 +82,7 @@ class DataController extends GetxController {
   ValueNotifier<List<AccountModel>> accountList = ValueNotifier([]);
 
   Future<void> fetchAccountList() async {
-    String url = ApiEndpoint.baseUrl2 + ApiEndpoint.account;
+    String url = ApiEndpoint.baseUrl + ApiEndpoint.account;
     GetConnect client = GetConnect(timeout: const Duration(seconds: 10));
 
     try {
@@ -95,11 +95,10 @@ class DataController extends GetxController {
       );
 
       if (response.isOk) {
-        print(response.body['_metadata']['message']);
         List<AccountModel> temp = [];
         List<String> temp2 = [];
 
-        Iterable iterable = response.body['_data'] ?? [];
+        Iterable iterable = response.body ?? [];
 
         for (var element in iterable) {
           AccountModel rawData = AccountModel.fromAPI(data: element);
@@ -120,7 +119,7 @@ class DataController extends GetxController {
   ValueNotifier<List<CategoryModel>> categoryList = ValueNotifier([]);
 
   Future<void> fetchCategoryList() async {
-    String url = ApiEndpoint.baseUrl2 + ApiEndpoint.category;
+    String url = ApiEndpoint.baseUrl + ApiEndpoint.category;
     GetConnect client = GetConnect(timeout: const Duration(seconds: 10));
 
     try {
@@ -133,11 +132,10 @@ class DataController extends GetxController {
       );
 
       if (response.isOk) {
-        print(response.body['_metadata']['message']);
         List<CategoryModel> temp = [];
         List<String> temp2 = [];
 
-        Iterable iterable = response.body['_data'] ?? [];
+        Iterable iterable = response.body ?? [];
 
         for (var element in iterable) {
           CategoryModel rawData = CategoryModel.fromAPI(data: element);

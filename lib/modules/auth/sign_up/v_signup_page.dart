@@ -145,7 +145,7 @@ class SignUpPage extends StatelessWidget {
                   const SizedBox(height: 15),
                   GestureDetector(
                     onTap: () {
-                      controller.proceedToVarification();
+                      controller.proceedToVerification();
                     },
                     child: Container(
                       decoration: BoxDecoration(

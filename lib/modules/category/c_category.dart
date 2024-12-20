@@ -22,8 +22,8 @@ class CategoryController extends GetxController {
   }
 
   Future<void> fetchCategoryList() async {
-    String url = ApiEndpoint.baseUrl2 + ApiEndpoint.category;
-    GetConnect client = GetConnect(timeout: const Duration(seconds: 10));
+    String url = ApiEndpoint.baseUrl + ApiEndpoint.category;
+    GetConnect client = GetConnect(timeout: const Duration(minutes: 1));
 
     try {
       xFetching.value = true;
@@ -36,10 +36,9 @@ class CategoryController extends GetxController {
       );
       xFetching.value = false;
       if (response.isOk) {
-        print(response.body['_metadata']['message']);
         List<CategoryModel> temp = [];
 
-        Iterable iterable = response.body['_data'] ?? [];
+        Iterable iterable = response.body ?? [];
 
         for (var element in iterable) {
           CategoryModel rawData = CategoryModel.fromAPI(data: element);
@@ -50,15 +49,14 @@ class CategoryController extends GetxController {
             .toString()
             .compareTo(a.categoryPrivacy.toString()));
       } else {
-        print(response.body['_metadata']['message']);
-        maxSuccessDialog(
-            response.body['_metadata']['message'].toString(), false);
+        print(response.body['message']);
+        maxSuccessDialog(response.body['message'].toString(), false);
       }
     } catch (e) {}
   }
 
   Future<void> deleteCategory(String id) async {
-    String url = '${ApiEndpoint.baseUrl2}${ApiEndpoint.category}/$id';
+    String url = '${ApiEndpoint.baseUrl}${ApiEndpoint.category}/$id';
 
     GetConnect client = GetConnect(timeout: const Duration(seconds: 10));
     try {
@@ -74,15 +72,14 @@ class CategoryController extends GetxController {
 
       Get.back();
       if (response.isOk) {
-        print(response.body['_metadata']['message'].toString());
+        print(response.body['message'].toString());
 
         List<CategoryModel> temp = [...categoryList.value];
         temp.removeWhere((category) => category.categoryID == id);
         categoryList.value = [...temp];
       } else {
-        print(response.body['_metadata']['message'].toString());
-        maxSuccessDialog(
-            response.body['_metadata']['message'].toString(), false);
+        print(response.body['message'].toString());
+        maxSuccessDialog(response.body['message'].toString(), false);
       }
     } catch (e1) {}
   }

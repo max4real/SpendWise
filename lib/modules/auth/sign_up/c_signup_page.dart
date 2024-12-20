@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:spend_wise/_common/data/data_controller.dart';
@@ -8,74 +7,64 @@ import 'package:spend_wise/_servies/network_services/api_endpoint.dart';
 import '../verification/v_verification_page.dart';
 
 class SignUpController extends GetxController {
-  ValueNotifier<bool> xObscured = ValueNotifier(true);
-  ValueNotifier<bool?> xChecked = ValueNotifier(false);
-  ValueNotifier<bool> xFetching = ValueNotifier(false);
+  final ValueNotifier<bool> xObscured = ValueNotifier(true);
+  final ValueNotifier<bool?> xChecked = ValueNotifier(false);
 
-  TextEditingController txtName = TextEditingController(text: '');
-  TextEditingController txtEmail = TextEditingController(text: '');
-  TextEditingController txtPassword = TextEditingController(text: '');
+  final TextEditingController txtName = TextEditingController();
+  final TextEditingController txtEmail = TextEditingController();
+  final TextEditingController txtPassword = TextEditingController();
 
-  @override
-  void onInit() {
-    // TODO: implement onInit
-    super.onInit();
-    initLoad();
+  String? validateFields() {
+    if (txtName.text.isEmpty) return "Please enter your name.";
+    if (txtEmail.text.isEmpty) return "Please enter your email.";
+    if (txtPassword.text.isEmpty) return "Please enter your password.";
+    if (xChecked.value != true) return "Please agree to the terms.";
+    return null;
   }
 
-  void initLoad() {}
-
-  void checkAllField() {
-    if (txtName.text.isEmpty) {
-      maxMessageDialog('Please Enter Name.');
-    } else if (txtEmail.text.isEmpty) {
-      maxMessageDialog('Please Enter Email.');
-    } else if (txtPassword.text.isEmpty) {
-      maxMessageDialog('Please Enter Password.');
-    } else if (xChecked.value == false) {
-      maxMessageDialog('Please Check The Box');
+  void proceedToVerification() {
+    final errorMessage = validateFields();
+    if (errorMessage != null) {
+      maxMessageDialog(errorMessage);
+      return;
     }
-  }
-
-  void proceedToVarification() {
-    checkAllField();
-    if (txtName.text.isNotEmpty &&
-        txtEmail.text.isNotEmpty &&
-        txtPassword.text.isNotEmpty &&
-        xChecked.value == true) {
-      makeRegister();
-    }
+    makeRegister();
   }
 
   Future<void> makeRegister() async {
-    String url = ApiEndpoint.baseUrl2 + ApiEndpoint.authRegister2;
-    xFetching.value = false;
-    GetConnect client = GetConnect(timeout: const Duration(seconds: 10));
-    try {
-      Get.dialog(const Center(
-        child: CircularProgressIndicator(),
-      ));
+    final GetConnect client = GetConnect(timeout: const Duration(seconds: 30));
 
-      final response = await client.post(url, {
-        "name": txtName.text,
-        "email": txtEmail.text,
-        "password": txtPassword.text,
-      });
+    try {
+      Get.dialog(const Center(child: CircularProgressIndicator()),
+          barrierDismissible: false);
+
+      final response = await client.post(
+        '${ApiEndpoint.baseUrl}${ApiEndpoint.authRegister}',
+        {
+          "name": txtName.text,
+          "email": txtEmail.text,
+          "password": txtPassword.text,
+        },
+      );
 
       Get.back();
+
       if (response.isOk) {
-        print(response.body['_metadata']['message'].toString());
-        saveEmail(txtEmail.text);
+        await saveEmail(txtEmail.text);
         Get.to(() => const VerificationPage());
       } else {
-        print(response.body['_metadata']['message'].toString());
-        maxSuccessDialog(response.body['_metadata']['message'].toString(), false);
+        maxSuccessDialog(
+            response.body?['message']?.toString() ?? 'Unknown error', false);
       }
-    } catch (e1) {}
+    } catch (e) {
+      Get.back();
+      maxMessageDialog('Failed to register. Please try again later.');
+      debugPrint('Error in makeRegister: $e');
+    }
   }
 
   Future<void> saveEmail(String email) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('email', email);
   }
 }

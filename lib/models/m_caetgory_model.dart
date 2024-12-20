@@ -14,7 +14,7 @@ class CategoryModel {
     return CategoryModel(
       categoryID: data['id'].toString(),
       categoryName: data['name'].toString(),
-      categoryPrivacy: data['isPrivate'] ?? false,
+      categoryPrivacy: data['private'] ?? false,
       categoryIcon: data['icon'] ?? '',
     );
   }

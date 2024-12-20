@@ -24,7 +24,7 @@ class AccountListController extends GetxController {
   }
 
   Future<void> fetchAccountList() async {
-    String url = ApiEndpoint.baseUrl2 + ApiEndpoint.account;
+    String url = ApiEndpoint.baseUrl + ApiEndpoint.account;
     GetConnect client = GetConnect(timeout: const Duration(seconds: 10));
 
     try {
@@ -42,7 +42,7 @@ class AccountListController extends GetxController {
         //     response.body['_metadata']['message'].toString(), true);
         List<AccountModel> temp = [];
 
-        Iterable iterable = response.body['_data'] ?? [];
+        Iterable iterable = response.body ?? [];
 
         for (var element in iterable) {
           AccountModel rawData = AccountModel.fromAPI(data: element);
@@ -52,7 +52,7 @@ class AccountListController extends GetxController {
         accountList.value = [...temp];
       } else {
         maxSuccessDialog(
-            response.body['_metadata']['message'].toString(), false);
+            response.body['message'].toString(), false);
       }
     } catch (e) {}
   }

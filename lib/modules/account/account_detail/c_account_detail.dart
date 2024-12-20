@@ -26,7 +26,7 @@ class AccountDetailController extends GetxController {
 
   Future<void> fetchTransaction() async {
     print("acc id - " + accId);
-    String url = '${ApiEndpoint.baseUrl2}${ApiEndpoint.account}/$accId';
+    String url = '${ApiEndpoint.baseUrl}${ApiEndpoint.account}/$accId';
 
     GetConnect client = GetConnect(timeout: const Duration(minutes: 1));
     try {
@@ -40,9 +40,9 @@ class AccountDetailController extends GetxController {
       );
       xFetching.value = false;
       if (response.isOk) {
-        print(response.body['_metadata']['message'].toString());
+        print(response.body['message'].toString());
 
-        Iterable iterable = response.body['_data']['transactions'] ?? [];
+        Iterable iterable = response.body['transaction'] ?? [];
         List<TransactionListModel> temp = [];
 
         for (var element in iterable) {
@@ -52,15 +52,14 @@ class AccountDetailController extends GetxController {
         }
         transactionList.value = [...temp];
       } else {
-        print(response.body['_metadata']['message'].toString());
-        maxSuccessDialog(
-            response.body['_metadata']['message'].toString(), false);
+        print(response.body['message'].toString());
+        maxSuccessDialog(response.body['message'].toString(), false);
       }
     } catch (e1) {}
   }
 
   Future<void> deleteAccount() async {
-    String url = '${ApiEndpoint.baseUrl2}${ApiEndpoint.account}/$accId';
+    String url = '${ApiEndpoint.baseUrl}${ApiEndpoint.account}/$accId';
 
     GetConnect client = GetConnect(timeout: const Duration(seconds: 10));
     try {
@@ -76,13 +75,12 @@ class AccountDetailController extends GetxController {
 
       Get.back();
       if (response.isOk) {
-        print(response.body['_metadata']['message'].toString());
+        print(response.body['message'].toString());
 
         Get.back();
       } else {
-        print(response.body['_metadata']['message'].toString());
-        maxSuccessDialog(
-            response.body['_metadata']['message'].toString(), false);
+        print(response.body['message'].toString());
+        maxSuccessDialog(response.body['message'].toString(), false);
       }
     } catch (e1) {}
   }

@@ -85,7 +85,6 @@ class OutcomeNewController extends GetxController {
 
   void proceedToSave() {
     if (checkAllField()) {
-      // printData();
       createGateway();
     }
   }
@@ -121,32 +120,33 @@ class OutcomeNewController extends GetxController {
   Future<void> createCategory(String categoryName) async {
     print('------------------------------------------------------------------');
     print('------------------------- Create CATEGORY ------------------------');
-    String url = ApiEndpoint.baseUrl2 + ApiEndpoint.category;
-    GetConnect client = GetConnect(timeout: const Duration(seconds: 10));
+    String url = ApiEndpoint.baseUrl + ApiEndpoint.category;
+    GetConnect client = GetConnect(timeout: const Duration(minutes: 1));
     try {
-      final response = await client.post(
-        url,
+      final formData = FormData(
         {
           "name": categoryName,
           "icon": "",
           "private": true,
         },
+      );
+      final response = await client.post(
+        url,
+        formData,
         headers: {
           'Authorization': 'Bearer ${dataController.apiToken}',
-          'Content-Type': 'application/json',
         },
       );
       if (response.isOk) {
-        String newCategoryID = response.body['_data']['id'].toString();
+        String newCategoryID = response.body['id'].toString();
         if (newCategoryID != '') {
           createTransaction(newCategoryID);
         } else {
           maxSuccessDialog("Something went wrong.", false);
         }
       } else {
-        print(response.body['_metadata']['message']);
-        maxSuccessDialog(
-            response.body['_metadata']['message'].toString(), false);
+        print(response.body['message']);
+        maxSuccessDialog(response.body['message'].toString(), false);
       }
     } catch (e) {}
   }

@@ -43,23 +43,26 @@ class LoginPageController extends GetxController {
   }
 
   Future<void> makeLogin() async {
-    String url = ApiEndpoint.baseUrl2 + ApiEndpoint.authLogin2;
-    GetConnect client = GetConnect(timeout: const Duration(seconds: 20));
+    String url = ApiEndpoint.baseUrl + ApiEndpoint.authLogin;
+    GetConnect client = GetConnect(timeout: const Duration(seconds: 30));
 
     try {
       Get.dialog(const Center(child: CircularProgressIndicator()));
 
-      final response = await client
-          .post(url, {"email": txtEmail.text, "password": txtPassword.text});
+      final response = await client.post(url, {
+        "email": txtEmail.text,
+        "password": txtPassword.text,
+      });
 
       Get.back();
       if (response.isOk) {
-        String token = response.body["_data"]['token'].toString();
+        String token = response.body["access_token"].toString();
         dataController.apiToken = token;
         saveToken(token);
         saveEmail(txtEmail.text);
+        print('Token - ' + token);
 
-        String meUrl = ApiEndpoint.baseUrl2 + ApiEndpoint.meAPI;
+        String meUrl = ApiEndpoint.baseUrl + ApiEndpoint.meAPI;
         final meResponse = await client.get(
           meUrl,
           headers: {
@@ -69,10 +72,9 @@ class LoginPageController extends GetxController {
         );
 
         if (meResponse.isOk) {
-          print(meResponse.body['_data']['name']);
-          print('Token - ' + token);
+          print(meResponse.body['profile']['name']);
 
-          MeModel rawData = MeModel.fromAPI(data: meResponse.body['_data']);
+          MeModel rawData = MeModel.fromAPI(data: meResponse.body['profile']);
           dataController.meModelNotifier = ValueNotifier(rawData);
 
           if (await isAccountListEmpty()) {
@@ -82,18 +84,18 @@ class LoginPageController extends GetxController {
           }
         } else {
           maxSuccessDialog(
-              meResponse.body['_metadata']['message'].toString(), false);
+              meResponse.body['message'].toString(), false);
         }
       } else {
         maxSuccessDialog(
-            response.body['_metadata']['message'].toString(), false);
+            response.body['message'].toString(), false);
       }
     } catch (e) {}
   }
 
   Future<bool> isAccountListEmpty() async {
     print('Fetching account list');
-    String url = ApiEndpoint.baseUrl2 + ApiEndpoint.account;
+    String url = ApiEndpoint.baseUrl + ApiEndpoint.account;
     GetConnect client = GetConnect(timeout: const Duration(seconds: 10));
 
     try {
@@ -110,7 +112,7 @@ class LoginPageController extends GetxController {
       if (response.isOk) {
         List<AccountModel> temp = [];
 
-        Iterable iterable = response.body['_data'] ?? [];
+        Iterable iterable = response.body ?? [];
 
         for (var element in iterable) {
           AccountModel rawData = AccountModel.fromAPI(data: element);
@@ -123,7 +125,7 @@ class LoginPageController extends GetxController {
         }
       } else {
         maxSuccessDialog(
-            response.body['_metadata']['message'].toString(), false);
+            response.body['message'].toString(), false);
       }
     } catch (e) {}
     return false;

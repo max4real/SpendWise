@@ -78,7 +78,7 @@ class AccountSetupController extends GetxController {
   Future<void> saveAccount() async {
     getType();
 
-    String url = ApiEndpoint.baseUrl2 + ApiEndpoint.account;
+    String url = ApiEndpoint.baseUrl + ApiEndpoint.account;
 
     GetConnect client = GetConnect(timeout: const Duration(seconds: 10));
     try {
@@ -90,8 +90,8 @@ class AccountSetupController extends GetxController {
         url,
         {
           "name": txtName.text,
-          "type": type,
-          "subType": subType,
+          "accountType": type,
+          "accountSubType": subType,
           "balance": int.tryParse(txtAmount.text) ?? -1,
         },
         headers: {
@@ -102,12 +102,11 @@ class AccountSetupController extends GetxController {
 
       Get.back();
       if (response.isOk) {
-        print(response.body['_metadata']['message'].toString());
+        print(response.body['message'].toString());
         Get.offAll(() => const SetupDone());
       } else {
-        print(response.body['_metadata']['message'].toString());
         maxSuccessDialog(
-            response.body['_metadata']['message'].toString(), false);
+            response.body['message'].toString(), false);
       }
     } catch (e1) {}
   }
