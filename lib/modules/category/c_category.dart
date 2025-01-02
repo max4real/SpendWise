@@ -77,6 +77,7 @@ class CategoryController extends GetxController {
         List<CategoryModel> temp = [...categoryList.value];
         temp.removeWhere((category) => category.categoryID == id);
         categoryList.value = [...temp];
+        print("deleted");
       } else {
         print(response.body['message'].toString());
         maxSuccessDialog(response.body['message'].toString(), false);

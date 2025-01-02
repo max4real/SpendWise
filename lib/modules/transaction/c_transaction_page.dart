@@ -81,7 +81,7 @@ class TransactionController extends GetxController {
   Future<void> fetchTransactionList() async {
     print('fetching Transaction');
     String url =
-        "${ApiEndpoint.baseUrl2}${ApiEndpoint.transaction}?page=$page&size=$size";
+        "${ApiEndpoint.baseUrl}${ApiEndpoint.transaction}?page=$page&size=$size";
 
     GetConnect client = GetConnect(timeout: const Duration(seconds: 30));
 
@@ -95,11 +95,11 @@ class TransactionController extends GetxController {
       );
 
       if (response.isOk) {
-        print(response.body['_metadata']['message']);
+        print(response.body);
         List<TransactionListModel> temp =
             page == 1 ? [] : [...transactionList.value];
 
-        Iterable iterable = response.body['_data']['result'] ?? [];
+        Iterable iterable = response.body["transactions"] ?? [];
 
         for (var element in iterable) {
           TransactionListModel rawData =
@@ -111,9 +111,8 @@ class TransactionController extends GetxController {
         moreLoading.value = false;
       } else {
         xFetching.value = false;
-        print(response.body['_metadata']['message']);
-        maxSuccessDialog(
-            response.body['_metadata']['message'].toString(), false);
+        print(response.body);
+        maxSuccessDialog(response.body['message'].toString(), false);
       }
     } catch (e) {}
   }

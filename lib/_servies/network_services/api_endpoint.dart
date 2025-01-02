@@ -24,4 +24,6 @@ class ApiEndpoint {
 
   //-------------Category-------------//
   static const String transaction = '/transaction';
+  static const String transactionTransfer = '/transaction/transfer';
+
 }

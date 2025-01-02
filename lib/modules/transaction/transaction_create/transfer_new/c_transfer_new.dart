@@ -86,7 +86,7 @@ class TransferNewController extends GetxController {
   Future<void> createTransaction() async {
     print('------------------------------------------------------------------');
     print('----------------------- Create Transaction -----------------------');
-    String url = ApiEndpoint.baseUrl2 + ApiEndpoint.transaction;
+    String url = ApiEndpoint.baseUrl + ApiEndpoint.transactionTransfer;
     GetConnect client = GetConnect(timeout: const Duration(minutes: 1));
 
     try {
@@ -110,10 +110,9 @@ class TransferNewController extends GetxController {
           if (txtDescription.text.isNotEmpty)
             'description': txtDescription.text,
           'amount': int.tryParse(txtAmount.text) ?? -1,
-          'type': transactionType,
-          'from': getSubTypeID(selectedSubTypeFrom.value.toString()),
-          'to': getSubTypeID(selectedSubTypeTo.value.toString()),
-          if (multipartFile != null) 'image': multipartFile,
+          'fromAccountId': getSubTypeID(selectedSubTypeFrom.value.toString()),
+          'toAccountId': getSubTypeID(selectedSubTypeTo.value.toString()),
+          if (multipartFile != null) 'attachmentFile': multipartFile,
         },
       );
 
@@ -121,7 +120,7 @@ class TransferNewController extends GetxController {
         print('${field.key}: ${field.value}');
       });
       if (multipartFile != null) {
-        print('image: ${multipartFile.filename}');
+        print('attachmentFile: ${multipartFile.filename}');
       }
 
       final response = await client.post(
@@ -139,7 +138,7 @@ class TransferNewController extends GetxController {
       if (response.isOk) {
         print(response.bodyString);
         maxSuccessDialog2(
-          response.body['_metadata']['message'].toString(),
+          "Successfully Created",
           true,
           () {
             clearAllField();
@@ -149,8 +148,7 @@ class TransferNewController extends GetxController {
         );
       } else {
         print(response.bodyString);
-        maxSuccessDialog(
-            response.body['_metadata']['message'].toString(), false);
+        maxSuccessDialog("Something Went Wrong.", false);
       }
     } catch (e) {
       // print('Error: $e');

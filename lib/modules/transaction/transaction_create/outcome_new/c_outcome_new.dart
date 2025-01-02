@@ -154,7 +154,7 @@ class OutcomeNewController extends GetxController {
   Future<void> createTransaction(String categoryID) async {
     print('------------------------------------------------------------------');
     print('----------------------- Create Transaction -----------------------');
-    String url = ApiEndpoint.baseUrl2 + ApiEndpoint.transaction;
+    String url = ApiEndpoint.baseUrl + ApiEndpoint.transaction;
     GetConnect client = GetConnect(timeout: const Duration(minutes: 1));
 
     try {
@@ -172,6 +172,18 @@ class OutcomeNewController extends GetxController {
         multipartFile = null;
       }
 
+      // final formData = FormData(
+      //   {
+      //     'remark': txtRemark.text,
+      //     if (txtDescription.text.isNotEmpty)
+      //       'description': txtDescription.text,
+      //     'amount': int.tryParse(txtAmount.text) ?? -1,
+      //     'type': transactionType,
+      //     'from': getSubTypeID(selectedSubType.value.toString()),
+      //     'categoryId': categoryID,
+      //     if (multipartFile != null) 'image': multipartFile,
+      //   },
+      // );
       final formData = FormData(
         {
           'remark': txtRemark.text,
@@ -179,17 +191,17 @@ class OutcomeNewController extends GetxController {
             'description': txtDescription.text,
           'amount': int.tryParse(txtAmount.text) ?? -1,
           'type': transactionType,
-          'to': getSubTypeID(selectedSubType.value.toString()),
+          'accountId': getSubTypeID(selectedSubType.value.toString()),
           'categoryId': categoryID,
-          if (multipartFile != null) 'image': multipartFile,
+          if (multipartFile != null) 'attachmentImage': multipartFile,
         },
       );
 
-      formData.fields.forEach((field) {
+      for (var field in formData.fields) {
         print('${field.key}: ${field.value}');
-      });
+      }
       if (multipartFile != null) {
-        print('image: ${multipartFile.filename}');
+        print('attachmentImage: ${multipartFile.filename}');
       }
 
       final response = await client.post(
@@ -205,11 +217,10 @@ class OutcomeNewController extends GetxController {
 
       Get.back();
       if (response.isOk) {
-        print("ok");
         print(response.bodyString);
         dataController.fetchCategoryList();
         maxSuccessDialog2(
-          response.body['_metadata']['message'].toString(),
+          "Successfully Created",
           true,
           () {
             clearAllField();
@@ -218,10 +229,8 @@ class OutcomeNewController extends GetxController {
           'Continue',
         );
       } else {
-        print('not ok');
         print(response.bodyString);
-        maxSuccessDialog(
-            response.body['_metadata']['message'].toString(), false);
+        maxSuccessDialog("Something Went Wrong.", false);
       }
     } catch (e) {
       // print('Error: $e');

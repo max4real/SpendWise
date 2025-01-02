@@ -8,6 +8,7 @@ import 'package:spend_wise/_servies/theme_services/d_dark_theme.dart';
 import 'package:spend_wise/_servies/theme_services/w_custon_theme_builder.dart';
 import 'package:get/get.dart';
 import 'package:spend_wise/models/m_transaction_list_model.dart';
+import 'package:spend_wise/modules/transaction/transaction_detail/c_transaction_details.dart';
 
 // ignore: must_be_immutable
 class TransactionDetailsPage extends StatelessWidget {
@@ -16,6 +17,8 @@ class TransactionDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TransactionDetailsController controller =
+        Get.put(TransactionDetailsController());
     Color color;
     if (transactionListModel.tarnType == 'INCOME') {
       color = incomeColor;
@@ -23,6 +26,8 @@ class TransactionDetailsPage extends StatelessWidget {
       color = outcomeColor;
     } else if (transactionListModel.tarnType == 'TRANSFER') {
       color = transferColor;
+      controller.fetchTransferDetails(
+          transferGroupId: transactionListModel.transferGroupId!);
     } else {
       color = background;
     }
@@ -169,18 +174,27 @@ class TransactionDetailsPage extends StatelessWidget {
                                               ),
                                             ),
                                             const Gap(10),
-                                            Text(
-                                              transactionListModel.from != null
-                                                  ? transactionListModel.from!
-                                                  : '-',
-                                              textAlign: TextAlign.center,
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: const TextStyle(
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.w600,
-                                                color: Color(0XFF0D0E0F),
-                                              ),
+                                            ValueListenableBuilder(
+                                              valueListenable: controller.from,
+                                              builder: (context, from, child) {
+                                                return Text(
+                                                  // transactionListModel.from !=
+                                                  //         null
+                                                  //     ? transactionListModel
+                                                  //         .from!
+                                                  //     : '-',
+                                                  from,
+                                                  textAlign: TextAlign.center,
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: const TextStyle(
+                                                    fontSize: 15,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: Color(0XFF0D0E0F),
+                                                  ),
+                                                );
+                                              },
                                             ),
                                           ],
                                         )
@@ -232,18 +246,26 @@ class TransactionDetailsPage extends StatelessWidget {
                                               ),
                                             ),
                                             const Gap(10),
-                                            Text(
-                                              transactionListModel.to != null
-                                                  ? transactionListModel.to!
-                                                  : "-",
-                                              textAlign: TextAlign.center,
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: const TextStyle(
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.w600,
-                                                color: Color(0XFF0D0E0F),
-                                              ),
+                                            ValueListenableBuilder(
+                                              valueListenable: controller.to,
+                                              builder: (context, to, child) {
+                                                return Text(
+                                                  // transactionListModel.to !=
+                                                  //         null
+                                                  //     ? transactionListModel.to!
+                                                  //     : "-",
+                                                  to,
+                                                  textAlign: TextAlign.center,
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: const TextStyle(
+                                                    fontSize: 15,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: Color(0XFF0D0E0F),
+                                                  ),
+                                                );
+                                              },
                                             ),
                                           ],
                                         )
