@@ -32,6 +32,9 @@ class TransactionController extends GetxController {
   ValueNotifier<bool> sortNew = ValueNotifier(false);
   ValueNotifier<bool> sortOld = ValueNotifier(false);
 
+  String activeFilter = "";
+  String activeSort = "";
+
   @override
   void onInit() {
     // TODO: implement onInit
@@ -50,40 +53,98 @@ class TransactionController extends GetxController {
   }
 
   void loadMore() {
-    //try removing condition
-    moreLoading.value = true;
-    if (transactionList.value.length == page * size) {
-      page = page + 1;
-      fetchTransactionList();
+    if (filterIncome.value ||
+        filterExpense.value ||
+        filterTransfer.value ||
+        sortHigh.value ||
+        sortLow.value ||
+        sortNew.value ||
+        sortOld.value) {
+      moreLoading.value = true;
+      if (transactionList.value.length == page * size) {
+        page = page + 1;
+        fetchTransactionList(
+          xWithFilter: true,
+          filterBy: activeFilter,
+          sortBy: activeSort,
+        );
+      } else {
+        moreLoading.value = false;
+      }
     } else {
-      moreLoading.value = false;
+      moreLoading.value = true;
+      if (transactionList.value.length == page * size) {
+        page = page + 1;
+        fetchTransactionList();
+      } else {
+        moreLoading.value = false;
+      }
     }
   }
 
-  void changeMonth({required int month, required int year}) {
+  void onChangeMonth({required int month, required int year}) {
     startDate.value = DateTime(year, month, 1);
     endDate.value =
         DateTime(year, month + 1, 1).subtract(const Duration(days: 1));
+
     print(startDate.value);
     print(endDate.value);
+
     print(month);
     print(year);
-    // toIso8601String
+
     Get.back();
 
     //call fetching method
   }
 
   void applyFilters() {
+    activeFilter = "";
+    activeSort = "";
+    if (filterIncome.value) activeFilter = ("INCOME");
+    if (filterExpense.value) activeFilter = ("EXPENSE");
+    if (filterTransfer.value) activeFilter = ("TRANSFER");
+
+    if (sortHigh.value) activeSort = ("HIGHEST");
+    if (sortLow.value) activeSort = ("LOWEST");
+    if (sortNew.value) activeSort = ("NEWEST");
+    if (sortOld.value) activeSort = ("OLDEST");
+
+    if (activeFilter != "" || activeSort != "") {
+      print("Active Filter - $activeFilter");
+      print("Active Sort - $activeSort");
+
+      page = 1;
+      size = 10;
+      fetchTransactionList(
+        xWithFilter: true,
+        filterBy: activeFilter,
+        sortBy: activeSort,
+      );
+    }
+
     Get.back();
   }
 
-  Future<void> fetchTransactionList() async {
-    print('fetching Transaction');
+  Future<void> fetchTransactionList({
+    bool xWithFilter = false,
+    String? filterBy,
+    String? sortBy,
+  }) async {
+    print('Fetching Transaction');
     String url =
         "${ApiEndpoint.baseUrl}${ApiEndpoint.transaction}?page=$page&limit=$size";
 
-    xFetching.value = true;
+    if (xWithFilter) {
+      url =
+          "${ApiEndpoint.baseUrl}${ApiEndpoint.transaction}?page=$page&limit=$size${filterBy == "" ? "" : "&filterBy=$filterBy"}${sortBy == "" ? "" : "&sortBy=$sortBy"}";
+    }
+
+    print(url);
+
+    if (!moreLoading.value) {
+      xFetching.value = true;
+    }
     GetConnect client = GetConnect(timeout: const Duration(seconds: 30));
 
     try {
@@ -158,7 +219,7 @@ class TransactionController extends GetxController {
     }
   }
 
-  void resetFilters() {
+  Future<void> resetFilters() async {
     filterIncome.value = false;
     filterExpense.value = false;
     filterTransfer.value = false;
@@ -166,6 +227,11 @@ class TransactionController extends GetxController {
     sortLow.value = false;
     sortNew.value = false;
     sortOld.value = false;
+
+    applyBadgeCount();
+    reloadAll();
+
+    Get.back();
   }
 
   void applyBadgeCount() {

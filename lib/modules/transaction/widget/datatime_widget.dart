@@ -93,8 +93,10 @@ class DatatimeWidget extends StatelessWidget {
               ),
               GestureDetector(
                 onTap: () {
-                  controller.changeMonth(
-                      month: selectedMonth, year: selectedYear);
+                  controller.onChangeMonth(
+                    month: selectedMonth,
+                    year: selectedYear,
+                  );
                 },
                 child: Container(
                   decoration: BoxDecoration(

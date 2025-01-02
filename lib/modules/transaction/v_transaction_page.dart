@@ -175,7 +175,7 @@ class TransactionPage extends StatelessWidget {
                                     },
                                     child: RefreshIndicator(
                                       onRefresh: () {
-                                        return controller.reloadAll();
+                                        return controller.resetFilters();
                                       },
                                       child: ListView.builder(
                                         itemCount: transactionList.length,
@@ -232,7 +232,6 @@ class TransactionPage extends StatelessWidget {
                           valueListenable: controller.moreLoading,
                           builder: (context, moreLoading, child) {
                             if (!moreLoading) {
-                              // if (false) {
                               return const SizedBox.shrink();
                             } else {
                               return SizedBox(
