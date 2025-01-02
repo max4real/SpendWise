@@ -28,7 +28,7 @@ class GatewayController extends GetxController {
     await getEmail();
     await Future.delayed(const Duration(milliseconds: 500));
     if (dataController.apiToken != '') {
-      if (await checkToken(dataController.apiToken)) {
+      if (await fetchMeAPI(dataController.apiToken)) {
         print('Token - ${dataController.apiToken}');
         print('1');
         Get.offAll(() => const MainPage());
@@ -50,8 +50,8 @@ class GatewayController extends GetxController {
     }
   }
 
-  Future<bool> checkToken(String? token) async {
-    String meUrl = ApiEndpoint.baseUrl2 + ApiEndpoint.meAPI;
+  Future<bool> fetchMeAPI(String? token) async {
+    String meUrl = ApiEndpoint.baseUrl + ApiEndpoint.meAPI;
     GetConnect client = GetConnect(timeout: const Duration(seconds: 20));
     final meResponse = await client.get(
       meUrl,
@@ -62,13 +62,16 @@ class GatewayController extends GetxController {
     );
 
     if (meResponse.isOk) {
-      print(meResponse.body['_data']['name']);
+      print(meResponse.body);
+      print(meResponse.body['profile']['name']);
 
-      MeModel rawData = MeModel.fromAPI(data: meResponse.body['_data']);
+      MeModel rawData = MeModel.fromAPI(data: meResponse.body['profile']);
       dataController.meModelNotifier = ValueNotifier(rawData);
 
       return true;
     } else {
+      print(meResponse.body);
+
       return false;
     }
   }

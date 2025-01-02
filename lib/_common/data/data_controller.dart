@@ -31,10 +31,8 @@ class DataController extends GetxController {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString('token');
     if (token != null) {
-      // spToken = token;
       apiToken = token;
     } else {
-      // spToken = "";
       apiToken = "";
     }
   }
@@ -70,13 +68,6 @@ class DataController extends GetxController {
     'Bank',
     'Mobile Banking',
   ];
-
-  //Get SubType list from Account List's subtype
-  // List<String> accSubType = [
-  //   // 'KBZ Bank',
-  //   // 'KBZ Pay',
-  //   // 'Wallet',
-  // ];
 
   ValueNotifier<List<String>> accSubType = ValueNotifier([]);
   ValueNotifier<List<AccountModel>> accountList = ValueNotifier([]);

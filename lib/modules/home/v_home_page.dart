@@ -75,6 +75,8 @@ class HomePage extends StatelessWidget {
                           builder: (context, meModelNotifier, child) {
                             return Text(
                               "${meModelNotifier.totalBalance} Ks",
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                               style: const TextStyle(
                                 color: Colors.black,
                                 fontSize: 25,
@@ -124,6 +126,8 @@ class HomePage extends StatelessWidget {
                                           (context, meModelNotifier, child) {
                                         return Text(
                                           '${meModelNotifier.totalIncome} Ks',
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
                                           style: const TextStyle(
                                             color: Colors.white,
                                             fontWeight: FontWeight.w600,
@@ -157,7 +161,7 @@ class HomePage extends StatelessWidget {
                                         ),
                                         const SizedBox(width: 10),
                                         const Text(
-                                          'Outcome',
+                                          'Expense',
                                           style: TextStyle(
                                             color: Colors.white,
                                             fontWeight: FontWeight.w400,
@@ -174,6 +178,8 @@ class HomePage extends StatelessWidget {
                                           (context, meModelNotifier, child) {
                                         return Text(
                                           '${meModelNotifier.totoalExpense} Ks',
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
                                           style: const TextStyle(
                                             color: Colors.white,
                                             fontWeight: FontWeight.w600,
@@ -372,7 +378,7 @@ class HomePage extends StatelessWidget {
                                           "TRANSFER") {
                                         title = 'Transfer';
                                       } else {
-                                        title = 'Account Create';
+                                        title = 'Other';
                                       }
                                       return GestureDetector(
                                         onTap: () {

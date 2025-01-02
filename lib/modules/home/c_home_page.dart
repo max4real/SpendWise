@@ -7,17 +7,12 @@ import '../../_servies/network_services/api_endpoint.dart';
 import '../../models/m_transaction_list_model.dart';
 
 class HomePageController extends GetxController {
-  // TextEditingController txtBalance = TextEditingController(text: '153000');
   int page = 1;
   int size = 4;
   DataController dataController = Get.find();
 
   ValueNotifier<bool> xFetching = ValueNotifier(true);
   ValueNotifier<List<TransactionListModel>> transactionList = ValueNotifier([]);
-
-  ValueNotifier<double> totalBalance = ValueNotifier(153000);
-  ValueNotifier<double> totalIncome = ValueNotifier(120000);
-  ValueNotifier<double> totalOutcome = ValueNotifier(75000);
 
   ValueNotifier<int> tabIndex = ValueNotifier(0);
 
@@ -62,7 +57,6 @@ class HomePageController extends GetxController {
     FlSpot(23, 0),
     FlSpot(24, 0),
   ];
-
   List<FlSpot> data2 = const [
     FlSpot(3, 40000),
     FlSpot(5, 2000),
@@ -102,7 +96,7 @@ class HomePageController extends GetxController {
   Future<void> fetchTransactionList() async {
     print('fetching Transaction');
     String url =
-        "${ApiEndpoint.baseUrl2}${ApiEndpoint.transaction}?page=$page&size=$size";
+        "${ApiEndpoint.baseUrl}${ApiEndpoint.transaction}?page=$page&limit=$size";
 
     GetConnect client = GetConnect(timeout: const Duration(seconds: 30));
 
@@ -117,11 +111,11 @@ class HomePageController extends GetxController {
       );
 
       if (response.isOk) {
-        print(response.body['_metadata']['message']);
+        print(response.body);
         List<TransactionListModel> temp =
             page == 1 ? [] : [...transactionList.value];
 
-        Iterable iterable = response.body['_data']['result'] ?? [];
+        Iterable iterable = response.body["transactions"] ?? [];
 
         for (var element in iterable) {
           TransactionListModel rawData =
@@ -132,7 +126,7 @@ class HomePageController extends GetxController {
         xFetching.value = false;
       } else {
         xFetching.value = false;
-        print(response.body['_metadata']['message']);
+        print(response.body);
         maxSuccessDialog(
             response.body['_metadata']['message'].toString(), false);
       }

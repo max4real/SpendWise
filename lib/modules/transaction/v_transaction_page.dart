@@ -149,8 +149,24 @@ class TransactionPage extends StatelessWidget {
                               valueListenable: controller.transactionList,
                               builder: (context, transactionList, child) {
                                 if (transactionList.isEmpty) {
-                                  return const Center(
-                                    child: Text("No Transaction Yet!"),
+                                  return Center(
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        const Text("No Transaction Yet!"),
+                                        const Gap(15),
+                                        IconButton(
+                                          onPressed: () {
+                                            controller.fetchTransactionList();
+                                          },
+                                          icon: Icon(
+                                            Icons.refresh,
+                                            color: theme.background,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   );
                                 } else {
                                   return LazyLoadScrollView(
@@ -171,7 +187,7 @@ class TransactionPage extends StatelessWidget {
                                               "TRANSFER") {
                                             title = 'Transfer';
                                           } else {
-                                            title = 'Account Create';
+                                            title = 'Other';
                                           }
                                           return GestureDetector(
                                             onTap: () {

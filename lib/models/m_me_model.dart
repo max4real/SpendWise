@@ -22,14 +22,18 @@ class MeModel {
       name: data['name'].toString(),
       email: data['email'].toString(),
       image: data['image'].toString(),
-      totalBalance: int.tryParse(data['email'].toString()) ?? -1,
-      totalIncome: int.tryParse(data['email'].toString()) ?? -1,
-      totoalExpense: int.tryParse(data['email'].toString()) ?? -1,
+      totalBalance: int.tryParse(data['totalBalance'].toString()) ?? -1,
+      totalIncome: int.tryParse(data['totalIncome'].toString()) ?? -1,
+      totoalExpense: int.tryParse(data['totalExpenses'].toString()) ?? -1,
     );
   }
 }
-// "id": "9a2d2d96-7191-4e33-8fbd-f735cd875059",
+//  "profile": {
+//     "id": "9a2d2d96-7191-4e33-8fbd-f735cd875059",
 //     "name": "max",
 //     "email": "myintmyatsoe10@gmail.com",
 //     "image": null,
-//     "account": []
+//     "totalBalance": 798000,
+//     "totalIncome": 15000,
+//     "totalExpenses": 23000
+//   }

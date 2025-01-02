@@ -81,8 +81,9 @@ class TransactionController extends GetxController {
   Future<void> fetchTransactionList() async {
     print('fetching Transaction');
     String url =
-        "${ApiEndpoint.baseUrl}${ApiEndpoint.transaction}?page=$page&size=$size";
+        "${ApiEndpoint.baseUrl}${ApiEndpoint.transaction}?page=$page&limit=$size";
 
+    xFetching.value = true;
     GetConnect client = GetConnect(timeout: const Duration(seconds: 30));
 
     try {

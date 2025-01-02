@@ -10,6 +10,7 @@ class TransactionDetailsController extends GetxController {
   ValueNotifier<String> to = ValueNotifier("-");
 
   Future<void> fetchTransferDetails({required String transferGroupId}) async {
+    print("fetching transfer transaction");
     String url =
         "${ApiEndpoint.baseUrl}${ApiEndpoint.transactionTransfer}/$transferGroupId";
 
