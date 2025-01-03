@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:spend_wise/_common/data/data_controller.dart';
 
 import '../../_servies/network_services/api_endpoint.dart';
+import '../../models/m_me_model.dart';
 import '../../models/m_transaction_list_model.dart';
 
 class HomePageController extends GetxController {
@@ -28,6 +29,11 @@ class HomePageController extends GetxController {
 
   void initLoad() {
     fetchTransactionList();
+  }
+
+  Future<void> onRefresh() async {
+    fetchTransactionList();
+    fetchMeAPI(dataController.apiToken);
   }
 
   List<FlSpot> data1 = const [
@@ -131,5 +137,26 @@ class HomePageController extends GetxController {
             response.body['_metadata']['message'].toString(), false);
       }
     } catch (e) {}
+  }
+
+  Future<void> fetchMeAPI(String? token) async {
+    String meUrl = ApiEndpoint.baseUrl + ApiEndpoint.meAPI;
+    GetConnect client = GetConnect(timeout: const Duration(seconds: 20));
+    final meResponse = await client.get(
+      meUrl,
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (meResponse.isOk) {
+      print(meResponse.body);
+
+      MeModel rawData = MeModel.fromAPI(data: meResponse.body['profile']);
+      dataController.meModelNotifier.value = rawData;
+    } else {
+      print(meResponse.body);
+    }
   }
 }

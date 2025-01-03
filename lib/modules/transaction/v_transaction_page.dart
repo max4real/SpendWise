@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:spend_wise/_common/_widget/maxMultiButton.dart';
-import 'package:spend_wise/_servies/theme_services/d_dark_theme.dart';
 import 'package:spend_wise/_servies/theme_services/w_custon_theme_builder.dart';
 import 'package:spend_wise/modules/transaction/c_transaction_page.dart';
 import 'package:get/get.dart';
@@ -238,7 +237,7 @@ class TransactionPage extends StatelessWidget {
                                 width: 50,
                                 child: LoadingIndicator(
                                   indicatorType: Indicator.ballPulseSync,
-                                  colors: [incomeColor],
+                                  colors: [theme.background],
                                 ),
                               );
                             }

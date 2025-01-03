@@ -19,9 +19,8 @@ class TransactionController extends GetxController {
   ValueNotifier<DateTime> startDate =
       ValueNotifier(DateTime(DateTime.now().year, DateTime.now().month, 1));
 
-  ValueNotifier<DateTime> endDate = ValueNotifier(
-      DateTime(DateTime.now().year, DateTime.now().month + 1 - 1, 0)
-          .subtract(const Duration(days: 1)));
+  ValueNotifier<DateTime> endDate =
+      ValueNotifier(DateTime(DateTime.now().year, DateTime.now().month + 1, 0));
 
   ValueNotifier<bool> filterIncome = ValueNotifier(false);
   ValueNotifier<bool> filterExpense = ValueNotifier(false);
@@ -53,32 +52,12 @@ class TransactionController extends GetxController {
   }
 
   void loadMore() {
-    if (filterIncome.value ||
-        filterExpense.value ||
-        filterTransfer.value ||
-        sortHigh.value ||
-        sortLow.value ||
-        sortNew.value ||
-        sortOld.value) {
-      moreLoading.value = true;
-      if (transactionList.value.length == page * size) {
-        page = page + 1;
-        fetchTransactionList(
-          xWithFilter: true,
-          filterBy: activeFilter,
-          sortBy: activeSort,
-        );
-      } else {
-        moreLoading.value = false;
-      }
+    moreLoading.value = true;
+    if (transactionList.value.length == page * size) {
+      page = page + 1;
+      fetchTransactionList();
     } else {
-      moreLoading.value = true;
-      if (transactionList.value.length == page * size) {
-        page = page + 1;
-        fetchTransactionList();
-      } else {
-        moreLoading.value = false;
-      }
+      moreLoading.value = false;
     }
   }
 
@@ -90,12 +69,9 @@ class TransactionController extends GetxController {
     print(startDate.value);
     print(endDate.value);
 
-    print(month);
-    print(year);
-
     Get.back();
 
-    //call fetching method
+    fetchTransactionList();
   }
 
   void applyFilters() {
@@ -116,28 +92,20 @@ class TransactionController extends GetxController {
 
       page = 1;
       size = 10;
-      fetchTransactionList(
-        xWithFilter: true,
-        filterBy: activeFilter,
-        sortBy: activeSort,
-      );
+      fetchTransactionList();
     }
 
     Get.back();
   }
 
-  Future<void> fetchTransactionList({
-    bool xWithFilter = false,
-    String? filterBy,
-    String? sortBy,
-  }) async {
+  Future<void> fetchTransactionList() async {
     print('Fetching Transaction');
     String url =
-        "${ApiEndpoint.baseUrl}${ApiEndpoint.transaction}?page=$page&limit=$size";
+        "${ApiEndpoint.baseUrl}${ApiEndpoint.transaction}?page=$page&limit=$size&fromDate=${startDate.value}&toDate=${endDate.value}";
 
-    if (xWithFilter) {
+    if (activeFilter != "" || activeSort != "") {
       url =
-          "${ApiEndpoint.baseUrl}${ApiEndpoint.transaction}?page=$page&limit=$size${filterBy == "" ? "" : "&filterBy=$filterBy"}${sortBy == "" ? "" : "&sortBy=$sortBy"}";
+          "${ApiEndpoint.baseUrl}${ApiEndpoint.transaction}?page=$page&limit=$size${activeFilter == "" ? "" : "&filterBy=$activeFilter"}${activeSort == "" ? "" : "&sortBy=$activeSort"}&fromDate=${startDate.value}&toDate=${endDate.value}";
     }
 
     print(url);
@@ -227,6 +195,13 @@ class TransactionController extends GetxController {
     sortLow.value = false;
     sortNew.value = false;
     sortOld.value = false;
+
+    activeFilter = "";
+    activeSort = "";
+
+    startDate.value = DateTime(DateTime.now().year, DateTime.now().month, 1);
+
+    endDate.value = DateTime(DateTime.now().year, DateTime.now().month + 1, 0);
 
     applyBadgeCount();
     reloadAll();
