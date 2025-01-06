@@ -83,20 +83,18 @@ class LoginPageController extends GetxController {
             Get.offAll(() => const MainPage());
           }
         } else {
-          maxSuccessDialog(
-              meResponse.body['message'].toString(), false);
+          maxSuccessDialog(meResponse.body['message'].toString(), false);
         }
       } else {
-        maxSuccessDialog(
-            response.body['message'].toString(), false);
+        maxSuccessDialog(response.body['message'].toString(), false);
       }
     } catch (e) {}
   }
 
   Future<bool> isAccountListEmpty() async {
-    print('Fetching account list');
+    print('Fetching account list ---');
     String url = ApiEndpoint.baseUrl + ApiEndpoint.account;
-    GetConnect client = GetConnect(timeout: const Duration(seconds: 10));
+    GetConnect client = GetConnect(timeout: const Duration(seconds: 30));
 
     try {
       Get.dialog(const Center(child: CircularProgressIndicator()));
@@ -124,8 +122,9 @@ class LoginPageController extends GetxController {
           return false;
         }
       } else {
-        maxSuccessDialog(
-            response.body['message'].toString(), false);
+        print("response not ok");
+        print(response.body);
+        maxSuccessDialog(response.body['message'].toString(), false);
       }
     } catch (e) {}
     return false;

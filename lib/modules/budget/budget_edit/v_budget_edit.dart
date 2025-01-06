@@ -115,70 +115,75 @@ class BudgetEditPage extends StatelessWidget {
                     child: Column(
                       children: [
                         ValueListenableBuilder(
-                          valueListenable: controller.selectedCategory,
-                          builder: (context, value, child) {
-                            return Container(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 16),
-                              decoration: BoxDecoration(
-                                border: Border.all(color: Colors.grey),
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              child: DropdownButtonHideUnderline(
-                                child: DropdownButton<String>(
-                                  value: value,
-                                  elevation: 8,
-                                  borderRadius: BorderRadius.circular(20),
-                                  menuWidth: Get.width * 0.6,
-                                  menuMaxHeight: 300,
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 2),
-                                  style: const TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w400,
+                          valueListenable: dataController.categoryListStr,
+                          builder: (context, categoryListStr, child) {
+                            return ValueListenableBuilder(
+                              valueListenable: controller.selectedCategory,
+                              builder: (context, value, child) {
+                                return Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 16),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(color: Colors.grey),
+                                    borderRadius: BorderRadius.circular(15),
                                   ),
-                                  hint: const Text(
-                                    'Category',
-                                    style: TextStyle(
-                                      color: Color(0XFF91919F),
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ),
-                                  isExpanded: true,
-                                  icon: Icon(
-                                    Iconsax.arrow_right_3,
-                                    color: theme.background,
-                                  ),
-                                  items: dataController.categoryTags
-                                      .map((String value) {
-                                    return DropdownMenuItem<String>(
+                                  child: DropdownButtonHideUnderline(
+                                    child: DropdownButton<String>(
                                       value: value,
-                                      child: Card(
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(10),
-                                          child: Row(
-                                            children: [
-                                              SvgPicture.string(
-                                                  AppSvgs.svgGreenDot),
-                                              const Gap(10),
-                                              Text(
-                                                value,
-                                                style: const TextStyle(
-                                                  color: Color(0xFF5D5C5C),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
+                                      elevation: 8,
+                                      borderRadius: BorderRadius.circular(20),
+                                      menuWidth: Get.width * 0.6,
+                                      menuMaxHeight: 300,
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 2),
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                      hint: const Text(
+                                        'Category',
+                                        style: TextStyle(
+                                          color: Color(0XFF91919F),
+                                          fontWeight: FontWeight.w400,
                                         ),
                                       ),
-                                    );
-                                  }).toList(),
-                                  onChanged: (newValue) {
-                                    controller.selectedCategory.value =
-                                        newValue;
-                                  },
-                                ),
-                              ),
+                                      isExpanded: true,
+                                      icon: Icon(
+                                        Iconsax.arrow_right_3,
+                                        color: theme.background,
+                                      ),
+                                      items:
+                                          categoryListStr.map((String value) {
+                                        return DropdownMenuItem<String>(
+                                          value: value,
+                                          child: Card(
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(10),
+                                              child: Row(
+                                                children: [
+                                                  SvgPicture.string(
+                                                      AppSvgs.svgGreenDot),
+                                                  const Gap(10),
+                                                  Text(
+                                                    value,
+                                                    style: const TextStyle(
+                                                      color: Color(0xFF5D5C5C),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      }).toList(),
+                                      onChanged: (newValue) {
+                                        controller.selectedCategory.value =
+                                            newValue;
+                                      },
+                                    ),
+                                  ),
+                                );
+                              },
                             );
                           },
                         ),

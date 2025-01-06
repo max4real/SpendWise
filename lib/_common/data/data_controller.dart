@@ -37,6 +37,13 @@ class DataController extends GetxController {
     }
   }
 
+  // Future<void> reloadFetching() async {
+  //   BudgetController budgetController = Get.find();
+  //   budgetController.fetchBudgetList();
+  //   TransactionController transactionController =Get.find();
+  //   transactionController.reloadAll();
+  // }
+
   Map<int, String> monthsMap = {
     1: 'Jan',
     2: 'Feb',
@@ -51,17 +58,6 @@ class DataController extends GetxController {
     11: 'Nov',
     12: 'Dec',
   };
-  List<String> categoryTags = [
-    'Shopping',
-    'Subscription',
-    'Food',
-    'Salary',
-    'Transportation',
-    'General Use',
-    'Loan',
-    'Borrow',
-    'Other',
-  ];
 
   List<String> accType = [
     'Wallet',

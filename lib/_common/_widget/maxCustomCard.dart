@@ -70,7 +70,7 @@ class MaxCustonCard extends StatelessWidget {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    '${formatNumber(used)} Spend Of ${formatNumber(totoal)} Ks',
+                    '${formatNumber(used)} Ks Spend of ${formatNumber(totoal)} Ks',
                     style: const TextStyle(
                       fontWeight: FontWeight.w400,
                       fontSize: 14,

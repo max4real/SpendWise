@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 import 'package:spend_wise/_common/_widget/maxCustomCard.dart';
@@ -79,38 +80,77 @@ class BudgetPage extends StatelessWidget {
               ),
             ),
             child: Padding(
-                padding: const EdgeInsets.only(top: 10, left: 13, right: 13),
+              padding: const EdgeInsets.only(top: 10, left: 13, right: 13),
+              child: RefreshIndicator(
                 child: ValueListenableBuilder(
-                  valueListenable: controller.budgetDataList,
-                  builder: (context, value, child) {
-                    if (value) {
+                  valueListenable: controller.xFetching,
+                  builder: (context, xFetching, child) {
+                    if (xFetching) {
                       return const Center(
-                        child: Text(
-                          'You don’t have a budget.\nLet’s make one so you in control.',
-                          textAlign: TextAlign.center,
-                        ),
+                        child: CircularProgressIndicator(),
                       );
                     } else {
-                      return ListView.builder(
-                        itemCount: 5,
-                        itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () {
-                              Get.to(() => const BudgetDetailPage());
-                            },
-                            child: MaxCustonCard(
-                              tag: index % 2 == 0 ? 'Shopping' : 'Food',
-                              xExceed: index % 2 == 0 ? false : true,
-                              totoal: 100000,
-                              used: 85000,
-                              remaining: 15000,
-                            ),
-                          );
+                      return ValueListenableBuilder(
+                        valueListenable: controller.budgetList,
+                        builder: (context, budgetList, child) {
+                          if (budgetList.isEmpty) {
+                            return Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Text(
+                                    "You don’t have a budget.\nLet’s make one so you in control.",
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  const Gap(15),
+                                  IconButton(
+                                    onPressed: () {
+                                      controller.fetchBudgetList();
+                                    },
+                                    icon: Icon(
+                                      Icons.refresh,
+                                      color: theme.background,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          } else {
+                            return ListView.builder(
+                              itemCount: budgetList.length,
+                              itemBuilder: (context, index) {
+                                final each = budgetList[index];
+                                return GestureDetector(
+                                  onTap: () {
+                                    Get.to(
+                                      () => BudgetDetailPage(
+                                        each: each,
+                                      ),
+                                    );
+                                  },
+                                  child: MaxCustonCard(
+                                    tag: each.categoryModel.categoryName,
+                                    xExceed: each.budgetAmount < each.budgetUsed
+                                        ? true
+                                        : false,
+                                    totoal: each.budgetAmount,
+                                    used: each.budgetUsed,
+                                    remaining: each.remainingAmount,
+                                  ),
+                                );
+                              },
+                            );
+                          }
                         },
                       );
                     }
                   },
-                )),
+                ),
+                onRefresh: () {
+                  return controller.fetchBudgetList();
+                },
+              ),
+            ),
           ),
         );
       },

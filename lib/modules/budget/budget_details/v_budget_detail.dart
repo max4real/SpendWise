@@ -2,19 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:spend_wise/_common/_widget/maxButton.dart';
 import 'package:spend_wise/_servies/theme_services/w_custon_theme_builder.dart';
 import 'package:get/get.dart';
-import 'package:spend_wise/modules/budget/budget_edit/v_budget_edit.dart';
+import 'package:spend_wise/models/m_budget_model.dart';
+import 'package:spend_wise/modules/budget/budget_details/c_budget_detail.dart';
 
 import '../../../_common/constants/app_svg.dart';
 import '../../../_common/data/data_controller.dart';
 
 class BudgetDetailPage extends StatelessWidget {
-  const BudgetDetailPage({super.key});
+  final BudgetModel each;
+
+  const BudgetDetailPage({super.key, required this.each});
 
   @override
   Widget build(BuildContext context) {
+    Get.put(BudgetDetailController());
+    double progressValue = (each.budgetUsed - 0) / (each.budgetAmount - 0);
+
     return MaxThemeBuilder(
       builder: (context, theme, themeController) {
         return Scaffold(
@@ -57,93 +62,98 @@ class BudgetDetailPage extends StatelessWidget {
             child: Column(
               children: [
                 Expanded(
-                    child: SizedBox.expand(
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: 70,
-                        width: 200,
-                        child: Card(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
-                            child: Row(
-                              children: [
-                                SvgPicture.string(
-                                  AppSvgs.svgGreenDot,
-                                  width: 20,
-                                  height: 20,
-                                ),
-                                const Gap(10),
-                                const Text(
-                                  "ShoppingABCDEF",
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    color: Color(0xFF5D5C5C),
+                  child: SizedBox.expand(
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: 70,
+                          width: 200,
+                          child: Card(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
+                              child: Row(
+                                children: [
+                                  SvgPicture.string(
+                                    AppSvgs.svgGreenDot,
+                                    width: 20,
+                                    height: 20,
                                   ),
-                                ),
-                              ],
+                                  const Gap(10),
+                                  Text(
+                                    each.categoryModel.categoryName,
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      color: Color(0xFF5D5C5C),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      const Gap(20),
-                      const Text(
-                        'Remaining',
-                        style: TextStyle(
-                            fontSize: 18,
+                        const Gap(20),
+                        const Text(
+                          'Remaining',
+                          style: TextStyle(
+                              fontSize: 18,
+                              color: Color(0XFF0D0E0F),
+                              fontWeight: FontWeight.w600),
+                        ),
+                        // const Gap(20),
+                        Text(
+                          '${formatNumber(each.remainingAmount)} Ks',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                              fontSize: 35,
+                              color: Color(0XFF0D0E0F),
+                              fontWeight: FontWeight.w400),
+                        ),
+                        const Gap(20),
+                        SizedBox(
+                          height: 15,
+                          width: double.infinity,
+                          child: LinearProgressIndicator(
+                            value: progressValue,
+                            borderRadius: BorderRadius.circular(10),
+                            backgroundColor: Colors.grey[300],
+                            valueColor:
+                                AlwaysStoppedAnimation<Color>(theme.background),
+                          ),
+                        ),
+                        const Gap(20),
+                        Text(
+                          'You have spend ${formatNumber(each.budgetUsed)} of ${formatNumber(each.budgetAmount)} Ks.',
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16,
                             color: Color(0XFF0D0E0F),
-                            fontWeight: FontWeight.w600),
-                      ),
-                      // const Gap(20),
-                      const Text(
-                        '15,000 Ks',
-                        style: TextStyle(
-                            fontSize: 40,
-                            color: Color(0XFF0D0E0F),
-                            fontWeight: FontWeight.w400),
-                      ),
-                      const Gap(20),
-                      SizedBox(
-                        height: 15,
-                        width: double.infinity,
-                        child: LinearProgressIndicator(
-                          value: 0.5,
-                          borderRadius: BorderRadius.circular(10),
-                          backgroundColor: Colors.grey[300],
-                          valueColor:
-                              AlwaysStoppedAnimation<Color>(theme.background),
+                          ),
                         ),
-                      ),
-                      const Gap(20),
-                      Text(
-                        'You have spend ${formatNumber(40000)} of ${formatNumber(100000)} Ks.',
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 16,
-                          color: Color(0XFF0D0E0F),
-                        ),
-                      ),
-                      const Gap(20),
-                      Visibility(
-                        visible: true,
-                        child: SvgPicture.string(
-                          AppSvgs.svgExceedMessage,
-                          width: 200,
-                        ),
-                      )
-                    ],
+                        const Gap(20),
+                        Visibility(
+                          visible: each.budgetAmount < each.budgetUsed
+                              ? true
+                              : false,
+                          child: SvgPicture.string(
+                            AppSvgs.svgExceedMessage,
+                            width: 200,
+                          ),
+                        )
+                      ],
+                    ),
                   ),
-                )),
-                const Gap(20),
-                GestureDetector(
-                  onTap: () {
-                    Get.to(() => const BudgetEditPage());
-                  },
-                  child: MaxButton(title: 'Edit'),
                 ),
-                const Gap(20),
+                // const Gap(20),
+                // GestureDetector(
+                //   onTap: () {
+                //     Get.to(() => const BudgetEditPage());
+                //   },
+                //   child: MaxButton(title: 'Edit'),
+                // ),
+                // const Gap(20),
               ],
             ),
           ),
@@ -153,6 +163,7 @@ class BudgetDetailPage extends StatelessWidget {
   }
 
   void showDeleteSheet() {
+    BudgetDetailController controller = Get.find();
     Get.bottomSheet(
       backgroundColor: Colors.white,
       MaxThemeBuilder(
@@ -205,9 +216,7 @@ class BudgetDetailPage extends StatelessWidget {
                       const Spacer(),
                       ElevatedButton(
                         onPressed: () {
-                          //Delete code
-                          maxSuccessDialog(
-                              'Budget has been successfully removed', true);
+                          controller.deleteBudget(each.id);
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: theme.background,

@@ -32,5 +32,4 @@ class MyApp extends StatelessWidget {
     Get.put(DataController());
     Get.put(ThemeController());
   }
-  
 }
