@@ -23,6 +23,8 @@ class ApiEndpoint {
   //-------------Category-------------//
   static const String transaction = '/transaction';
   static const String transactionTransfer = '/transaction/transfer';
+  static const String transactionExpenseUsage = '/transaction/expense-usage';
+
 
   //-------------Budgets-------------//
   static const String budget = '/budgets';

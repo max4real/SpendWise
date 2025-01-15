@@ -11,6 +11,7 @@ class HomePageController extends GetxController {
   int page = 1;
   int size = 4;
   DataController dataController = Get.find();
+  DateTime today = DateTime.now();
 
   ValueNotifier<bool> xFetching = ValueNotifier(true);
   ValueNotifier<List<TransactionListModel>> transactionList = ValueNotifier([]);
@@ -18,85 +19,79 @@ class HomePageController extends GetxController {
   ValueNotifier<int> tabIndex = ValueNotifier(0);
 
   ValueNotifier<List<FlSpot>> chartDataList = ValueNotifier([]);
+  String chartDataKey = 'weekly';
 
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-    chartDataList.value = [...data1];
     initLoad();
   }
 
   void initLoad() {
+    fetchChartData(key: chartDataKey);
     fetchTransactionList();
   }
 
   Future<void> onRefresh() async {
+    fetchChartData(key: chartDataKey);
     fetchTransactionList();
     fetchMeAPI(dataController.apiToken);
   }
 
-  List<FlSpot> data1 = const [
-    FlSpot(0, 0),
-    FlSpot(1, 0),
-    FlSpot(2, 0),
-    FlSpot(3, 40000),
-    FlSpot(4, 0),
-    FlSpot(5, 2000),
-    FlSpot(6, 0),
-    FlSpot(7, 0),
-    FlSpot(8, 0),
-    FlSpot(9, 0),
-    FlSpot(10, 1500),
-    FlSpot(11, 0),
-    FlSpot(12, 0),
-    FlSpot(13, 0),
-    FlSpot(14, 0),
-    FlSpot(15, 0),
-    FlSpot(16, 3500),
-    FlSpot(17, 0),
-    FlSpot(18, 4500),
-    FlSpot(19, 0),
-    FlSpot(20, 0),
-    FlSpot(21, 0),
-    FlSpot(22, 0),
-    FlSpot(23, 0),
-    FlSpot(24, 0),
-  ];
-  List<FlSpot> data2 = const [
-    FlSpot(3, 40000),
-    FlSpot(5, 2000),
-    FlSpot(10, 1500),
-    FlSpot(13, 25000),
-    FlSpot(16, 3500),
-    FlSpot(18, 4500),
-  ];
-  List<FlSpot> data3 = const [
-    FlSpot(0, 1000),
-    FlSpot(3, 5000),
-    FlSpot(4, 3000),
-    FlSpot(8, 13000),
-    FlSpot(10, 8000),
-    FlSpot(12, 9500),
-    FlSpot(14, 400),
-    FlSpot(16, 0),
-    FlSpot(18, 500),
-    FlSpot(20, 0),
-    FlSpot(22, 3500),
-    FlSpot(24, 0),
-  ];
-
   void chartTabOnChnage(int index) {
     if (index == 0) {
-      chartDataList.value.clear();
-      chartDataList.value = [...data1];
+      chartDataKey = "weekly";
+      fetchChartData(key: chartDataKey);
     } else if (index == 1) {
-      chartDataList.value.clear();
-      chartDataList.value = [...data2];
+      chartDataKey = "monthly";
+      fetchChartData(key: chartDataKey);
     } else if (index == 2) {
-      chartDataList.value.clear();
-      chartDataList.value = [...data3];
+      chartDataKey = "yearly";
+      fetchChartData(key: chartDataKey);
     }
+  }
+
+  Future<void> reloadChart() async {
+    fetchChartData(key: chartDataKey);
+  }
+
+  Future<void> fetchChartData({required String key}) async {
+    print('fetching chart data');
+    String url =
+        "${ApiEndpoint.baseUrl}${ApiEndpoint.transactionExpenseUsage}?timeFrame=$key";
+
+    GetConnect client = GetConnect(timeout: const Duration(seconds: 30));
+
+    try {
+      final response = await client.get(
+        url,
+        headers: {
+          'Authorization': 'Bearer ${dataController.apiToken}',
+          'Content-Type': 'application/json',
+        },
+      );
+
+      if (response.isOk) {
+        Iterable iterable = response.body["breakdown"];
+
+        List<FlSpot> temp = [];
+
+        for (int i = 0; i < iterable.length; i++) {
+          final item = iterable.elementAt(i);
+          double x = i.toDouble();
+          double y = double.tryParse(item['total'].toString()) ?? -1;
+          temp.add(FlSpot(x, y));
+        }
+
+        chartDataList.value.clear();
+        chartDataList.value = temp;
+      } else {
+        print(response.body);
+        maxSuccessDialog(
+            response.body['_metadata']['message'].toString(), false);
+      }
+    } catch (e) {}
   }
 
   Future<void> fetchTransactionList() async {

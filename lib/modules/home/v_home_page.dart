@@ -3,6 +3,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:intl/intl.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:spend_wise/_common/_widget/maxListTile.dart';
 import 'package:spend_wise/_common/data/data_controller.dart';
@@ -31,9 +32,9 @@ class HomePage extends StatelessWidget {
               size: 30,
             ),
             centerTitle: true,
-            title: const Text(
-              "October",
-              style: TextStyle(fontSize: 18),
+            title: Text(
+              DateFormat('MMMM yyyy').format(controller.today),
+              style: const TextStyle(fontSize: 18),
             ),
             actions: [
               IconButton(
@@ -212,7 +213,9 @@ class HomePage extends StatelessWidget {
                         ),
                         const Spacer(),
                         IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            controller.reloadChart();
+                          },
                           icon: const Icon(Iconsax.refresh_left_square),
                         )
                       ],
@@ -225,39 +228,53 @@ class HomePage extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(vertical: 20),
                       child: ValueListenableBuilder(
                         valueListenable: controller.chartDataList,
-                        builder: (context, value, child) {
-                          return LineChart(
-                            duration: const Duration(seconds: 1),
-                            LineChartData(
-                              // lineTouchData: const LineTouchData(enabled: false),
-                              gridData: const FlGridData(show: true),
-                              titlesData: const FlTitlesData(show: true),
-                              borderData: FlBorderData(show: false),
-                              lineBarsData: [
-                                LineChartBarData(
-                                  color: theme.background,
-                                  barWidth: 5,
-                                  isCurved: true,
-                                  isStrokeCapRound: true,
-                                  belowBarData: BarAreaData(
-                                    show: true,
-                                    gradient: LinearGradient(
-                                      colors: [
-                                        theme.background.withOpacity(0.5),
-                                        Colors.white.withOpacity(0.5)
-                                      ],
-                                      begin: Alignment.topCenter,
-                                      end: Alignment.bottomCenter,
+                        builder: (context, chartDataList, child) {
+                          if (chartDataList.isEmpty) {
+                            return const Center(
+                              child: Text(
+                                'No Data Yet!',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            );
+                          } else {
+                            return LineChart(
+                              duration: const Duration(seconds: 1),
+                              LineChartData(
+                                lineTouchData:
+                                    const LineTouchData(enabled: true),
+                                gridData: const FlGridData(show: false),
+                                titlesData: const FlTitlesData(show: false),
+                                borderData: FlBorderData(show: false),
+                                lineBarsData: [
+                                  LineChartBarData(
+                                    color: theme.background,
+                                    barWidth: 5,
+                                    isCurved: true,
+                                    isStrokeCapRound: true,
+                                    belowBarData: BarAreaData(
+                                      show: true,
+                                      gradient: LinearGradient(
+                                        colors: [
+                                          theme.background.withOpacity(0.5),
+                                          Colors.white.withOpacity(0.5)
+                                        ],
+                                        begin: Alignment.topCenter,
+                                        end: Alignment.bottomCenter,
+                                      ),
+                                    ),
+                                    spots: chartDataList,
+                                    dotData: const FlDotData(
+                                      show: false,
                                     ),
                                   ),
-                                  spots: value,
-                                  dotData: const FlDotData(
-                                    show: true,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
+                                ],
+                              ),
+                            );
+                          }
                         },
                       )),
                   //Tab
